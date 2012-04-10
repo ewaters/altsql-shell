@@ -49,9 +49,16 @@ sub readline {
 sub completion_function {
 	my ($self, $word, $buffer, $start) = @_;
 
-	$self->{app}->log_debug("\ncompletion_function: '$word', '$buffer', '$start'");
+	#$self->{app}->log_debug("\ncompletion_function: '$word', '$buffer', '$start'");
 
-	return ();
+	my $hash = $self->{app}{autocomplete_entries};
+	return () unless $hash;
+
+	my @matches;
+	foreach my $key (sort keys %$hash) {
+		push @matches, $key if $key =~ m/^$word/i;
+	}
+	return @matches;
 }
 
 sub write_history {

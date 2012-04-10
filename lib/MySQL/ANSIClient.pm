@@ -10,6 +10,8 @@ use DBIx::MyParsePP;
 use Switch 'Perl6';
 use Time::HiRes qw(gettimeofday tv_interval);
 
+our $VERSION = 0.01;
+
 ## Configure
 
 sub help_text {
@@ -35,6 +37,7 @@ sub capture_command_line_args {
 		'port|P=s' => \$args{port},
 		'help|?'   => \$args{help},
 		'history=s' => \$args{_term_history_fn},
+		'no-auto-rehash|A' => \$args{no_auto_rehash},
 	);
 	if (@ARGV && int @ARGV == 1) {
 		$args{database} = $ARGV[0];
@@ -51,8 +54,8 @@ sub new {
 	my $class = shift;
 	my %self = validate(@_, {
 		term_class  => { default => 'MySQL::ANSIClient::Term' },
-		table_class => { default => 'MySQL::ANSIClient::Table' },
-		args => 1,
+		view_class  => { default => 'MySQL::ANSIClient::View' },
+		args        => 1,
 	});
 	my $self = bless \%self, $class;
 
@@ -75,12 +78,12 @@ sub new {
 		%{ $self->{term_args} },
 	);
 
-	## Create a table render
+	## Create a view object
 
-	my $table_class = $self->{table_class};
-	eval "require $table_class";
+	my $view_class = $self->{view_class};
+	eval "require $view_class";
 	die $@ if $@;
-	$self->{table} = $table_class->new($self);
+	$self->{view} = $view_class->new($self);
 
 	## Create other reusable objects
 
@@ -100,6 +103,14 @@ sub db_connect {
 		PrintError => 0,
 	}) or die $DBI::errstr . "\nDSN used: '$dsn'\n";
 
+	## Update autocomplete entries
+
+	if ($self->{args}{database}) {
+		$self->update_autocomplete_entries($self->{args}{database});
+	}
+
+	## Collect type info from the handle
+
 	my %types;
 	my $type_info_all = $self->{dbh}->type_info_all();
 	my %key_map = %{ shift @$type_info_all };
@@ -115,6 +126,23 @@ sub db_connect {
 	}
 
 	$self->{db_types} = \%types;
+}
+
+sub update_autocomplete_entries {
+	my ($self, $database) = @_;
+
+	return if $self->{args}{no_auto_rehash};
+
+	my %autocomplete;
+	my $rows = $self->{dbh}->selectall_arrayref("select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where TABLE_SCHEMA = ?", {}, $database);
+	foreach my $row (@$rows) {
+		$autocomplete{$row->[0]} = 1; # Table
+		$autocomplete{$row->[1]} = 1; # Column
+		$autocomplete{$row->[0] . '.' . $row->[1]} = 1; # Table.Column
+	}
+	$self->{autocomplete_entries} = \%autocomplete;
+
+	$self->log_debug("updated autocomplete for $database");
 }
 
 sub new_from_cli {
@@ -149,7 +177,7 @@ sub run {
 		# Extract out \G
 		my %render_opts;
 		if ($input =~ s/\\G$//) {
-			$render_opts{one_row_per_table} = 1;
+			$render_opts{one_row_per_column} = 1;
 		}
 
 		# Allow the user to pass non-SQL control verbs
@@ -167,6 +195,10 @@ sub run {
 		}
 
 		$self->handle_sql_input($input, \%render_opts);
+
+		if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
+			$self->update_autocomplete_entries($database);
+		}
 	}
 }
 
@@ -207,8 +239,7 @@ sub handle_sql_input {
 		}
 	}
 	
-	my %data;
-	$data{timing}{start} = gettimeofday;
+	my $t0 = gettimeofday;
 
 	my $sth = $self->{dbh}->prepare($sql);
 	$sth->execute();
@@ -217,31 +248,14 @@ sub handle_sql_input {
 		return;
 	}
 
-	$data{timing}{stop} = gettimeofday;
+	my $t1 = gettimeofday;
 
-	if ($output_type eq 'table') {
-		foreach my $i (0..$sth->{NUM_OF_FIELDS} - 1) {
-			push @{ $data{columns} }, {
-				name      => $sth->{NAME}[$i],
-				type      => $sth->{TYPE}[$i],
-				precision => $sth->{PRECISION}[$i],
-				scale     => $sth->{SCALE}[$i],
-				nullable  => $sth->{NULLABLE}[$i] || undef,
-			};
-		}
-		$data{rows} = $sth->fetchall_arrayref;
-		$self->{table}->render(\%data, $render_opts);
-	}
-	elsif ($verb eq 'use') {
-		$self->log_info('Database changed');
-	}
-	else {
-		$self->log_info(sprintf 'Query OK, %d row%s affected (%.2f sec)', $sth->rows, ($sth->rows > 1 ? 's' : ''), $data{timing}{stop} - $data{timing}{start});
-		if ($verb ne 'insert') {
-			$self->log_info(sprintf 'Records: %d  Warnings: %d', $sth->rows, $sth->{mysql_warning_count});
-		}
-		$self->log_info(''); # empty line
-	}
+	$self->{view}->render_sth(
+		sth => $sth,
+		time => $t1 - $t0,
+		verb => $verb,
+		%$render_opts,
+	);
 }
 
 sub db_type_info {
