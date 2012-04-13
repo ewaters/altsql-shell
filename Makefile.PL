@@ -12,6 +12,7 @@ WriteMakefile(
 		: ()),
 	PL_FILES            => {},
 	PREREQ_PM => {
+		'Moose'            => 0,
 		'Params::Validate' => 0,
 		'DBI'              => 0,
 		'DBD::mysql'       => 0,

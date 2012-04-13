@@ -1,36 +1,31 @@
 package MySQL::ANSIClient::View;
 
-use strict;
-use warnings;
+use Moose;
 use Data::Dumper;
 use Text::ASCIITable;
 use Term::ANSIColor qw(color colored);
+use Time::HiRes qw(gettimeofday);
 use Params::Validate;
+use List::Util qw(sum);
 
-sub new {
-	my ($class, $app) = @_;
-
-	my %self = (
-		app => $app,
-	);
-
-	return bless \%self, $class;
-}
+with 'MySQL::ANSIClient::Role';
 
 sub render_sth {
 	my $self = shift;
 	my %args = validate(@_, {
 		sth  => 1,
-		time => 1,
+		timing => 1,
 		verb => 1,
 		one_row_per_column => 0,
 	});
 	my $sth = $args{sth};
 
 	if ($args{verb} eq 'use') {
-		$self->{app}->log_info('Database changed');
+		$self->log_info('Database changed');
+		return;
 	}
-	elsif ($sth->{NUM_OF_FIELDS}) {
+
+	if ($sth->{NUM_OF_FIELDS}) {
 		my %mysql_meta = (
 			map { my $key = $_; $key =~ s/^mysql_//; +($key => $sth->{$_}) }
 			qw(mysql_is_blob mysql_is_key mysql_is_num mysql_is_pri_key mysql_is_auto_increment mysql_length mysql_max_length)
@@ -46,7 +41,11 @@ sub render_sth {
 				map { $_ => $mysql_meta{$_}[$i] } keys %mysql_meta
 			};
 		}
+
+		my $t0 = gettimeofday;
 		$args{rows} = $sth->fetchall_arrayref;
+		$args{time}{fetchall} = gettimeofday - $t0;
+
 		if ($args{one_row_per_column}) {
 			return $self->render_one_row_per_column(\%args);
 		}
@@ -54,18 +53,18 @@ sub render_sth {
 			return $self->render_table(\%args);
 		}
 	}
-	else {
-		$self->{app}->log_info(sprintf 'Query OK, %d row%s affected (%.2f sec)', $sth->rows, ($sth->rows > 1 ? 's' : ''), $args{time});
-		if ($args{verb} ne 'insert') {
-			$self->{app}->log_info(sprintf 'Records: %d  Warnings: %d', $sth->rows, $sth->{mysql_warning_count});
-		}
-		$self->{app}->log_info(''); # empty line
+
+	$self->log_info(sprintf 'Query OK, %d row%s affected (%.2f sec)', $sth->rows, ($sth->rows > 1 ? 's' : ''), sum values %{ $args{timing} });
+	if ($args{verb} ne 'insert') {
+		$self->log_info(sprintf 'Records: %d  Warnings: %d', $sth->rows, $sth->{mysql_warning_count});
 	}
+	$self->log_info(''); # empty line
 }
 
 sub render_table {
 	my ($self, $data) = @_;
 
+	my $t0 = gettimeofday;
 	my $table = Text::ASCIITable->new({ allowANSI => 1 });
 
 	$table->setCols(map { $self->format_column_cell($_) } @{ $data->{columns} });
@@ -76,9 +75,10 @@ sub render_table {
 		}
 		$table->addRow(@row);
 	}
+	$data->{timing}{render_table} = gettimeofday - $t0;
 
 	print $table;
-	printf "%d rows in set (%.2f sec)\n", int @{ $data->{rows} }, $data->{time};
+	printf "%d rows in set (%.2f sec)\n", int @{ $data->{rows} }, sum values %{ $data->{timing} };
 	print "\n";
 }
 
@@ -105,7 +105,7 @@ sub render_one_row_per_column {
 		}
 	}
 
-	printf "%d rows in set (%.2f sec)\n", int @{ $data->{rows} }, $data->{time};
+	printf "%d rows in set (%.2f sec)\n", int @{ $data->{rows} }, sum values %{ $data->{timing} };
 	print "\n";
 }
 

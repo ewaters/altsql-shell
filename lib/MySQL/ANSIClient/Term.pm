@@ -1,19 +1,34 @@
 package MySQL::ANSIClient::Term;
 
-use strict;
-use warnings;
+use Moose;
 use Term::ReadLine::Zoid;
 use Data::Dumper;
 use JSON::XS;
 
-sub new {
-	my ($class, %self) = @_;
+with 'MySQL::ANSIClient::Role';
+
+has 'term' => (
+	is         => 'ro',
+	lazy_build => 1,
+);
+has 'prompt' => (
+	is      => 'rw',
+	default => 'myqslc> ',
+);
+has 'history_fn' => (
+	is => 'ro',
+);
+
+sub BUILD {
+	my $self = shift;
+	$self->log_info("Ctrl-C to reset the line; Ctrl-D to exit");
+}
+
+sub _build_term {
+	my $self = shift;
 
 	my $term = Term::ReadLine::Zoid->new("mysql-color");
-	$self{term} = $term;
-	my $self = bless \%self, $class;
-
-	$self->{app}->log_info("Ctrl-C to reset the line; Ctrl-D to exit");
+	$self->{term} = $term;
 
 	$term->Attribs->{completion_function} = sub {
 		$self->completion_function(@_);
@@ -21,7 +36,7 @@ sub new {
 
 	$term->bindkey('^D', sub {
 		print "\n";
-		$self->{app}->shutdown();
+		$self->app->shutdown();
 	});
 
 	## The user has pressed the 'enter' key.  If the buffer ends in ';' or '\G', accept the buffer
@@ -37,21 +52,21 @@ sub new {
 
 	$self->read_history();
 
-	return $self;
+	return $term;
 }
 
 sub readline {
 	my $self = shift;
 
-	return $self->{term}->readline('mysqlc> ');
+	return $self->term->readline($self->prompt);
 }
 
 sub completion_function {
 	my ($self, $word, $buffer, $start) = @_;
 
-	#$self->{app}->log_debug("\ncompletion_function: '$word', '$buffer', '$start'");
+	#$self->log_debug("\ncompletion_function: '$word', '$buffer', '$start'");
 
-	my $hash = $self->{app}{autocomplete_entries};
+	my $hash = $self->app->{autocomplete_entries};
 	return () unless $hash;
 
 	my @matches;
@@ -64,13 +79,13 @@ sub completion_function {
 sub write_history {
 	my ($self, $fn) = @_;
 
-	$fn ||= $self->{history_fn};
+	$fn ||= $self->history_fn;
 	if (! $fn) {
 		return;
 	}
 
 	open my $out, '>', $fn or die "Can't open $fn for writing: $!";
-	print $out encode_json({ history => [ $self->{term}->GetHistory ] });
+	print $out encode_json({ history => [ $self->term->GetHistory ] });
 	close $out;
 }
 
@@ -78,7 +93,7 @@ sub read_history {
 	my ($self, $fn) = @_;
 
 	# Seed the history from a file if present
-	$fn ||= $self->{history_fn};
+	$fn ||= $self->history_fn;
 	if (! $fn || ! -f $fn) {
 		return;
 	}
@@ -89,10 +104,10 @@ sub read_history {
 	close $in;
 	eval {
 		my $parsed = decode_json($data);
-		$self->{term}->SetHistory(@{ $parsed->{history} });
+		$self->term->SetHistory(@{ $parsed->{history} });
 	};
 	if (my $exception = $@) {
-		$self->{app}->log_error("An error occurred when decoding $fn: $exception");
+		$self->log_error("An error occurred when decoding $fn: $exception");
 	}
 }
 
