@@ -3,16 +3,17 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-	NAME                => 'MySQL::ANSIClient',
+	NAME                => 'MySQL::Client',
 	AUTHOR              => q{Eric Waters <ewaters@shutterstock.com>},
-	VERSION_FROM        => 'lib/MySQL/ANSIClient.pm',
-	ABSTRACT            => 'MySQL ANSI command line client',
+	VERSION_FROM        => 'lib/MySQL/Client.pm',
+	ABSTRACT            => 'MySQL scriptable command line client',
 	($ExtUtils::MakeMaker::VERSION >= 6.3002
 		? ('LICENSE'=> 'perl')
 		: ()),
 	PL_FILES            => {},
 	PREREQ_PM => {
 		'Moose'            => 0,
+		'MooseX::Object::Pluggable' => 0,
 		'Params::Validate' => 0,
 		'DBI'              => 0,
 		'DBD::mysql'       => 0,
