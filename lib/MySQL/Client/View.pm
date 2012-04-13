@@ -1,4 +1,4 @@
-package MySQL::ANSIClient::View;
+package MySQL::Client::View;
 
 use Moose;
 use Data::Dumper;
@@ -8,7 +8,7 @@ use Time::HiRes qw(gettimeofday);
 use Params::Validate;
 use List::Util qw(sum);
 
-with 'MySQL::ANSIClient::Role';
+with 'MySQL::Client::Role';
 
 sub render_sth {
 	my $self = shift;

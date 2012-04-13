@@ -2,6 +2,6 @@
 
 use strict;
 use warnings;
-use MySQL::ANSIClient;
+use MySQL::Client;
 
-MySQL::ANSIClient->new_from_cli->run();
+MySQL::Client->new_from_cli->run();

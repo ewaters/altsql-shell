@@ -1,4 +1,4 @@
-package MySQL::ANSIClient;
+package MySQL::Client;
 
 use Moose;
 use Getopt::Long;
@@ -49,8 +49,8 @@ sub capture_command_line_args {
 	return %args;
 }
 
-has 'term_class' => (is => 'ro', default => 'MySQL::ANSIClient::Term');
-has 'view_class' => (is => 'ro', default => 'MySQL::ANSIClient::View');
+has 'term_class' => (is => 'ro', default => 'MySQL::Client::Term');
+has 'view_class' => (is => 'ro', default => 'MySQL::Client::View');
 has 'term'       => (is => 'ro');
 has 'view'       => (is => 'ro');
 has 'args'       => (is => 'rw');

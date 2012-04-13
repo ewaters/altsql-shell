@@ -1,4 +1,4 @@
-package MySQL::ANSIClient::Role;
+package MySQL::Client::Role;
 
 use Moose::Role;
 

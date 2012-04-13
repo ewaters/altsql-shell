@@ -1,11 +1,11 @@
-package MySQL::ANSIClient::Term;
+package MySQL::Client::Term;
 
 use Moose;
 use Term::ReadLine::Zoid;
 use Data::Dumper;
 use JSON::XS;
 
-with 'MySQL::ANSIClient::Role';
+with 'MySQL::Client::Role';
 
 has 'term' => (
 	is         => 'ro',
