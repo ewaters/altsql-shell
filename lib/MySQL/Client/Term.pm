@@ -39,20 +39,24 @@ sub _build_term {
 		$self->app->shutdown();
 	});
 
-	## The user has pressed the 'enter' key.  If the buffer ends in ';' or '\G', accept the buffer
-	$term->bindkey('return', sub {
-		my $sql = join ' ', @{ $term->{lines} };
-		if ($sql =~ m{(;|\\G)\s*$}) {
-			$term->accept_line();
-		}
-		else {
-			$term->insert_line();
-		}
-	});
+	$term->bindkey('return', sub { $self->return_key });
 
 	$self->read_history();
 
 	return $term;
+}
+
+sub return_key {
+	my $self = shift;
+
+	## The user has pressed the 'enter' key.  If the buffer ends in ';' or '\G', or if they've typed the bare word 'quit' or 'exit', accept the buffer
+	my $input = join ' ', @{ $self->term->{lines} };
+	if ($input =~ m{(;|\\G)\s*$} || $input =~ m{^\s*(quit|exit)\s*$}) {
+		$self->term->accept_line();
+	}
+	else {
+		$self->term->insert_line();
+	}
 }
 
 sub readline {
