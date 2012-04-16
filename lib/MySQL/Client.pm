@@ -9,58 +9,57 @@ use DBIx::MyParsePP;
 use Switch 'Perl6';
 use Time::HiRes qw(gettimeofday tv_interval);
 
+with 'MooseX::Object::Pluggable';
+
 our $VERSION = 0.01;
 
 ## Configure
 
-sub help_text {
-	return <<EOF;
-
-  -h --host HOSTNAME
-  -u --user USERNAME
-  -p --pass PASSWORD
-  -P --port PORT
-  -d --database DATABASE
-  -? --help
-EOF
-}
-
-sub capture_command_line_args {
-	my $class = shift;
-	my %args;
-	GetOptions(
-		'host|h=s' => \$args{host},
-		'user|u=s' => \$args{user},
-		'pass|p=i' => \$args{password},
-		'database|d=s' => \$args{database},
-		'port|P=s' => \$args{port},
-		'help|?'   => \$args{help},
-		'history=s' => \$args{_term_history_fn},
-		'no-auto-rehash|A' => \$args{no_auto_rehash},
+sub args_spec {
+	return (
+		host => {
+			cli  => 'host|h=s',
+			help => '-h --host HOSTNAME',
+		},
+		user => {
+			cli  => 'user|u=s',
+			help => '-u --user USERNAME',
+		},
+		password => {
+			cli  => 'pass|p=s',
+			help => '-p --pass PASSWORD',
+		},
+		database => {
+			cli  => 'database|d=s',
+			help => '-d --database DATABASE',
+		},
+		port => {
+			cli  => 'port|P=i',
+			help => '-P --port',
+		},
+		help => {
+			cli  => 'help|?',
+		},
+		no_auto_rehash => {
+			cli  => 'no-auto-rehash|A',
+			help => "-A --no-auto-rehash -- Don't scan the information schema for tab autocomplete data",
+		},
 	);
-	if (@ARGV && int @ARGV == 1) {
-		$args{database} = $ARGV[0];
-	}
-	$args{_term_history_fn} ||= $ENV{HOME} . '/.mysqlc_history.js';
-	if ($args{help}) {
-		print $class->help_text();
-		exit;
-	}
-	return %args;
 }
 
-has 'term_class' => (is => 'ro', default => 'MySQL::Client::Term');
-has 'view_class' => (is => 'ro', default => 'MySQL::Client::View');
+my %_default_classes = (
+	term => 'MySQL::Client::Term',
+	view => 'MySQL::Client::View',
+);
 has 'term'       => (is => 'ro');
 has 'view'       => (is => 'ro');
 has 'args'       => (is => 'rw');
 has 'sql_parser' => (is => 'ro', default => sub { DBIx::MyParsePP->new() });
 has 'dbh'        => (is => 'rw');
+has 'current_database' => (is => 'rw');
 
 sub BUILD {
 	my $self = shift;
-
-	$self->db_connect();
 
 	foreach my $subclass (qw(term view)) {
 		# Extract out subclass args from args
@@ -70,7 +69,7 @@ sub BUILD {
 			keys %{ $self->args }
 		);
 
-		my $subclass_name = $self->{"${subclass}_class"};
+		my $subclass_name = $self->args->{"${subclass}_class"};
 
 		eval "require $subclass_name";
 		die $@ if $@;
@@ -79,6 +78,8 @@ sub BUILD {
 			%args,
 		});
 	}
+
+	$self->db_connect();
 }
 
 sub db_connect {
@@ -95,26 +96,11 @@ sub db_connect {
 	## Update autocomplete entries
 
 	if ($self->args->{database}) {
+		$self->current_database($self->args->{database});
 		$self->update_autocomplete_entries($self->args->{database});
 	}
 
-	## Collect type info from the handle
-
-	my %types;
-	my $type_info_all = $self->{dbh}->type_info_all();
-	my %key_map = %{ shift @$type_info_all };
-
-	$types{unknown} = { map { $_ => 'unknown' } keys %key_map };
-
-	foreach my $i (0..$#{ $type_info_all }) {
-		my %type;
-		while (my ($key, $index) = each %key_map) {
-			$type{$key} = $type_info_all->[$i][$index];
-		}
-		$types{$i} = \%type;
-	}
-
-	$self->{db_types} = \%types;
+	$self->update_db_types();
 }
 
 sub update_autocomplete_entries {
@@ -129,17 +115,47 @@ sub update_autocomplete_entries {
 		$autocomplete{$row->[1]} = 1; # Column
 		$autocomplete{$row->[0] . '.' . $row->[1]} = 1; # Table.Column
 	}
-	$self->{autocomplete_entries} = \%autocomplete;
+	$self->term->autocomplete_entries(\%autocomplete);
 
 	$self->log_debug("updated autocomplete for $database");
 }
 
 sub new_from_cli {
-	my $class = shift;
+	my ($class, %args) = @_;
+	$args{term_class} ||= $_default_classes{term};
+	$args{view_class} ||= $_default_classes{view};
 
-	my %args = $class->capture_command_line_args;
+	my %opts_spec;
+	foreach my $args_class ('main', 'view', 'term') {
+		if ($args_class eq 'main') {
+			my %args_spec = $class->args_spec();
+			foreach my $arg (keys %args_spec) {
+				$opts_spec{ $args_spec{$arg}{cli} } = \$args{$arg};
+			}
+		}
+		else {
+			my $args_classname = $args{"${args_class}_class"};
+			eval "require $args_classname";
+			die $@ if $@;
+			my %args_spec = $args_classname->args_spec();
+			foreach my $key (keys %args_spec) {
+				$opts_spec{ $args_spec{$key}{cli} } = \$args{"_${args_class}_$key"};
+				if (my $default = $args_spec{$key}{default}) {
+					$args{"_${args_class}_$key"} = $default;
+				}
+			}
+		}
+	}
+
+	GetOptions(%opts_spec);
+
+	# Special hardcoded
+	if (@ARGV && int @ARGV == 1) {
+		$args{database} = $ARGV[0];
+	}
+
 	if ($args{help}) {
-		$class->log_info($class->help_text);
+		print "TODO from spec!\n";
 		exit;
 	}
 
@@ -203,6 +219,7 @@ sub handle_term_input {
 	$self->handle_sql_input($input, \%render_opts);
 
 	if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
+		$self->current_database($database);
 		$self->update_autocomplete_entries($database);
 	}
 }
@@ -247,6 +264,28 @@ sub handle_sql_input {
 }
 
 ## Misc utilities
+
+sub update_db_types {
+	my $self = shift;
+
+	## Collect type info from the handle
+
+	my %types;
+	my $type_info_all = $self->{dbh}->type_info_all();
+	my %key_map = %{ shift @$type_info_all };
+
+	$types{unknown} = { map { $_ => 'unknown' } keys %key_map };
+
+	foreach my $i (0..$#{ $type_info_all }) {
+		my %type;
+		while (my ($key, $index) = each %key_map) {
+			$type{$key} = $type_info_all->[$i][$index];
+		}
+		$types{$i} = \%type;
+	}
+
+	$self->{db_types} = \%types;
+}
 
 sub db_type_info {
 	my ($self, $type) = @_;

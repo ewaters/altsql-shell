@@ -3,12 +3,17 @@ package MySQL::Client::View;
 use Moose;
 use Data::Dumper;
 use Text::ASCIITable;
-use Term::ANSIColor qw(color colored);
 use Time::HiRes qw(gettimeofday);
 use Params::Validate;
 use List::Util qw(sum);
 
 with 'MySQL::Client::Role';
+with 'MooseX::Object::Pluggable';
+
+sub args_spec {
+	return (
+	);
+}
 
 sub render_sth {
 	my $self = shift;
@@ -44,7 +49,12 @@ sub render_sth {
 
 		my $t0 = gettimeofday;
 		$args{rows} = $sth->fetchall_arrayref;
-		$args{time}{fetchall} = gettimeofday - $t0;
+		$args{timing}{fetchall} = gettimeofday - $t0;
+
+		if (int @{ $args{rows} } == 0) {
+			printf "Empty set (%.2f sec)\n", sum values %{ $args{timing} };
+			return;
+		}
 
 		if ($args{one_row_per_column}) {
 			return $self->render_one_row_per_column(\%args);
@@ -112,21 +122,12 @@ sub render_one_row_per_column {
 sub format_column_cell {
 	my ($self, $spec) = @_;
 
-	return colored($spec->{name}, "red");
+	return $spec->{name};
 }
 
 sub format_cell {
 	my ($self, $value, $spec) = @_;
 
-	if (! defined $value) {
-		return colored 'NULL', 'blue';
-	}
-	elsif ($spec->{is_pri_key}) {
-		return colored $value, 'bold';
-	}
-	elsif ($spec->{is_num}) {
-		return colored $value, 'yellow';
-	}
 	return $value;
 }
 

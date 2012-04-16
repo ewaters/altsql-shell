@@ -6,6 +6,7 @@ use Data::Dumper;
 use JSON::XS;
 
 with 'MySQL::Client::Role';
+with 'MooseX::Object::Pluggable';
 
 has 'term' => (
 	is         => 'ro',
@@ -15,9 +16,18 @@ has 'prompt' => (
 	is      => 'rw',
 	default => 'myqslc> ',
 );
-has 'history_fn' => (
-	is => 'ro',
-);
+has 'history_fn'           => ( is => 'ro' );
+has 'autocomplete_entries' => ( is => 'rw' );
+
+sub args_spec {
+	return (
+		history_fn => {
+			cli     => 'history=s',
+			default => $ENV{HOME} . '/.mysqlc_history.js',
+			help    => '--history FILENAME',
+		},
+	);
+}
 
 sub BUILD {
 	my $self = shift;
@@ -27,7 +37,7 @@ sub BUILD {
 sub _build_term {
 	my $self = shift;
 
-	my $term = Term::ReadLine::Zoid->new("mysql-color");
+	my $term = Term::ReadLine::Zoid->new("mysql-client");
 	$self->{term} = $term;
 
 	$term->Attribs->{completion_function} = sub {
@@ -70,7 +80,7 @@ sub completion_function {
 
 	#$self->log_debug("\ncompletion_function: '$word', '$buffer', '$start'");
 
-	my $hash = $self->app->{autocomplete_entries};
+	my $hash = $self->autocomplete_entries;
 	return () unless $hash;
 
 	my @matches;
@@ -106,13 +116,31 @@ sub read_history {
 	local $\ = undef;
 	my $data = <$in>;
 	close $in;
+
+	my @history;
 	eval {
 		my $parsed = decode_json($data);
-		$self->term->SetHistory(@{ $parsed->{history} });
+		@history = @{ $parsed->{history} };
 	};
 	if (my $exception = $@) {
 		$self->log_error("An error occurred when decoding $fn: $exception");
 	}
+
+	$self->term->SetHistory($self->tidy_history(@history));
+}
+
+sub tidy_history {
+	my ($self, @history) = @_;
+
+	# Filter out exit/quit statements
+	@history = grep { ! /^(quit|exit)/ } @history;
+
+	# Limit it to a sane number
+	if ($#history > 1_000) {
+		splice @history, 0, $#history - 1_000;
+	}
+	
+	return @history;
 }
 
 1;

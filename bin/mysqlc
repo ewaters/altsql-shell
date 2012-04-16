@@ -4,4 +4,7 @@ use strict;
 use warnings;
 use MySQL::Client;
 
-MySQL::Client->new_from_cli->run();
+my $c = MySQL::Client->new_from_cli();
+$c->view->load_plugin($_) foreach qw(Color);
+$c->load_plugin($_) foreach qw(Tail);
+$c->run();
