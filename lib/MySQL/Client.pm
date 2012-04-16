@@ -117,7 +117,7 @@ sub update_autocomplete_entries {
 	}
 	$self->term->autocomplete_entries(\%autocomplete);
 
-	$self->log_debug("updated autocomplete for $database");
+	$self->log_debug("Reading table information for completion of table and column names\nYou can turn off this feature to get a quicker startup with -A\n");
 }
 
 sub new_from_cli {
@@ -216,12 +216,12 @@ sub handle_term_input {
 		return;
 	}
 
-	$self->handle_sql_input($input, \%render_opts);
-
 	if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
 		$self->current_database($database);
 		$self->update_autocomplete_entries($database);
 	}
+
+	$self->handle_sql_input($input, \%render_opts);
 }
 
 sub handle_sql_input {

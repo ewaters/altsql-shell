@@ -52,7 +52,8 @@ sub render_sth {
 		$args{timing}{fetchall} = gettimeofday - $t0;
 
 		if (int @{ $args{rows} } == 0) {
-			printf "Empty set (%.2f sec)\n", sum values %{ $args{timing} };
+			$self->log_info(sprintf "Empty set (%.2f sec)", sum values %{ $args{timing} });
+			$self->log_info(''); # empty line
 			return;
 		}
 
