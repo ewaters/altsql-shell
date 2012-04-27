@@ -1,3 +1,10 @@
+# Annoyances with mysql, fixed!
+
+ * Ctrl-C doesn't kill the program; it just terminates the command
+
+ * Multiline input in mysql is treated as multiple lines of history; it's very hard to use your history buffer after executing a multiline statement.  Additionally, you can't edit lines above the current one in a multiline statement
+
+
 ## show create table
 
 ```

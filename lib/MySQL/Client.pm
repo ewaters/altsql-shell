@@ -9,9 +9,13 @@ use DBIx::MyParsePP;
 use Switch 'Perl6';
 use Time::HiRes qw(gettimeofday tv_interval);
 
+# Don't emit 'Wide character in output' warnings
+binmode STDOUT, ':utf8';
+
 with 'MooseX::Object::Pluggable';
 
 our $VERSION = 0.01;
+our $| = 1;
 
 ## Configure
 
@@ -34,8 +38,8 @@ sub args_spec {
 			help => '-d --database DATABASE',
 		},
 		port => {
-			cli  => 'port|P=i',
-			help => '-P --port',
+			cli  => 'port=i',
+			help => '--port',
 		},
 		help => {
 			cli  => 'help|?',
@@ -91,6 +95,8 @@ sub db_connect {
 	);
 	$self->{dbh} = DBI->connect($dsn, $self->args->{user}, $self->args->{password}, {
 		PrintError => 0,
+		mysql_auto_reconnect => 1,
+		mysql_enable_utf8 => 1,
 	}) or die $DBI::errstr . "\nDSN used: '$dsn'\n";
 
 	## Update autocomplete entries
@@ -107,6 +113,7 @@ sub update_autocomplete_entries {
 	my ($self, $database) = @_;
 
 	return if $self->args->{no_auto_rehash};
+	$self->log_debug("Reading table information for completion of table and column names\nYou can turn off this feature to get a quicker startup with -A\n");
 
 	my %autocomplete;
 	my $rows = $self->dbh->selectall_arrayref("select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where TABLE_SCHEMA = ?", {}, $database);
@@ -116,8 +123,6 @@ sub update_autocomplete_entries {
 		$autocomplete{$row->[0] . '.' . $row->[1]} = 1; # Table.Column
 	}
 	$self->term->autocomplete_entries(\%autocomplete);
-
-	$self->log_debug("Reading table information for completion of table and column names\nYou can turn off this feature to get a quicker startup with -A\n");
 }
 
 sub new_from_cli {
@@ -147,7 +152,29 @@ sub new_from_cli {
 		}
 	}
 
+	# If one has passed '-ppassword', let's separate that so GetOptions can recognize it
+	{
+		my @argv;
+		foreach my $arg (@ARGV) {
+			if ($arg =~ m{^-p(.+)$}) {
+				push @argv, ('-p', $1);
+			}
+			else {
+				push @argv, $arg;
+			}
+		}
+		@ARGV = @argv;
+	}
+
 	GetOptions(%opts_spec);
+
+	# Replace the password with x's in the program name
+	if ($args{password}) {
+		# FIXME: this doesn't work, but it does hide the password
+		my $program_name = $0;
+		$program_name =~ s/$args{password}/xxxxxxxxxx/;
+		$0 = $program_name;
+	}
 
 	# Special hardcoded
 	if (@ARGV && int @ARGV == 1) {

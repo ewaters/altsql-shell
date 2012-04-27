@@ -75,22 +75,36 @@ sub render_sth {
 sub render_table {
 	my ($self, $data) = @_;
 
-	my $t0 = gettimeofday;
-	my $table = Text::ASCIITable->new({ allowANSI => 1 });
 
-	$table->setCols(map { $self->format_column_cell($_) } @{ $data->{columns} });
+	my %table = (
+		columns => [ map { $self->format_column_cell($_) } @{ $data->{columns} } ],
+		rows    => [],
+	);
 	foreach my $row (@{ $data->{rows} }) {
 		my @row;
 		foreach my $i (0..$#{ $data->{columns} }) {
 			push @row, $self->format_cell($row->[$i], $data->{columns}[$i]);
 		}
-		$table->addRow(@row);
+		push @{ $table{rows} }, \@row;
 	}
+
+	my $t0 = gettimeofday;
+	$self->_render_table_data(\%table);
 	$data->{timing}{render_table} = gettimeofday - $t0;
 
-	print $table;
 	printf "%d rows in set (%.2f sec)\n", int @{ $data->{rows} }, sum values %{ $data->{timing} };
 	print "\n";
+}
+
+sub _render_table_data {
+	my ($self, $data) = @_;
+	my $table = Text::ASCIITable->new({ allowANSI => 1 });
+
+	$table->setCols(@{ $data->{columns} });
+	foreach my $row (@{ $data->{rows} }) {
+		$table->addRow(@$row);
+	}
+	print $table;
 }
 
 sub render_one_row_per_column {
