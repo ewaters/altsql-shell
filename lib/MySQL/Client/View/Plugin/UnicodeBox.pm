@@ -25,7 +25,7 @@ sub _render_table_data {
 		$pager = 'less -FRX';
 	}
 
-	if ($pager) {
+	if ($pager && ! $data->{no_pager}) {
 		open my $out, "| $pager" or die "Can't open $pager for pipe: $!";
 		binmode $out, ':utf8';
 		print $out $table->render();

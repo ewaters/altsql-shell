@@ -22,6 +22,7 @@ sub render_sth {
 		timing => 1,
 		verb => 1,
 		one_row_per_column => 0,
+		no_pager => 0,
 	});
 	my $sth = $args{sth};
 
@@ -75,8 +76,8 @@ sub render_sth {
 sub render_table {
 	my ($self, $data) = @_;
 
-
 	my %table = (
+		%$data,
 		columns => [ map { $self->format_column_cell($_) } @{ $data->{columns} } ],
 		rows    => [],
 	);
