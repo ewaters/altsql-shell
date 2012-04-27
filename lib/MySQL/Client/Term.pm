@@ -143,4 +143,16 @@ sub tidy_history {
 	return @history;
 }
 
+sub get_term_width {
+	my $self = shift;
+	my ($width, $height) = $self->term->TermSize();
+	return $width;
+}
+
+sub get_term_height {
+	my $self = shift;
+	my ($width, $height) = $self->term->TermSize();
+	return $height;
+}
+
 1;
