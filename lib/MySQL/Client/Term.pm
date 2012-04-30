@@ -14,7 +14,7 @@ has 'term' => (
 );
 has 'prompt' => (
 	is      => 'rw',
-	default => 'myqslc> ',
+	default => 'mysqlc> ',
 );
 has 'history_fn'           => ( is => 'ro' );
 has 'autocomplete_entries' => ( is => 'rw' );
