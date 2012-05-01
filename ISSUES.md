@@ -3,8 +3,6 @@
  * If table output vastly overextends the terminal width, we should use multi-line output to keep the table informative
    - or, allow a horizontal scrolling pager
 
- * If output will exceed a certain length, default to pager (like `git diff`)
-
  * Hide passwords in process listing
  * Prompt for password if none is passed in CLI
 
@@ -20,8 +18,6 @@
 
  * Show the header ocassionally if we're many pages into the output
    That way, you don't have to scroll to the top to know which column is which
-
- * Ctrl-C after you've entered a command to kill that process
 
 = Outstanding issues
 
