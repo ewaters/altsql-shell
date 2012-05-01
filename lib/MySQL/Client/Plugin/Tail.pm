@@ -105,6 +105,8 @@ around handle_sql_input => sub {
 		$break = 1;
 	};
 
+	$render_opts->{no_pager} = 1;
+
 	while (1) {
 		last if $break;
 		$update_last_seen_max_value->();
