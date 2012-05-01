@@ -1,0 +1,10 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use MySQL::Client;
+
+my $c = MySQL::Client->new_from_cli();
+$c->view->load_plugin($_) foreach qw(Color UnicodeBox);
+$c->load_plugin($_) foreach qw(Tail);
+$c->run();

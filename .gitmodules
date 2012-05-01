@@ -1,3 +1,0 @@
-[submodule "deps/Text-UnicodeBox"]
-	path = deps/Text-UnicodeBox
-	url = git@github.shuttercorp.net:ewaters/Text-UnicodeBox.git
