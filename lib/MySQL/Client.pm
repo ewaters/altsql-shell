@@ -8,6 +8,7 @@ use Data::Dumper;
 use DBIx::MyParsePP;
 use Switch 'Perl6';
 use Time::HiRes qw(gettimeofday tv_interval);
+use Sys::SigAction qw(set_sig_handler);
 
 # Don't emit 'Wide character in output' warnings
 binmode STDOUT, ':utf8';
@@ -274,8 +275,21 @@ sub handle_sql_input {
 	my $t0 = gettimeofday;
 
 	my $sth = $self->dbh->prepare($input);
-	$sth->execute();
-	if (my $error = $self->dbh->errstr) {
+
+	# Execute the statement, allowing Ctrl-C to interrupt the call
+	eval {
+		eval {
+			my $h = set_sig_handler('INT', sub {
+				my $thread_id = $self->dbh->{mysql_thread_id};
+				$self->dbh->clone->do("KILL QUERY $thread_id");
+				die "Ctrl-C killed thread $thread_id\n";
+			});
+			$sth->execute();
+		};
+		die "$@" if $@;
+	};
+
+	if (my $error = $self->dbh->errstr || $@) {
 		$self->log_error($error);
 		return;
 	}

@@ -23,6 +23,7 @@ WriteMakefile(
 		'JSON::XS'         => 0,
 		'Text::ASCIITable' => 0,
 		'Term::ANSIColor'  => 0,
+		'Sys::SigAction'   => 0,
 	},
 	dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 	clean               => { FILES => 'media-*' },
