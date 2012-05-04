@@ -1,4 +1,4 @@
-package MySQL::Client::View::Plugin::Color;
+package App::AltSQL::View::Plugin::Color;
 
 use Moose::Role;
 use Term::ANSIColor qw(color colored);

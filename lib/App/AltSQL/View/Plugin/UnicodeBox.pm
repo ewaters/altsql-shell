@@ -1,4 +1,4 @@
-package MySQL::Client::View::Plugin::UnicodeBox;
+package App::AltSQL::View::Plugin::UnicodeBox;
 
 use Moose::Role;
 use Text::UnicodeBox::Table;

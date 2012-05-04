@@ -1,4 +1,4 @@
-package MySQL::Client::View;
+package App::AltSQL::View;
 
 use Moose;
 use Data::Dumper;
@@ -7,7 +7,7 @@ use Time::HiRes qw(gettimeofday);
 use Params::Validate;
 use List::Util qw(sum);
 
-with 'MySQL::Client::Role';
+with 'App::AltSQL::Role';
 with 'MooseX::Object::Pluggable';
 
 sub args_spec {

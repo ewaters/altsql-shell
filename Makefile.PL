@@ -3,9 +3,9 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-	NAME                => 'MySQL::Client',
+	NAME                => 'App::AltSQL',
 	AUTHOR              => q{Eric Waters <ewaters@shutterstock.com>},
-	VERSION_FROM        => 'lib/MySQL/Client.pm',
+	VERSION_FROM        => 'lib/App/AltSQL.pm',
 	ABSTRACT            => 'MySQL scriptable command line client',
 	($ExtUtils::MakeMaker::VERSION >= 6.3002
 		? ('LICENSE'=> 'perl')

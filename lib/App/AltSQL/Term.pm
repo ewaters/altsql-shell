@@ -1,11 +1,11 @@
-package MySQL::Client::Term;
+package App::AltSQL::Term;
 
 use Moose;
 use Term::ReadLine::Zoid;
 use Data::Dumper;
 use JSON::XS;
 
-with 'MySQL::Client::Role';
+with 'App::AltSQL::Role';
 with 'MooseX::Object::Pluggable';
 
 has 'term' => (

@@ -1,4 +1,4 @@
-package MySQL::Client::Role;
+package App::AltSQL::Role;
 
 use Moose::Role;
 

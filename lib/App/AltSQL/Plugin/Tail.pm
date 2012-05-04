@@ -1,4 +1,4 @@
-package MySQL::Client::Plugin::Tail;
+package App::AltSQL::Plugin::Tail;
 
 use Moose::Role;
 

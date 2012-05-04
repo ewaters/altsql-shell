@@ -1,4 +1,4 @@
-package MySQL::Client;
+package App::AltSQL;
 
 use Moose;
 use Getopt::Long;
@@ -53,8 +53,8 @@ sub args_spec {
 }
 
 my %_default_classes = (
-	term => 'MySQL::Client::Term',
-	view => 'MySQL::Client::View',
+	term => 'App::AltSQL::Term',
+	view => 'App::AltSQL::View',
 );
 has 'term'       => (is => 'ro');
 has 'view'       => (is => 'ro');

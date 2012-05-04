@@ -2,9 +2,9 @@
 
 use strict;
 use warnings;
-use MySQL::Client;
+use App::AltSQL;
 
-my $c = MySQL::Client->new_from_cli();
+my $c = App::AltSQL->new_from_cli();
 $c->view->load_plugin($_) foreach qw(Color UnicodeBox);
 $c->load_plugin($_) foreach qw(Tail);
 $c->run();
