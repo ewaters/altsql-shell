@@ -21,7 +21,7 @@
 
 = Outstanding issues
 
- * Support for unicode
+ * Support \c at end to abandon statement
  * ; or \G contained inside a quote block but ending a line
  * Ctrl-A to go to beginning of line turns Backspace into a forward delete (WTF?)
  * Enter key on an empty line shouldn't go to a new line
@@ -30,5 +30,5 @@
    myqslc> show tables limit 100;
    Error at pos 17, line 1
 
- * If MySQL server has gone away, it doesn't reconnect
+ * If MySQL server has gone away, it doesn't communicate that it reconnects
 

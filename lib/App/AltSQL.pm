@@ -244,16 +244,17 @@ sub handle_term_input {
 		return;
 	}
 
-	if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
-		$self->current_database($database);
-		$self->update_autocomplete_entries($database);
-	}
-
 	$self->handle_sql_input($input, \%render_opts);
 }
 
 sub handle_sql_input {
 	my ($self, $input, $render_opts) = @_;
+
+	# Track which database we're in for autocomplete
+	if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
+		$self->current_database($database);
+		$self->update_autocomplete_entries($database);
+	}
 
 	# Attempt to parse the input with a SQL parser
 	my $parsed = $self->sql_parser->parse($input);
@@ -282,7 +283,7 @@ sub handle_sql_input {
 			my $h = set_sig_handler('INT', sub {
 				my $thread_id = $self->dbh->{mysql_thread_id};
 				$self->dbh->clone->do("KILL QUERY $thread_id");
-				die "Ctrl-C killed thread $thread_id\n";
+				die "Query aborted by Ctrl+C\n";
 			});
 			$sth->execute();
 		};
