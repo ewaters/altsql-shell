@@ -25,6 +25,8 @@ WriteMakefile(
 		'Term::ANSIColor'  => 0,
 		'Sys::SigAction'   => 0,
 		'Config::Any'      => 0,
+		'Test::Most'       => 0,
+		'Getopt::Long'     => 2.38,
 	},
 	dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 	clean               => { FILES => 'media-*' },

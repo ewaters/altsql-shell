@@ -37,4 +37,13 @@ cmp_deeply(
 	'Arguments from a subclass',
 );
 
+cmp_deeply(
+	App::AltSQL->parse_cli_args([qw(-h dev-mysql01.nyc02.shuttercorp.net -D shutterstock)]),
+	superhashof({
+		host     => 'dev-mysql01.nyc02.shuttercorp.net',
+		database => 'shutterstock',
+	}),
+	'Known failing CLI args'
+);
+
 done_testing;
