@@ -1,2 +1,4 @@
 Makefile
 MYMETA.yml
+*.swp
+deps/

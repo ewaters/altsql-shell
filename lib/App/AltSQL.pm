@@ -1,7 +1,7 @@
 package App::AltSQL;
 
 use Moose;
-use Getopt::Long;
+use Getopt::Long qw(GetOptionsFromArray);
 use Params::Validate;
 use DBI;
 use Data::Dumper;
@@ -24,23 +24,23 @@ sub args_spec {
 	return (
 		host => {
 			cli  => 'host|h=s',
-			help => '-h --host HOSTNAME',
+			help => '-h HOSTNAME | --host HOSTNAME',
 		},
 		user => {
 			cli  => 'user|u=s',
-			help => '-u --user USERNAME',
+			help => '-u USERNAME | --user USERNAME',
 		},
+		
 		password => {
-			cli  => 'pass|p=s',
-			help => '-p --pass PASSWORD',
+			help => '-p | --password=PASSWORD | -pPASSWORD',
 		},
 		database => {
 			cli  => 'database|d=s',
-			help => '-d --database DATABASE',
+			help => '-d DATABASE | --database DATABASE',
 		},
 		port => {
 			cli  => 'port=i',
-			help => '--port',
+			help => '--port PORT',
 		},
 		help => {
 			cli  => 'help|?',
@@ -126,16 +126,19 @@ sub update_autocomplete_entries {
 	$self->term->autocomplete_entries(\%autocomplete);
 }
 
-sub new_from_cli {
-	my ($class, %args) = @_;
+sub parse_cli_args {
+	my ($class, $argv, %args) = @_;
+	my @argv = defined $argv ? @$argv : ();
+
+	# Read in the args_spec() from each subclass we'll be using
+	my %opts_spec;
 	$args{term_class} ||= $_default_classes{term};
 	$args{view_class} ||= $_default_classes{view};
-
-	my %opts_spec;
 	foreach my $args_class ('main', 'view', 'term') {
 		if ($args_class eq 'main') {
 			my %args_spec = $class->args_spec();
 			foreach my $arg (keys %args_spec) {
+				next unless $args_spec{$arg}{cli};
 				$opts_spec{ $args_spec{$arg}{cli} } = \$args{$arg};
 			}
 		}
@@ -145,6 +148,7 @@ sub new_from_cli {
 			die $@ if $@;
 			my %args_spec = $args_classname->args_spec();
 			foreach my $key (keys %args_spec) {
+				next unless $args_spec{$key}{cli};
 				$opts_spec{ $args_spec{$key}{cli} } = \$args{"_${args_class}_$key"};
 				if (my $default = $args_spec{$key}{default}) {
 					$args{"_${args_class}_$key"} = $default;
@@ -153,41 +157,47 @@ sub new_from_cli {
 		}
 	}
 
-	# If one has passed '-ppassword', let's separate that so GetOptions can recognize it
-	{
-		my @argv;
-		foreach my $arg (@ARGV) {
-			if ($arg =~ m{^-p(.+)$}) {
-				push @argv, ('-p', $1);
-			}
-			else {
-				push @argv, $arg;
-			}
+	# Password is a special case
+	foreach my $i (0..$#argv) {
+		my $arg = $argv[$i];
+		next unless $arg =~ m{^(?:-p|--password=)(.*)$};
+		splice @argv, $i, 1;
+		if (length $1) {
+			$args{password} = $1;
+			# Remove the password from the program name so people can't see it in process listings
+			$0 = join ' ', $0, @argv;
 		}
-		@ARGV = @argv;
+		else {
+			# Prompt the user for the password
+			require Term::ReadKey;
+			Term::ReadKey::ReadMode('noecho');
+			print "Enter password: ";
+			$args{password} = Term::ReadKey::ReadLine(0);
+			Term::ReadKey::ReadMode('normal');
+			print "\n";
+			chomp $args{password};
+		}
+		last; # I've found what I was looking for
 	}
 
-	GetOptions(%opts_spec);
+	GetOptionsFromArray(\@argv, %opts_spec);
 
-	# Replace the password with x's in the program name
-	if ($args{password}) {
-		# FIXME: this doesn't work, but it does hide the password
-		my $program_name = $0;
-		$program_name =~ s/$args{password}/xxxxxxxxxx/;
-		$0 = $program_name;
+	# Database is a special case; if left over arguments, that's the database name
+	if (@argv && int @argv == 1) {
+		$args{database} = $argv[0];
 	}
 
-	# Special hardcoded
-	if (@ARGV && int @ARGV == 1) {
-		$args{database} = $ARGV[0];
-	}
+	return \%args;
+}
 
-	if ($args{help}) {
+sub new_from_cli {
+	my $class = shift;
+	my $args = $class->parse_cli_args(\@ARGV);
+	if ($args->{help}) {
 		print "TODO from spec!\n";
 		exit;
 	}
-
-	return $class->new(args => \%args);
+	return $class->new(args => $args);
 }
 
 ## Main

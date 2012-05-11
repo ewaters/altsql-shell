@@ -6,7 +6,7 @@ WriteMakefile(
 	NAME                => 'App::AltSQL',
 	AUTHOR              => q{Eric Waters <ewaters@shutterstock.com>},
 	VERSION_FROM        => 'lib/App/AltSQL.pm',
-	ABSTRACT            => 'MySQL scriptable command line client',
+	ABSTRACT            => 'Scriptable SQL shell',
 	($ExtUtils::MakeMaker::VERSION >= 6.3002
 		? ('LICENSE'=> 'perl')
 		: ()),
@@ -24,6 +24,7 @@ WriteMakefile(
 		'Text::ASCIITable' => 0,
 		'Term::ANSIColor'  => 0,
 		'Sys::SigAction'   => 0,
+		'Config::Any'      => 0,
 	},
 	dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 	clean               => { FILES => 'media-*' },

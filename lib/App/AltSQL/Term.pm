@@ -23,7 +23,7 @@ sub args_spec {
 	return (
 		history_fn => {
 			cli     => 'history=s',
-			default => $ENV{HOME} . '/.mysqlc_history.js',
+			default => $ENV{HOME} . '/.altsql_history.js',
 			help    => '--history FILENAME',
 		},
 	);
