@@ -10,13 +10,27 @@ use Switch 'Perl6';
 use Time::HiRes qw(gettimeofday tv_interval);
 use Sys::SigAction qw(set_sig_handler);
 
+our $VERSION = 0.01;
+our $| = 1;
+
 # Don't emit 'Wide character in output' warnings
 binmode STDOUT, ':utf8';
 
 with 'MooseX::Object::Pluggable';
 
-our $VERSION = 0.01;
-our $| = 1;
+my %_default_classes = (
+	term => 'App::AltSQL::Term',
+	view => 'App::AltSQL::View',
+);
+has 'term'       => (is => 'ro');
+has 'view'       => (is => 'ro');
+has 'args'       => (is => 'rw');
+has 'sql_parser' => (is => 'ro', default => sub { DBIx::MyParsePP->new() });
+has 'dbh'        => (is => 'rw');
+has 'current_database' => (is => 'rw');
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 ## Configure
 
@@ -52,17 +66,6 @@ sub args_spec {
 	);
 }
 
-my %_default_classes = (
-	term => 'App::AltSQL::Term',
-	view => 'App::AltSQL::View',
-);
-has 'term'       => (is => 'ro');
-has 'view'       => (is => 'ro');
-has 'args'       => (is => 'rw');
-has 'sql_parser' => (is => 'ro', default => sub { DBIx::MyParsePP->new() });
-has 'dbh'        => (is => 'rw');
-has 'current_database' => (is => 'rw');
-
 sub BUILD {
 	my $self = shift;
 
@@ -78,10 +81,16 @@ sub BUILD {
 
 		eval "require $subclass_name";
 		die $@ if $@;
-		$self->{$subclass} = $subclass_name->new({
-			app => $self,
-			%args,
-		});
+
+		if ($subclass eq 'term') {
+			$self->{$subclass} = $subclass_name->new({
+				app => $self,
+				%args,
+			});
+		}
+		else {
+			$self->args->{view_args} = \%args;
+		}
 	}
 
 	$self->db_connect();
@@ -307,12 +316,18 @@ sub handle_sql_input {
 
 	my %timing = ( prepare_execute => gettimeofday - $t0 );
 
-	$self->view->render_sth(
+	my $view = $self->args->{view_class}->new(
+		app => $self,
 		sth => $sth,
 		timing => \%timing,
 		verb => $verb,
-		%$render_opts,
+		%{ $self->args->{view_args} },
 	);
+
+	# FIXME: Make this configurable somehow
+	$view->load_plugin($_) foreach qw(Color UnicodeBox);
+
+	$view->render(%$render_opts);
 }
 
 ## Misc utilities

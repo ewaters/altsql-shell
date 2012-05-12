@@ -3,81 +3,153 @@ package App::AltSQL::View;
 use Moose;
 use Data::Dumper;
 use Text::ASCIITable;
+use Text::CharWidth qw(mbswidth);
 use Time::HiRes qw(gettimeofday);
 use Params::Validate;
-use List::Util qw(sum);
+use List::Util qw(sum max);
 
 with 'App::AltSQL::Role';
 with 'MooseX::Object::Pluggable';
+
+has 'timing' => ( is => 'rw' );
+has 'verb'   => ( is => 'rw' );
+
+has 'buffer' => ( is => 'rw' );
+has 'table_data' => ( is => 'rw' );
+has 'footer' => ( is => 'rw' );
 
 sub args_spec {
 	return (
 	);
 }
 
-sub render_sth {
-	my $self = shift;
+around BUILDARGS => sub {
+	my $orig = shift;
+	my $class = shift;
 	my %args = validate(@_, {
-		sth  => 1,
+		app    => 1,
 		timing => 1,
-		verb => 1,
-		one_row_per_column => 0,
-		no_pager => 0,
+		verb   => 1,
+		sth    => 1,
 	});
-	my $sth = $args{sth};
+	my $sth = delete $args{sth};
 
 	if ($args{verb} eq 'use') {
-		$self->log_info('Database changed');
+		$args{buffer} = 'Database changed';
+		return $class->$orig(\%args);
+	}
+
+	if (! $sth->{NUM_OF_FIELDS}) {
+		$args{buffer} = sprintf "Query OK, %d row%s affected (%.2f sec)\n", $sth->rows, ($sth->rows > 1 ? 's' : ''), sum values %{ $args{timing} };
+		if ($args{verb} ne 'insert') {
+			$args{buffer} .= sprintf "Records: %d  Warnings: %d\n", $sth->rows, $sth->{mysql_warning_count};
+		}
+		$args{buffer} .= "\n";
+		return $class->$orig(\%args);
+	}
+
+	my %table_data = (
+		columns => [],
+		rows    => [],
+	);
+	$args{table_data} = \%table_data;
+
+	# Populate table_data{columns}
+	my %mysql_meta = (
+		map { my $key = $_; $key =~ s/^mysql_//; +($key => $sth->{$_}) }
+		qw(mysql_is_blob mysql_is_key mysql_is_num mysql_is_pri_key mysql_is_auto_increment mysql_length mysql_max_length)
+	);
+	foreach my $i (0..$sth->{NUM_OF_FIELDS} - 1) {
+		push @{ $table_data{columns} }, {
+			name      => $sth->{NAME}[$i],
+			type      => $sth->{TYPE}[$i],
+			precision => $sth->{PRECISION}[$i],
+			scale     => $sth->{SCALE}[$i],
+			nullable  => $sth->{NULLABLE}[$i] || undef,
+			map { $_ => $mysql_meta{$_}[$i] } keys %mysql_meta
+		};
+	}
+
+	# Populate table_data{rows}
+	my $t0 = gettimeofday;
+	$table_data{rows} = $sth->fetchall_arrayref;
+	$args{timing}{fetchall} = gettimeofday - $t0;
+
+	# Return if no rows in result
+	if (int @{ $table_data{rows} } == 0) {
+		$args{buffer} = sprintf "Empty set (%.2f sec)\n\n", sum values %{ $args{timing} };
+		return $class->$orig(\%args);
+	}
+
+	$args{footer} = sprintf "%d rows in set (%.2f sec)\n\n", int @{ $table_data{rows} },
+		sum values %{ $args{timing} };
+
+	return $class->$orig(\%args);
+};
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
+
+sub render {
+	my $self = shift;
+	my %args = validate(@_, {
+		no_pager           => 0,
+		one_row_per_column => 0,
+	});
+
+	# Buffer will be unset unless there is a static result
+	my $buffer = $self->buffer;
+	if ($buffer) {
+		print $buffer;
 		return;
 	}
 
-	if ($sth->{NUM_OF_FIELDS}) {
-		my %mysql_meta = (
-			map { my $key = $_; $key =~ s/^mysql_//; +($key => $sth->{$_}) }
-			qw(mysql_is_blob mysql_is_key mysql_is_num mysql_is_pri_key mysql_is_auto_increment mysql_length mysql_max_length)
-		);
-
-		foreach my $i (0..$sth->{NUM_OF_FIELDS} - 1) {
-			push @{ $args{columns} }, {
-				name      => $sth->{NAME}[$i],
-				type      => $sth->{TYPE}[$i],
-				precision => $sth->{PRECISION}[$i],
-				scale     => $sth->{SCALE}[$i],
-				nullable  => $sth->{NULLABLE}[$i] || undef,
-				map { $_ => $mysql_meta{$_}[$i] } keys %mysql_meta
-			};
-		}
-
-		my $t0 = gettimeofday;
-		$args{rows} = $sth->fetchall_arrayref;
-		$args{timing}{fetchall} = gettimeofday - $t0;
-
-		if (int @{ $args{rows} } == 0) {
-			$self->log_info(sprintf "Empty set (%.2f sec)", sum values %{ $args{timing} });
-			$self->log_info(''); # empty line
-			return;
-		}
-
-		if ($args{one_row_per_column}) {
-			return $self->render_one_row_per_column(\%args);
-		}
-		else {
-			return $self->render_table(\%args);
-		}
+	# Otherwise, construct the buffer from rendering the table_data with footer
+	if ($args{one_row_per_column}) {
+		$buffer = $self->render_one_row_per_column();
+	}
+	else {
+		$buffer = $self->render_table();
 	}
 
-	$self->log_info(sprintf 'Query OK, %d row%s affected (%.2f sec)', $sth->rows, ($sth->rows > 1 ? 's' : ''), sum values %{ $args{timing} });
-	if ($args{verb} ne 'insert') {
-		$self->log_info(sprintf 'Records: %d  Warnings: %d', $sth->rows, $sth->{mysql_warning_count});
+	if ($self->footer) {
+		$buffer .= $self->footer;
 	}
-	$self->log_info(''); # empty line
+
+	## Possibly page the output
+
+	my $pager;
+	my ($buffer_width, $buffer_height) = _buffer_dimensions(\$buffer);
+
+	# less args are:
+	#   -F quit if one screen
+	#   -R support color
+	#   -X don't send termcap init
+	#   -S chop long lines; don't wrap long lines
+
+	if ($buffer_width > $self->app->term->get_term_width) {
+		$pager = 'less -FRXS';
+	}
+	elsif ($buffer_height > $self->app->term->get_term_height) {
+		$pager = 'less -FRX';
+	}
+
+	if ($pager && ! $args{no_pager}) {
+		open my $out, "| $pager" or die "Can't open $pager for pipe: $!";
+		binmode $out, ':utf8';
+		print $out $buffer;
+		close $out;
+	}
+	else {
+		print $buffer;
+	}
 }
 
 sub render_table {
-	my ($self, $data) = @_;
+	my $self = shift;
+	my $data = $self->table_data;
 
 	my %table = (
-		%$data,
 		columns => [ map { $self->format_column_cell($_) } @{ $data->{columns} } ],
 		rows    => [],
 	);
@@ -90,11 +162,9 @@ sub render_table {
 	}
 
 	my $t0 = gettimeofday;
-	$self->_render_table_data(\%table);
-	$data->{timing}{render_table} = gettimeofday - $t0;
-
-	printf "%d rows in set (%.2f sec)\n", int @{ $data->{rows} }, sum values %{ $data->{timing} };
-	print "\n";
+	my $output = $self->_render_table_data(\%table);
+	$self->timing->{render_table} = gettimeofday - $t0;
+	return $output;
 }
 
 sub _render_table_data {
@@ -105,11 +175,12 @@ sub _render_table_data {
 	foreach my $row (@{ $data->{rows} }) {
 		$table->addRow(@$row);
 	}
-	print $table;
+	return '' . $table;
 }
 
 sub render_one_row_per_column {
-	my ($self, $data) = @_;
+	my $self = shift;
+	my $data = $self->table_data;
 
 	my $max_length_of_column = 0;
 	foreach my $column (@{ $data->{columns} }) {
@@ -117,22 +188,23 @@ sub render_one_row_per_column {
 		$max_length_of_column = $length if ! $max_length_of_column || $max_length_of_column < $length;
 	}
 
+	my $output = '';
+
 	my $count = 1;
 	foreach my $row (@{ $data->{rows} }) {
-		print "*************************** $count. row ***************************\n";
+		$output .= "*************************** $count. row ***************************\n";
 		$count++;
 
 		foreach my $i (0..$#{ $data->{columns} }) {
 			my $padding_count = $max_length_of_column - length $data->{columns}[$i]{name};
-			printf "%s%s: %s\n",
+			$output .= sprintf "%s%s: %s\n",
 				(' ' x $padding_count),
 				$self->format_column_cell($data->{columns}[$i]),
 				$self->format_cell($row->[$i], $data->{columns}[$i]);
 		}
 	}
 
-	printf "%d rows in set (%.2f sec)\n", int @{ $data->{rows} }, sum values %{ $data->{timing} };
-	print "\n";
+	return $output;
 }
 
 sub format_column_cell {
@@ -145,6 +217,20 @@ sub format_cell {
 	my ($self, $value, $spec) = @_;
 
 	return $value;
+}
+
+sub _buffer_dimensions {
+	my $buffer_ref = shift;
+
+	my $width = 0;
+	my $height = 0;
+
+	foreach my $line (split /\n/, $$buffer_ref)	{
+		$width = max(mbswidth($line), $width);
+		$height++;
+	}
+
+	return ($width, $height);
 }
 
 1;

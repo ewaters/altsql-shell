@@ -8,4 +8,6 @@ has 'app' => (
 	handles  => [qw(log_info log_debug log_error)],
 );
 
+no Moose::Role;
+
 1;

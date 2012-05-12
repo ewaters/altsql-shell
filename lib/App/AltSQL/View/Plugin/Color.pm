@@ -2,6 +2,7 @@ package App::AltSQL::View::Plugin::Color;
 
 use Moose::Role;
 use Term::ANSIColor qw(color colored);
+no Moose::Role;
 
 sub format_column_cell {
 	my ($self, $spec) = @_;

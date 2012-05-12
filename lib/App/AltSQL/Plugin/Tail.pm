@@ -117,4 +117,6 @@ around handle_sql_input => sub {
 	}
 };
 
+no Moose::Role;
+
 1;

@@ -19,6 +19,9 @@ has 'prompt' => (
 has 'history_fn'           => ( is => 'ro' );
 has 'autocomplete_entries' => ( is => 'rw' );
 
+no Moose;
+__PACKAGE__->meta->make_immutable;
+
 sub args_spec {
 	return (
 		history_fn => {
