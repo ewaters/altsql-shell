@@ -3,12 +3,9 @@ package App::AltSQL;
 use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use Params::Validate;
-use DBI;
 use Data::Dumper;
-use DBIx::MyParsePP;
 use Switch 'Perl6';
 use Time::HiRes qw(gettimeofday tv_interval);
-use Sys::SigAction qw(set_sig_handler);
 
 our $VERSION = 0.01;
 our $| = 1;
@@ -21,13 +18,12 @@ with 'MooseX::Object::Pluggable';
 my %_default_classes = (
 	term => 'App::AltSQL::Term',
 	view => 'App::AltSQL::View',
+	model => 'App::AltSQL::Model::MySQL',
 );
-has 'term'       => (is => 'ro');
-has 'view'       => (is => 'ro');
-has 'args'       => (is => 'rw');
-has 'sql_parser' => (is => 'ro', default => sub { DBIx::MyParsePP->new() });
-has 'dbh'        => (is => 'rw');
-has 'current_database' => (is => 'rw');
+has 'term'  => (is => 'ro');
+has 'view'  => (is => 'ro');
+has 'model' => (is => 'ro');
+has 'args'  => (is => 'rw');
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
@@ -36,32 +32,8 @@ __PACKAGE__->meta->make_immutable;
 
 sub args_spec {
 	return (
-		host => {
-			cli  => 'host|h=s',
-			help => '-h HOSTNAME | --host HOSTNAME',
-		},
-		user => {
-			cli  => 'user|u=s',
-			help => '-u USERNAME | --user USERNAME',
-		},
-		
-		password => {
-			help => '-p | --password=PASSWORD | -pPASSWORD',
-		},
-		database => {
-			cli  => 'database|d=s',
-			help => '-d DATABASE | --database DATABASE',
-		},
-		port => {
-			cli  => 'port=i',
-			help => '--port PORT',
-		},
 		help => {
 			cli  => 'help|?',
-		},
-		no_auto_rehash => {
-			cli  => 'no-auto-rehash|A',
-			help => "-A --no-auto-rehash -- Don't scan the information schema for tab autocomplete data",
 		},
 	);
 }
@@ -69,7 +41,7 @@ sub args_spec {
 sub BUILD {
 	my $self = shift;
 
-	foreach my $subclass (qw(term view)) {
+	foreach my $subclass (qw(term view model)) {
 		# Extract out subclass args from args
 		my %args = (
 			map { my $key = $_; /^_${subclass}_(.+)/; +($1 => delete $self->args->{$key}) }
@@ -82,57 +54,19 @@ sub BUILD {
 		eval "require $subclass_name";
 		die $@ if $@;
 
-		if ($subclass eq 'term') {
+		if ($subclass eq 'view') {
+			# We don't have one view per class; we create it per statement
+			$self->args->{view_args} = \%args;
+		}
+		else {
 			$self->{$subclass} = $subclass_name->new({
 				app => $self,
 				%args,
 			});
 		}
-		else {
-			$self->args->{view_args} = \%args;
-		}
 	}
 
-	$self->db_connect();
-}
-
-sub db_connect {
-	my $self = shift;
-	my $dsn = 'DBI:mysql:' . join (';',
-		map { "$_=$self->{args}{$_}" }
-		grep { defined $self->{args}{$_} }
-		qw(database host port)
-	);
-	$self->{dbh} = DBI->connect($dsn, $self->args->{user}, $self->args->{password}, {
-		PrintError => 0,
-		mysql_auto_reconnect => 1,
-		mysql_enable_utf8 => 1,
-	}) or die $DBI::errstr . "\nDSN used: '$dsn'\n";
-
-	## Update autocomplete entries
-
-	if ($self->args->{database}) {
-		$self->current_database($self->args->{database});
-		$self->update_autocomplete_entries($self->args->{database});
-	}
-
-	$self->update_db_types();
-}
-
-sub update_autocomplete_entries {
-	my ($self, $database) = @_;
-
-	return if $self->args->{no_auto_rehash};
-	$self->log_debug("Reading table information for completion of table and column names\nYou can turn off this feature to get a quicker startup with -A\n");
-
-	my %autocomplete;
-	my $rows = $self->dbh->selectall_arrayref("select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where TABLE_SCHEMA = ?", {}, $database);
-	foreach my $row (@$rows) {
-		$autocomplete{$row->[0]} = 1; # Table
-		$autocomplete{$row->[1]} = 1; # Column
-		$autocomplete{$row->[0] . '.' . $row->[1]} = 1; # Table.Column
-	}
-	$self->term->autocomplete_entries(\%autocomplete);
+	$self->model->db_connect();
 }
 
 sub parse_cli_args {
@@ -143,7 +77,9 @@ sub parse_cli_args {
 	my %opts_spec;
 	$args{term_class} ||= $_default_classes{term};
 	$args{view_class} ||= $_default_classes{view};
-	foreach my $args_class ('main', 'view', 'term') {
+	$args{model_class} ||= $_default_classes{model};
+
+	foreach my $args_class ('main', 'view', 'term', 'model') {
 		if ($args_class eq 'main') {
 			my %args_spec = $class->args_spec();
 			foreach my $arg (keys %args_spec) {
@@ -172,7 +108,7 @@ sub parse_cli_args {
 		next unless $arg =~ m{^(?:-p|--password=)(.*)$};
 		splice @argv, $i, 1;
 		if (length $1) {
-			$args{password} = $1;
+			$args{_model_password} = $1;
 			# Remove the password from the program name so people can't see it in process listings
 			$0 = join ' ', $0, @argv;
 		}
@@ -181,10 +117,10 @@ sub parse_cli_args {
 			require Term::ReadKey;
 			Term::ReadKey::ReadMode('noecho');
 			print "Enter password: ";
-			$args{password} = Term::ReadKey::ReadLine(0);
+			$args{_model_password} = Term::ReadKey::ReadLine(0);
 			Term::ReadKey::ReadMode('normal');
 			print "\n";
-			chomp $args{password};
+			chomp $args{_model_password};
 		}
 		last; # I've found what I was looking for
 	}
@@ -193,7 +129,7 @@ sub parse_cli_args {
 
 	# Database is a special case; if left over arguments, that's the database name
 	if (@argv && int @argv == 1) {
-		$args{database} = $argv[0];
+		$args{_model_database} = $argv[0];
 	}
 
 	return \%args;
@@ -263,109 +199,36 @@ sub handle_term_input {
 		return;
 	}
 
-	$self->handle_sql_input($input, \%render_opts);
+	if (my ($command) = $input =~ m/^\.([a-z]+)\b/i) {
+		my $handled = $self->call_command(lc($command), $input);
+		return if $handled;
+	}
+
+	$self->model->handle_sql_input($input, \%render_opts);
 }
 
-sub handle_sql_input {
-	my ($self, $input, $render_opts) = @_;
+sub call_command {
+	my ($command, $input) = @_;
+	# Do nothing here; placeholder for plugin's to attach to
+	return;
+}
 
-	# Track which database we're in for autocomplete
-	if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
-		$self->current_database($database);
-		$self->update_autocomplete_entries($database);
-	}
+## Output display
 
-	# Attempt to parse the input with a SQL parser
-	my $parsed = $self->sql_parser->parse($input);
-	if (! defined $parsed->root) {
-		$self->log_error(sprintf "Error at pos %d, line %s", $parsed->pos, $parsed->line);
-		return;
-	}
-
-	# Figure out the verb
-	my $statement = $parsed->root->extract('statement');
-	if (! $statement) {
-		$self->log_error("Not sure what to do with this; no 'statement' in the parse tree");
-		return;
-	}
-	my $verb = $statement->children->[0];
-
-	# Run the SQL
-	
-	my $t0 = gettimeofday;
-
-	my $sth = $self->dbh->prepare($input);
-
-	# Execute the statement, allowing Ctrl-C to interrupt the call
-	eval {
-		eval {
-			my $h = set_sig_handler('INT', sub {
-				my $thread_id = $self->dbh->{mysql_thread_id};
-				$self->dbh->clone->do("KILL QUERY $thread_id");
-				die "Query aborted by Ctrl+C\n";
-			});
-			$sth->execute();
-		};
-		die "$@" if $@;
-	};
-
-	if (my $error = $self->dbh->errstr || $@) {
-		$self->log_error($error);
-		return;
-	}
-
-	my %timing = ( prepare_execute => gettimeofday - $t0 );
+sub create_view {
+	my ($self, %args) = @_;
 
 	my $view = $self->args->{view_class}->new(
 		app => $self,
-		sth => $sth,
-		timing => \%timing,
-		verb => $verb,
+		%args,
 		%{ $self->args->{view_args} },
 	);
 
 	# FIXME: Make this configurable somehow
 	$view->load_plugin($_) foreach qw(Color UnicodeBox);
 
-	$view->render(%$render_opts);
+	return $view;
 }
-
-## Misc utilities
-
-sub update_db_types {
-	my $self = shift;
-
-	## Collect type info from the handle
-
-	my %types;
-	my $type_info_all = $self->{dbh}->type_info_all();
-	my %key_map = %{ shift @$type_info_all };
-
-	$types{unknown} = { map { $_ => 'unknown' } keys %key_map };
-
-	foreach my $i (0..$#{ $type_info_all }) {
-		my %type;
-		while (my ($key, $index) = each %key_map) {
-			$type{$key} = $type_info_all->[$i][$index];
-		}
-		$types{$i} = \%type;
-	}
-
-	$self->{db_types} = \%types;
-}
-
-sub db_type_info {
-	my ($self, $type) = @_;
-
-	my $info = $self->{db_types}{$type};
-	if (! $info) {
-		#$self->log_error("No such type info for $type");
-		return $self->{db_types}{unknown};
-	}
-	return $info;
-}
-
-## Output display
 
 sub log_info {
 	my ($self, $message) = @_;

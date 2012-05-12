@@ -14,7 +14,7 @@ Given:
 
 The SQL:
 
- tail ts, log from log_entries every 30;
+ .tail ts, log from log_entries every 30;
 
 Will:
 
@@ -27,30 +27,32 @@ Will:
 
 Other recognized forms:
 
- tail * from log_entries every 30;
- tail log_entries every 30;
+ .tail * from log_entries every 30;
+ .tail log_entries every 30;
 
- tail log from log_entries where log like '%ERROR%' every 30;
+ .tail log from log_entries where log like '%ERROR%' every 30;
 
 =cut
 
-around handle_sql_input => sub {
-	my ($orig, $self, $input, $render_opts) = @_;
+around call_command => sub {
+	my ($orig, $self, @args) = @_;
+	my ($command, $input) = @args[0..1];
 
-	if ($input !~ m{^tail \s+}x) {
-		return $self->$orig($input, $render_opts);
+	if ($command ne 'tail') {
+		# Call next chained call_command
+		return $self->$orig(@args);
 	}
 
 	my ($from, $table, $where, $sleep_seconds) = $input =~
-		m{^tail (.+? from|) \s+ (\S+) \s+ (where .+?|) every \s+ (\d+) \s* (?:s|seconds|)$}x;
+		m{^\.tail (.+? from|) \s+ (\S+) \s+ (where .+?|) every \s+ (\d+) \s* (?:s|seconds|)$}xi;
 	if (! defined $table) {
-		$self->log_error("Usage: TAIL \$select FROM \$table WHERE \$criteria EVERY \$seconds | TAIL \$table EVERY \$seconds");
-		return;
+		$self->log_error("Usage: .TAIL \$select FROM \$table WHERE \$criteria EVERY \$seconds | .TAIL \$table EVERY \$seconds");
+		return 1; # handled
 	}
 
 	## Find the primary key, auto_increment column
 
-	my $column_search = $self->dbh->selectall_arrayref(q|
+	my $column_search = $self->model->dbh->selectall_arrayref(q|
 		select
 			COLUMN_NAME, IS_NULLABLE, DATA_TYPE, COLUMN_KEY, EXTRA
 		from
@@ -58,7 +60,7 @@ around handle_sql_input => sub {
 		where
 			TABLE_SCHEMA = ? and
 			TABLE_NAME = ?
-	|, { Slice => {} }, $self->current_database, $table);
+	|, { Slice => {} }, $self->model->current_database, $table);
 
 	my $key_column;
 	{
@@ -77,7 +79,7 @@ around handle_sql_input => sub {
 
 	my $last_seen_max_value;
 	my $update_last_seen_max_value = sub {
-		my $table_status = $self->dbh->selectrow_hashref(q|
+		my $table_status = $self->model->dbh->selectrow_hashref(q|
 			show
 				table status
 			where
@@ -105,7 +107,7 @@ around handle_sql_input => sub {
 		$break = 1;
 	};
 
-	$render_opts->{no_pager} = 1;
+	my %render_opts = ( no_pager => 1 );
 
 	while (1) {
 		last if $break;
@@ -113,8 +115,10 @@ around handle_sql_input => sub {
 		sleep $sleep_seconds;
 		my $sql = $tail_sql_fragment . $last_seen_max_value;
 		$self->log_info( scalar(localtime(time)) . ': ' . $sql);
-		$self->$orig($sql, $render_opts);
+		$self->model->handle_sql_input($sql, \%render_opts);
 	}
+
+	return 1;
 };
 
 no Moose::Role;
