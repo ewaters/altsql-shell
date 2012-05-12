@@ -26,6 +26,7 @@ WriteMakefile(
 		'Term::ANSIColor'  => 0.04,
 		'Sys::SigAction'   => 0,
 		'Config::Any'      => 0,
+		'Hash::Union'      => 0,
 		'Test::Most'       => 0,
 		'Getopt::Long'     => 2.38,
 	},

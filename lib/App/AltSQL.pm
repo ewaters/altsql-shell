@@ -6,6 +6,8 @@ use Params::Validate;
 use Data::Dumper;
 use Switch 'Perl6';
 use Time::HiRes qw(gettimeofday tv_interval);
+use Config::Any;
+use Hash::Union qw(union);
 
 our $VERSION = 0.01;
 our $| = 1;
@@ -15,15 +17,14 @@ binmode STDOUT, ':utf8';
 
 with 'MooseX::Object::Pluggable';
 
+my @_config_stems = ( '/etc/altsql', "$ENV{HOME}/.altsql" );
 my %_default_classes = (
 	term => 'App::AltSQL::Term',
 	view => 'App::AltSQL::View',
 	model => 'App::AltSQL::Model::MySQL',
 );
-has 'term'  => (is => 'ro');
-has 'view'  => (is => 'ro');
-has 'model' => (is => 'ro');
-has 'args'  => (is => 'rw');
+has ['term', 'view', 'model']  => (is => 'ro');
+has ['args', 'config'] => (is => 'rw');
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
@@ -135,6 +136,70 @@ sub parse_cli_args {
 	return \%args;
 }
 
+sub resolve_namespace_config_value {
+	my ($self, $namespace, $key_or_keys, $default_config) = @_;
+
+	# FIXME!!!  Why the hell is Perl letting me do this?  I thought Moose was always use strict / warnings
+	$undeclared_variable = 1;
+
+	my $return;
+	my $cache_key = join ':', $namespace, ref $key_or_keys ? @$key_or_keys : $key_or_keys;
+	if (exists $self->{_resolve_namespace_config_value_cache}{$cache_key}) {
+		return $self->{_resolve_namespace_config_value_cache}{$cache_key};
+	}
+
+	if (ref $key_or_keys && int @$key_or_keys > 1) {
+		my @keys = @$key_or_keys;
+		my $first_key = shift @keys;
+		my $default_hash = $default_config->{$first_key};
+		my $defined_hash = $self->get_namespace_config_value($namespace, $first_key) || {};
+		my $config = union([ $default_hash, $defined_hash ]);
+		$return = _find_hash_value($config, @keys);
+	}
+	else {
+		my $default = $default_config->{$key_or_keys};
+		my $defined = $self->get_namespace_config_value($namespace, $key_or_keys) || undef;
+		$return = defined $defined ? $defined : $default;
+	}
+
+	$self->{_resolve_namespace_config_value_cache}{$cache_key} = $return;
+	return $return;
+}
+
+sub _find_hash_value {
+	my ($config, @keys) = @_;
+	my $key = shift @keys;
+	return undef if ! defined $key;
+	return undef if ! exists $config->{$key};
+	my $value = $config->{$key};
+	if (ref $value && ref $value eq 'HASH') {
+		return _find_hash_value($value, @keys);
+	}
+	return $value;
+}
+
+sub get_namespace_config_value {
+	my ($self, $namespace, $key) = @_;
+	my $config = $self->config->{$namespace};
+	return unless defined $config;
+	return $config->{$key};
+}
+
+sub read_config_file {
+	my $class = shift;
+
+	# Read system settings first, then get more specific
+	my @configs;
+	my $configs = Config::Any->load_stems({ stems => \@_config_stems, use_ext => 1 });
+	foreach my $config (@$configs) {
+		my ($filename) = keys %$config;
+		push @configs, $config->{$filename};
+	}
+
+	# Merge all the hash configs together smartly
+	return union(\@configs);
+}
+
 sub new_from_cli {
 	my $class = shift;
 	my $args = $class->parse_cli_args(\@ARGV);
@@ -142,7 +207,8 @@ sub new_from_cli {
 		print "TODO from spec!\n";
 		exit;
 	}
-	return $class->new(args => $args);
+	my $config = $class->read_config_file();
+	return $class->new(args => $args, config => $config);
 }
 
 ## Main
@@ -224,8 +290,9 @@ sub create_view {
 		%{ $self->args->{view_args} },
 	);
 
-	# FIXME: Make this configurable somehow
-	$view->load_plugin($_) foreach qw(Color UnicodeBox);
+	if (my $plugins = $self->config->{view_plugins}) {
+		$view->load_plugin($_) foreach @$plugins;
+	}
 
 	return $view;
 }

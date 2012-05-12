@@ -4,25 +4,51 @@ use Moose::Role;
 use Term::ANSIColor qw(color colored);
 no Moose::Role;
 
+my %default_config = (
+	header_text => {
+		default => 'red',
+	},
+	cell_text => {
+		is_null => 'blue',
+		is_primary_key => 'bold',
+		is_number => 'yellow',
+	},
+);
+
 sub format_column_cell {
 	my ($self, $spec) = @_;
 
-	return colored($spec->{name}, "red");
+	return colored $spec->{name}, $self->resolve_namespace_config_value(__PACKAGE__, [ 'header_text', 'default' ], \%default_config);
 }
 
 sub format_cell {
 	my ($self, $value, $spec) = @_;
 
+	my %colors =
+		qw(default is_null is_primary_key is_number);
+
+	my $key = 'default';
+
 	if (! defined $value) {
-		return colored 'NULL', 'blue';
+		$value = 'NULL';
+		$key = 'is_null';
 	}
 	elsif ($spec->{is_pri_key}) {
-		return colored $value, 'bold';
+		$key = 'is_primary_key';
 	}
 	elsif ($spec->{is_num}) {
-		return colored $value, 'yellow';
+		$key = 'is_number';
 	}
-	return $value;
+	else {
+		$key = 'default';
+	}
+
+	if (my $color = $self->resolve_namespace_config_value(__PACKAGE__, ['cell_text', $key], \%default_config)) {
+		return colored $value, $color;
+	}
+	else {
+		return $value;
+	}
 }
 
 1;
