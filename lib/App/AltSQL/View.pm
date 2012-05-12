@@ -40,7 +40,7 @@ around BUILDARGS => sub {
 	}
 
 	if (! $sth->{NUM_OF_FIELDS}) {
-		$args{buffer} = sprintf "Query OK, %d row%s affected (%.2f sec)\n", $sth->rows, ($sth->rows > 1 ? 's' : ''), sum values %{ $args{timing} };
+		$args{buffer} = sprintf "Query OK, %d row%s affected (%s)\n", $sth->rows, ($sth->rows > 1 ? 's' : ''), _describe_timing($args{timing});
 		if ($args{verb} ne 'insert') {
 			$args{buffer} .= sprintf "Records: %d  Warnings: %d\n", $sth->rows, $sth->{mysql_warning_count};
 		}
@@ -77,12 +77,11 @@ around BUILDARGS => sub {
 
 	# Return if no rows in result
 	if (int @{ $table_data{rows} } == 0) {
-		$args{buffer} = sprintf "Empty set (%.2f sec)\n\n", sum values %{ $args{timing} };
+		$args{buffer} = sprintf "Empty set (%s)\n\n", _describe_timing($args{timing});
 		return $class->$orig(\%args);
 	}
 
-	$args{footer} = sprintf "%d rows in set (%.2f sec)\n\n", int @{ $table_data{rows} },
-		sum values %{ $args{timing} };
+	$args{footer} = sprintf "%d rows in set (%s)\n\n", int @{ $table_data{rows} }, _describe_timing($args{timing});
 
 	return $class->$orig(\%args);
 };
@@ -231,6 +230,24 @@ sub _buffer_dimensions {
 	}
 
 	return ($width, $height);
+}
+
+sub _describe_timing {
+	my $timing = shift;
+	my $seconds = sum values %$timing;
+
+	my $minutes;
+	if ($seconds > 60) {
+		$minutes = sprintf '%d', $seconds / 60;
+		$seconds -= $minutes * 60;
+	}
+
+	if ($minutes) {
+		return sprintf '%d min %d sec', $minutes, $seconds;
+	}
+	else {
+		return sprintf '%.2f sec', $seconds;
+	}
 }
 
 1;
