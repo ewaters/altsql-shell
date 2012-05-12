@@ -10,7 +10,7 @@ sub _render_table_data {
 	my $table = Text::UnicodeBox::Table->new(
 		split_lines => 1,
 	);
-	$table->add_header({ style => 'heavy' }, @{ $data->{columns} });
+	$table->add_header({ alignment => $data->{alignment}, style => 'heavy' }, @{ $data->{columns} });
 	$table->add_row(@$_) foreach @{ $data->{rows} };
 
 	return $table->render();

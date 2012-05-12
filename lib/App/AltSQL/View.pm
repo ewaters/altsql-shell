@@ -149,8 +149,9 @@ sub render_table {
 	my $data = $self->table_data;
 
 	my %table = (
-		columns => [ map { $self->format_column_cell($_) } @{ $data->{columns} } ],
-		rows    => [],
+		alignment => [ map { $_->{is_num} ? 'right' : 'left' } @{ $data->{columns} } ],
+		columns   => [ map { $self->format_column_cell($_) } @{ $data->{columns} } ],
+		rows      => [],
 	);
 	foreach my $row (@{ $data->{rows} }) {
 		my @row;
