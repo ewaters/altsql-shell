@@ -4,8 +4,9 @@ use Moose;
 use DBI;
 use DBIx::MyParsePP;
 use Sys::SigAction qw(set_sig_handler);
+use Time::HiRes qw(gettimeofday tv_interval);
 
-with 'App::AltSQL::Role';
+extends 'App::AltSQL::Model';
 
 has 'sql_parser' => (is => 'ro', default => sub { DBIx::MyParsePP->new() });
 has 'dbh'        => (is => 'rw');
@@ -17,9 +18,6 @@ has 'password' => ( is => 'ro' );
 has 'database' => ( is => 'ro' );
 has 'port' => ( is => 'ro' );
 has 'no_auto_rehash' => ( is => 'ro' );
-
-no Moose;
-__PACKAGE__->meta->make_immutable;
 
 sub args_spec {
 	return (
@@ -101,7 +99,7 @@ sub handle_sql_input {
 	# Attempt to parse the input with a SQL parser
 	my $parsed = $self->sql_parser->parse($input);
 	if (! defined $parsed->root) {
-		$self->log_error(sprintf "Error at pos %d, line %s", $parsed->pos, $parsed->line);
+		$self->show_sql_error($input, $parsed->pos, $parsed->line);
 		return;
 	}
 
@@ -180,5 +178,17 @@ sub db_type_info {
 	return $info;
 }
 
+sub show_sql_error {
+	my ($self, $input, $char_number, $line_number) = @_;
+
+	my @lines = split /\n/, $input;
+	my $line = $lines[ $line_number - 1 ];
+	$self->log_error("There was an error parsing the SQL statement on line $line_number:");
+	$self->log_error($line);
+	$self->log_error(('-' x ($char_number - 1)) . '^');
+}
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;

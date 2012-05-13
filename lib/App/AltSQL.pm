@@ -5,7 +5,6 @@ use Getopt::Long qw(GetOptionsFromArray);
 use Params::Validate;
 use Data::Dumper;
 use Switch 'Perl6';
-use Time::HiRes qw(gettimeofday tv_interval);
 use Config::Any;
 use Hash::Union qw(union);
 
@@ -25,9 +24,6 @@ my %_default_classes = (
 );
 has ['term', 'view', 'model']  => (is => 'ro');
 has ['args', 'config'] => (is => 'rw');
-
-no Moose;
-__PACKAGE__->meta->make_immutable;
 
 ## Configure
 
@@ -139,9 +135,6 @@ sub parse_cli_args {
 sub resolve_namespace_config_value {
 	my ($self, $namespace, $key_or_keys, $default_config) = @_;
 
-	# FIXME!!!  Why the hell is Perl letting me do this?  I thought Moose was always use strict / warnings
-	$undeclared_variable = 1;
-
 	my $return;
 	my $cache_key = join ':', $namespace, ref $key_or_keys ? @$key_or_keys : $key_or_keys;
 	if (exists $self->{_resolve_namespace_config_value_cache}{$cache_key}) {
@@ -245,6 +238,11 @@ sub handle_term_input {
 	$input =~ s/\s*$//; # no trailing spaces
 	$input =~ s/;*$//;  # no trailing semicolon
 
+	# Support mysql '\c' clear command
+	if ($input =~ m/\\c$/) {
+		return;
+	}
+
 	# Extract out \G
 	my %render_opts;
 	if ($input =~ s/\\G$//) {
@@ -309,5 +307,8 @@ sub log_debug {
 sub log_error {
 	return log_info(@_);
 }
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;

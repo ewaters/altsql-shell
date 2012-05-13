@@ -86,9 +86,6 @@ around BUILDARGS => sub {
 	return $class->$orig(\%args);
 };
 
-no Moose;
-__PACKAGE__->meta->make_immutable;
-
 sub render {
 	my $self = shift;
 	my %args = validate(@_, {
@@ -250,5 +247,8 @@ sub _describe_timing {
 		return sprintf '%.2f sec', $seconds;
 	}
 }
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;

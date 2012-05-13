@@ -19,9 +19,6 @@ has 'prompt' => (
 has 'history_fn'           => ( is => 'ro' );
 has 'autocomplete_entries' => ( is => 'rw' );
 
-no Moose;
-__PACKAGE__->meta->make_immutable;
-
 sub args_spec {
 	return (
 		history_fn => {
@@ -64,7 +61,7 @@ sub return_key {
 
 	## The user has pressed the 'enter' key.  If the buffer ends in ';' or '\G', or if they've typed the bare word 'quit' or 'exit', accept the buffer
 	my $input = join ' ', @{ $self->term->{lines} };
-	if ($input =~ m{(;|\\G)\s*$} || $input =~ m{^\s*(quit|exit)\s*$}) {
+	if ($input =~ m{(;|\\G|\\c)\s*$} || $input =~ m{^\s*(quit|exit)\s*$} || $input =~ m{^\s*$}) {
 		$self->term->accept_line();
 	}
 	else {
@@ -157,5 +154,8 @@ sub get_term_height {
 	my ($width, $height) = $self->term->TermSize();
 	return $height;
 }
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;

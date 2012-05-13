@@ -2,7 +2,6 @@ package App::AltSQL::View::Plugin::Color;
 
 use Moose::Role;
 use Term::ANSIColor qw(color colored);
-no Moose::Role;
 
 my %default_config = (
 	header_text => {
@@ -50,5 +49,7 @@ sub format_cell {
 		return $value;
 	}
 }
+
+no Moose::Role;
 
 1;
