@@ -1,0 +1,56 @@
+---
+abstract: 'A drop in replacement to the MySQL prompt with a pluggable Perl interface'
+author:
+  - 'Eric Waters <ewaters@gmail.com>'
+build_requires:
+  Test::Most: 0
+configure_requires:
+  Module::Build: 0.4
+generated_by: 'Module::Build version 0.3607'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: App-AltSQL
+provides:
+  App::AltSQL:
+    file: lib/App/AltSQL.pm
+    version: 0.01
+  App::AltSQL::Model:
+    file: lib/App/AltSQL/Model.pm
+  App::AltSQL::Model::MySQL:
+    file: lib/App/AltSQL/Model/MySQL.pm
+  App::AltSQL::Plugin::Tail:
+    file: lib/App/AltSQL/Plugin/Tail.pm
+  App::AltSQL::Role:
+    file: lib/App/AltSQL/Role.pm
+  App::AltSQL::Term:
+    file: lib/App/AltSQL/Term.pm
+  App::AltSQL::View:
+    file: lib/App/AltSQL/View.pm
+  App::AltSQL::View::Plugin::Color:
+    file: lib/App/AltSQL/View/Plugin/Color.pm
+  App::AltSQL::View::Plugin::UnicodeBox:
+    file: lib/App/AltSQL/View/Plugin/UnicodeBox.pm
+requires:
+  Config::Any: 0
+  DBD::mysql: 0
+  DBI: 0
+  DBIx::MyParsePP: 0
+  Getopt::Long: 2.38
+  Hash::Union: 0
+  JSON::XS: 0
+  Moose: 0
+  MooseX::Object::Pluggable: 0
+  Params::Validate: 0
+  Pod::Usage: 0
+  Switch: 0
+  Sys::SigAction: 0
+  Term::ANSIColor: 0.04
+  Term::ReadLine::Zoid: 0
+  Test::Most: 0
+  Text::ASCIITable: 0
+  Text::CharWidth: 0
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01

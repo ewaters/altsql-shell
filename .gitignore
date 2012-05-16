@@ -2,3 +2,5 @@ Makefile
 MYMETA.yml
 *.swp
 deps/
+*.bak
+bin/shutterstock*

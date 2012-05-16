@@ -1,0 +1,230 @@
+NAME
+    App::AltSQL - A drop in replacement to the MySQL prompt with a pluggable
+    Perl interface
+
+SYNOPSIS
+      ./altsql -h <host> -u <username> -D <database> -p<password>
+
+      altsql> select * from film limit 4;
+      ╒═════════╤══════════════════╤═══════════════════════════════════════════════════════════════
+      │ film_id │ title            │ description                                                   
+      ╞═════════╪══════════════════╪═══════════════════════════════════════════════════════════════
+      │       1 │ ACADEMY DINOSAUR │ A Epic Drama of a Feminist And a Mad Scientist who must Battle
+      │       2 │ ACE GOLDFINGER   │ A Astounding Epistle of a Database Administrator And a Explore
+      │       3 │ ADAPTATION HOLES │ A Astounding Reflection of a Lumberjack And a Car who must Sin
+      │       4 │ AFFAIR PREJUDICE │ A Fanciful Documentary of a Frisbee And a Lumberjack who must 
+      ╘═════════╧══════════════════╧═══════════════════════════════════════════════════════════════
+      4 rows in set (0.00 sec)
+
+DESCRIPTION
+    AltSQL is a way to improve your user experience with "mysql", "sqlite3",
+    "psql" and other tool that Perl has DBI drivers for. Currently written
+    for MySQL only, the long term goal of this project is to provide users
+    of the various SQL-based databases with a familiar command line
+    interface but with modern improvements such as color, unicode box
+    tables, and tweaks to the user interface that are fast and easy to
+    prototype and experiment with.
+
+    There are a few key issues that this programmer has had with using the
+    mysql client every day. After looking for alternatives and other ways to
+    fix the problems, reimplementing the client in Perl seemed like the
+    easiest approach, and lent towards the greatest possible adoption by my
+    peers. Here are a few of those issues:
+
+    Ctrl-C kills the program
+        All of the shells that we used on a daily basis allow you to abandon
+        the half-written statement on the prompt by typing Ctrl-C. Spending
+        all day in shells, you expect this behavior to be consistent, but
+        you do this in mysql and you will be thrown to the street. Let's do
+        what I mean, and abandon the statement.
+
+    Wide output wraps
+        We are grateful that mysql at least uses ASCII art for table
+        formatting (unlike "sqlite3" for some reason). But there are some
+        tables that I work with that have many columns, with long names
+        (it's often easier to keep adding columns to a table over time). As
+        a result, when you perform a simple `select * from fim limit 4` you
+        quickly find your terminal overwhelmed by useless ASCII art
+        attempting (and mostly failing) to provide any semblance of meaning
+        from the result. You can throw a '\G' onto the command, but if it
+        took 10 seconds to execute and you locked tables while doing it, you
+        could be slowing down your website or letting your slave fall behind
+        on sync.
+
+        Suffice it to say, it's a much better experience if, just like with
+        "git diff", wide output is left wide, and you are optionally able to
+        scroll horizontally with your arrow keys like you wanted in the
+        first place.
+
+    Color
+        Most other modern programs we developers use on a daily basis (vim,
+        ls, top, git, tmux, screen) offer to provide additional context to
+        you via color. By consistently setting colors on a variable type or
+        file type, programs can convey to us additional context that allows
+        us to better grasp and understand what's happening. They help us be
+        smarter and faster at our jobs, and detect when we've made a
+        mistake. There's no reason we shouldn't use color to make it obvious
+        which column(s) form the primary key of a table, or which columns
+        are a number type or string type. The DBI statement handler contains
+        lots of context, and we can interrogate the "information_schema"
+        tables in mysql for even more.
+
+    Unicode Box characters
+        The usage of '|', '+' and '-' for drawing tables and formatting data
+        seems a bit antiquated. Other tools are adopting Unicode characters,
+        and most programmers are now using terminal programs that support
+        Unicode and UTF8 encoding natively. The Unicode box symbol set
+        allows seamless box drawing which allows you to read between the
+        lines, so to speak. It is less obtrusive, and combining this with
+        color you can create a more useful and clear user experience.
+
+    I've thought of a number of other features, but so too have my coworkers
+    and friends. Most people I've spoken with have ideas for future
+    features. Next time you're using your DB shell and find yourself
+    irritated at a feature or bug in the software that you feel could be
+    done much better, file a feature request or, better yet, write your own
+    plugins.
+
+CONFIGURATION
+    The command line arguments inform how to connect to the database,
+    whereas the configuration file(s) provide behavior and features of the
+    UI.
+
+  Command Line
+    The following options are available.
+
+    -h HOSTNAME | --host HOSTNAME
+    -u USERNAME | --user USERNAME
+    -p | --password=PASSWORD | -pPASSWORD
+    --port PORT
+    -D DATABASE | --database DATABASE
+        Basic connection parameters to the MySQL database.
+
+    --A | --no-auto-rehash
+        By default, upon startup and whenever the database is changed, the
+        "information_schema" tables will be read to perform tab completion.
+        Disable this behavior to get a faster startup time (but no tab
+        complete).
+
+  Config File
+    We are using Config::Any for finding and parsing the configuration file.
+    You may use any format you'd like to write it so long as it's support in
+    "Config::Any".
+
+    /etc/altsql.(yml|cnf|ini|js|pl)
+    ~/.altsql.(yml|cnf|ini|js|pl)
+        Write your configuration file to either the system or the local
+        configuration locations. The local file will inherit from the global
+        configuration but with local modifications. For purposes of this
+        example I'll be writing out the config in YAML, but again any other
+        compatible format would do just as well.
+
+      ---
+      plugins:
+        - Tail
+
+      view_plugins:
+        - Color
+        - UnicodeBox
+
+      App::AltSQL::View::Plugin::Color:
+        header_text:
+          default: red
+        cell_text:
+          is_null: blue
+          is_primary_key: bold
+          is_number: yellow
+
+      App::AltSQL::View::Plugin::UnicodeBox:
+        style: heavy_header
+        split_lines: 1
+        plain_ascii: 0
+
+    This is the default configuration, and currently encompasses all the
+    configurable settings. This should be future safe; as you can see,
+    plugins may use this file for their own variables as there are
+    namespaced sections.
+
+EXTENDING
+    As mentioned above, one key point of this project is to make it easy for
+    people to extend. For this reason, I've built it on Moose and offer a
+    MooseX::Object::Pluggable interface. If you extend "App::AltSQL", you
+    may want to know about the following methods.
+
+  Accessors
+    term - the singleton App::AltSQL::Term (or subclass) instance
+    view - the class in which all table output will be accomplished
+    (defaults to App::AltSQL::View)
+    model - where the database calls happen (App::AltSQL::Model::MySQL)
+    args
+        Hash of the command line arguments
+
+    config
+        Hash of the file configuration
+
+  parse_cli_args \@ARGV
+    Called in "bin/altsql" to collect command line arguments and return a
+    hashref
+
+  resolve_namespace_config_value $namespace, $key | [ $key1, $key2, ... ], \%default_config
+      $self->resolve_namespace_config_value('MyApp', 'timeout', { timeout => 60 });
+      # Will search $self->config->{MyApp}{timeout} and will return that or the default 60 if not present
+
+    Provides plugin authors with easy access to the configuration file.
+    Provide either an arrayref of keys for deep hash matching or a single
+    key for a two dimensional hash.
+
+  get_namespace_config_value $namespace, $key
+    Return a config value of the given key in the namespace. Returns empty
+    list if non-existant.
+
+  read_config_file
+    Will read in all the config file(s) and return the config they represent
+
+  new_from_cli
+    Called in "altsql" to read in the command line arguments and create a
+    new instance from them and any config files found.
+
+  run
+    Start the shell up and enter the readline event loop.
+
+  shutdown
+    Perform any cleanup steps here.
+
+  handle_term_input $input
+    The user has just typed something and submitted the buffer. Do something
+    with it. Most notably, parse it for directives and act upon them.
+
+  call_command $command, $input
+    Currently, the application treats any text that starts with a period as
+    a command to the program rather then as SQL to be sent to the server.
+    This method will be called with that command and the full line types.
+    So, if someone typed '.reset screen', command would be 'reset' and the
+    input woudl be '.reset screen'. This is naturally a good place to add
+    any extensions to the SQL syntax.
+
+  create_view %args
+    Call App::AltSQL::View "new()", mixing in the app and command line view
+    arguments and loading any requested plugins.
+
+  log_info, log_debug, log_error
+    Your basic logging methods, they all currently do the same thing.
+
+DEVELOPMENT
+    This module is being developed via a git repository publicly available
+    at http://github.com/ewaters/altsql-shell. I encourage anyone who is
+    interested to fork my code and contribute bug fixes or new features, or
+    just have fun and be creative.
+
+COPYRIGHT
+    Copyright (c) 2012 Eric Waters and Shutterstock Images
+    (http://shutterstock.com). All rights reserved. This program is free
+    software; you can redistribute it and/or modify it under the same terms
+    as Perl itself.
+
+    The full text of the license can be found in the LICENSE file included
+    with this module.
+
+AUTHOR
+    Eric Waters <ewaters@gmail.com>
+
