@@ -1,5 +1,26 @@
 package App::AltSQL::View::Plugin::Color;
 
+=head1 NAME
+
+App::AltSQL::View::Plugin::Color - Colorize the output in a context sensitive way
+
+=head1 DESCRIPTION
+
+This uses the L<App::AltSQL> configuration file for customizing how things are colored.  The default configuration is:
+
+  header_text => {
+    default => 'red',
+  },
+  cell_text => {
+    is_null => 'blue',
+    is_primary_key => 'bold',
+    is_number => 'yellow',
+  }
+
+The values are passed to L<Term::ANSIColor> so any supported color may be used.
+
+=cut
+
 use Moose::Role;
 use Term::ANSIColor qw(color colored);
 
@@ -51,5 +72,21 @@ sub format_cell {
 }
 
 no Moose::Role;
+
+=head1 DEVELOPMENT
+
+This module is being developed via a git repository publicly available at http://github.com/ewaters/altsql-shell.  I encourage anyone who is interested to fork my code and contribute bug fixes or new features, or just have fun and be creative.
+
+=head1 COPYRIGHT
+
+Copyright (c) 2012 Eric Waters and Shutterstock Images (http://shutterstock.com).  All rights reserved.  This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the LICENSE file included with this module.
+
+=head1 AUTHOR
+
+Eric Waters <ewaters@gmail.com>
+
+=cut
 
 1;

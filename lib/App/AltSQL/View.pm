@@ -1,5 +1,15 @@
 package App::AltSQL::View;
 
+=head1 NAME
+
+App::AltSQL::View
+
+=head1 DESCRIPTION
+
+This is an internal class used by L<App::AltSQL> to capture the output of a DBI statement handler and express it to the user somehow.  It does this mainly with L<Text::UnicodeBox::Table>, and is currently MySQL specific.
+
+=cut
+
 use Moose;
 use Data::Dumper;
 use Text::ASCIITable;
@@ -86,6 +96,12 @@ around BUILDARGS => sub {
 	return $class->$orig(\%args);
 };
 
+=head2 render %args
+
+Optionally pass 'no_pager' or 'one_row_per_column'.  Will render the stored buffer by either printing it to the screen or piping it to a pager.
+
+=cut
+
 sub render {
 	my $self = shift;
 	my %args = validate(@_, {
@@ -141,6 +157,12 @@ sub render {
 	}
 }
 
+=head2 render_table
+
+Given the table data that was extracted from the statement handler, compose a nicely formatted table for showing to the user.
+
+=cut
+
 sub render_table {
 	my $self = shift;
 	my $data = $self->table_data;
@@ -175,6 +197,12 @@ sub _render_table_data {
 	return '' . $table;
 }
 
+=head2 render_one_row_column
+
+Rather then using ASCII art to horizontally format each row, use one row of output per cell of data.
+
+=cut
+
 sub render_one_row_per_column {
 	my $self = shift;
 	my $data = $self->table_data;
@@ -204,11 +232,51 @@ sub render_one_row_per_column {
 	return $output;
 }
 
+=head2 format_column_cell \%spec
+
+Given the column specification, format the output for the user.  This would be the header cell of the table.  The specification may have the following keys, which match up with data found in the L<DBI> statement handler.
+
+=over 4
+
+=item name
+
+=item type
+
+=item precision
+
+=item scale
+
+=item nullable
+
+=item is_blob
+
+=item is_key
+
+=item is_num
+
+=item is_pri_key
+
+=item is_auto_increment
+
+=item length
+
+=item max_length
+
+=back
+
+=cut
+
 sub format_column_cell {
 	my ($self, $spec) = @_;
 
 	return $spec->{name};
 }
+
+=head2 format_cell $value, \%spec
+
+Format the cell $value while knowing the column %spec (same data structure as above)
+
+=cut
 
 sub format_cell {
 	my ($self, $value, $spec) = @_;
@@ -250,5 +318,21 @@ sub _describe_timing {
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
+
+=head1 DEVELOPMENT
+
+This module is being developed via a git repository publicly available at http://github.com/ewaters/altsql-shell.  I encourage anyone who is interested to fork my code and contribute bug fixes or new features, or just have fun and be creative.
+
+=head1 COPYRIGHT
+
+Copyright (c) 2012 Eric Waters and Shutterstock Images (http://shutterstock.com).  All rights reserved.  This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the LICENSE file included with this module.
+
+=head1 AUTHOR
+
+Eric Waters <ewaters@gmail.com>
+
+=cut
 
 1;
