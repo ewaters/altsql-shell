@@ -28,7 +28,7 @@ my $build = Module::Build->new(
 		'Hash::Union'      => 0,
 		'Test::Most'       => 0,
 		'Getopt::Long'     => 2.38,
-		'Pod::Usage'       => 0,
+		'Text::UnicodeBox' => 0.03,
 	},
 	create_makefile_pl => 'passthrough',
 	create_readme      => 1,
