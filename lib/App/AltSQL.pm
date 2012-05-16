@@ -144,6 +144,10 @@ my %_default_classes = (
 	view => 'App::AltSQL::View',
 	model => 'App::AltSQL::Model::MySQL',
 );
+my %default_config = (
+	plugins => [ 'Tail' ],
+	view_plugins => [ 'Color', 'UnicodeBox' ],
+);
 
 =head2 Accessors
 
@@ -382,7 +386,7 @@ sub new_from_cli {
 		exit;
 	}
 	my $config = $class->read_config_file();
-	my $self = $class->new(args => $args, config => $config);
+	my $self = $class->new(args => $args, config => $config || \%default_config);
 
 	# Load in any plugins that are configured
 	foreach my $plugin (@{ $config->{plugins} }) {
