@@ -1,0 +1,7 @@
+^\.git
+^\bdeps\b
+^\bbin/shutterstock.+
+^MYMETA.yml$
+^_build/
+^Build
+^blib/

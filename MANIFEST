@@ -11,6 +11,7 @@ lib/App/AltSQL/View/Plugin/Color.pm
 lib/App/AltSQL/View/Plugin/UnicodeBox.pm
 Makefile.PL
 MANIFEST			This list of files
+MANIFEST.SKIP
 t/001_arguments.t
 t/010_sql_syntax_checking.t
 t/sql/sakila-data.sql

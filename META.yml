@@ -43,7 +43,6 @@ requires:
   Moose: 0
   MooseX::Object::Pluggable: 0
   Params::Validate: 0
-  Pod::Usage: 0
   Switch: 0
   Sys::SigAction: 0
   Term::ANSIColor: 0.04
@@ -51,6 +50,7 @@ requires:
   Test::Most: 0
   Text::ASCIITable: 0
   Text::CharWidth: 0
+  Text::UnicodeBox: 0.03
 resources:
   license: http://dev.perl.org/licenses/
 version: 0.01
