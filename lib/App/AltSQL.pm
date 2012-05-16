@@ -11,14 +11,14 @@ App::AltSQL - A drop in replacement to the MySQL prompt with a pluggable Perl in
   ./altsql -h <host> -u <username> -D <database> -p<password>
 
   altsql> select * from film limit 4;
-  ╒═════════╤══════════════════╤═══════════════════════════════════════════════════════════════
-  │ film_id │ title            │ description                                                   
-  ╞═════════╪══════════════════╪═══════════════════════════════════════════════════════════════
-  │       1 │ ACADEMY DINOSAUR │ A Epic Drama of a Feminist And a Mad Scientist who must Battle
-  │       2 │ ACE GOLDFINGER   │ A Astounding Epistle of a Database Administrator And a Explore
-  │       3 │ ADAPTATION HOLES │ A Astounding Reflection of a Lumberjack And a Car who must Sin
-  │       4 │ AFFAIR PREJUDICE │ A Fanciful Documentary of a Frisbee And a Lumberjack who must 
-  ╘═════════╧══════════════════╧═══════════════════════════════════════════════════════════════
+  ╒═════════╤══════════════════╤════════════════════════════
+  │ film_id │ title            │ description                
+  ╞═════════╪══════════════════╪════════════════════════════
+  │       1 │ ACADEMY DINOSAUR │ A Epic Drama of a Feminist 
+  │       2 │ ACE GOLDFINGER   │ A Astounding Epistle of a D
+  │       3 │ ADAPTATION HOLES │ A Astounding Reflection of 
+  │       4 │ AFFAIR PREJUDICE │ A Fanciful Documentary of a
+  ╘═════════╧══════════════════╧════════════════════════════
   4 rows in set (0.00 sec)
 
 =head1 DESCRIPTION
