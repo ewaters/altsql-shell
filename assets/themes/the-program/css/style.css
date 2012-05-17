@@ -1495,8 +1495,12 @@ hr {
   float: right;
 }
 
-.altsql {
+pre {
+	font-size: 0.8em;
+}
 
+.altsql {
+	
 }
 
 .altsql .header_text {
