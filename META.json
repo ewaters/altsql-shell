@@ -36,7 +36,6 @@
             "Moose" : "0",
             "MooseX::Object::Pluggable" : "0",
             "Params::Validate" : "0",
-            "Switch" : "0",
             "Sys::SigAction" : "0",
             "Term::ANSIColor" : "0.04",
             "Term::ReadLine::Zoid" : "0",
@@ -50,7 +49,7 @@
    "provides" : {
       "App::AltSQL" : {
          "file" : "lib/App/AltSQL.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       },
       "App::AltSQL::Model" : {
          "file" : "lib/App/AltSQL/Model.pm",
@@ -91,5 +90,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }
