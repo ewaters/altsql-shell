@@ -15,6 +15,7 @@ MANIFEST.SKIP
 t/001_arguments.t
 t/sql/sakila-data.sql
 t/sql/sakila-schema.sql
-README
+README.pod
+Changes
 META.yml
 META.json
