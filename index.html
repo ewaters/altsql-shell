@@ -16,6 +16,16 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
+  <style>
+  .altsql .header_text {
+	  color: yellow;
+	  font-weight: bold;
+  }
+  .altsql .cell_is_primary_key {
+      font-weight: bold;
+  }
+  </style>
+
 </head>
 
 <body>
@@ -46,7 +56,7 @@ $ sudo cpanm App::AltSQL
 
 <p>Now you can use it just like the <code>mysql</code> prompt.</p>
 
-<pre><code>$ altsql -u root -h localhost -D sakila
+<pre class='altsql'><code>$ altsql -u root -h localhost -D sakila
 
 Ctrl-C to reset the line; Ctrl-D to exit
 Reading table information for completion of table and column names
@@ -54,13 +64,13 @@ You can turn off this feature to get a quicker startup with -A
 
 altsql&gt; select * from actor limit 5
 ┏━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┓
-┃ <b>actor_id</b> ┃ <b>first_name</b> ┃ <b>last_name</b>    ┃ <b>last_update</b>         ┃
+┃ <span class='header_text'>actor_id</span> ┃ <span class='header_text'>first_name</span> ┃ <span class='header_text'b>last_name</span>    ┃ <span class='header_text'b>last_update</span>         ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━┩
-│        1 │ PENELOPE   │ GUINESS      │ 2006-02-15 04:34:33 │
-│        2 │ NICK       │ WAHLBERG     │ 2006-02-15 04:34:33 │
-│        3 │ ED         │ CHASE        │ 2006-02-15 04:34:33 │
-│        4 │ JENNIFER   │ DAVIS        │ 2006-02-15 04:34:33 │
-│        5 │ JOHNNY     │ LOLLOBRIGIDA │ 2006-02-15 04:34:33 │
+│        <span class='cell_is_primary_key'>1</span> │ PENELOPE   │ GUINESS      │ 2006-02-15 04:34:33 │
+│        <span class='cell_is_primary_key'>2</span> │ NICK       │ WAHLBERG     │ 2006-02-15 04:34:33 │
+│        <span class='cell_is_primary_key'>3</span> │ ED         │ CHASE        │ 2006-02-15 04:34:33 │
+│        <span class='cell_is_primary_key'>4</span> │ JENNIFER   │ DAVIS        │ 2006-02-15 04:34:33 │
+│        <span class='cell_is_primary_key'>5</span> │ JOHNNY     │ LOLLOBRIGIDA │ 2006-02-15 04:34:33 │
 └──────────┴────────────┴──────────────┴─────────────────────┘
 5 rows in set (0.00 sec)
 
