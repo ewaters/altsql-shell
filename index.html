@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>AltSQL</title>
+  <meta name="description" content="An easily extensible DBI shell, perfect for a drop-in replacement to mysql-client">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">AltSQL</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">An easily extensible DBI shell, perfect for a drop-in replacement to mysql-client</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/ewaters/altsql-shell/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/ewaters/altsql-shell/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/ewaters/altsql-shell" class="code">View AltSQL on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <p>AltSQL is a way to improve your user experience with <code>mysql</code>, <code>sqlite3</code>, <code>psql</code> and other tool that Perl has DBI drivers for. Currently written for MySQL only, the long term goal of this project is to provide users of the various SQL-based databases with a familiar command line interface but with modern improvements such as color, unicode box tables, and tweaks to the user interface that are fast and easy to prototype and experiment with.</p>
+
+<h3>Quick Start</h3>
+
+<pre>
+$ sudo cpanm App::AltSQL
+</pre>
+
+<p>Now you can use it just like the <code>mysql</code> prompt.</p>
+
+<pre><code>$ altsql -u root -h localhost -D sakila
+
+Ctrl-C to reset the line; Ctrl-D to exit
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+altsql&gt; select * from actor limit 5
+┏━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┓
+┃ actor_id ┃ first_name ┃ last_name    ┃ last_update         ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━┩
+│        1 │ PENELOPE   │ GUINESS      │ 2006-02-15 04:34:33 │
+│        2 │ NICK       │ WAHLBERG     │ 2006-02-15 04:34:33 │
+│        3 │ ED         │ CHASE        │ 2006-02-15 04:34:33 │
+│        4 │ JENNIFER   │ DAVIS        │ 2006-02-15 04:34:33 │
+│        5 │ JOHNNY     │ LOLLOBRIGIDA │ 2006-02-15 04:34:33 │
+└──────────┴────────────┴──────────────┴─────────────────────┘
+5 rows in set (0.00 sec)
+
+altsql&gt;
+</code></pre>
+
+<h3>Reasoning</h3>
+
+<p>There are a few key issues that this programmer has had with using the mysql client every day. After looking for alternatives and other ways to fix the problems, reimplementing the client in Perl seemed like the easiest approach, and lent towards the greatest possible adoption by my peers. Here are a few of those issues:</p>
+
+<ul>
+<li>
+<p>Ctrl-C kills the program</p>
+
+<p>All of the shells that we used on a daily basis allow you to abandon the half-written statement on the prompt by typing Ctrl-C. Spending all day in shells, you expect this behavior to be consistent, but you do this in mysql and you will be thrown to the street. Let's do what I mean, and abandon the statement.</p>
+</li>
+<li>
+<p>Wide output wraps</p>
+
+<p>We are grateful that mysql at least uses ASCII art for table formatting (unlike sqlite3 for some reason). But there are some tables that I work with that have many columns, with long names (it's often easier to keep adding columns to a table over time). As a result, when you perform a simple <code>select * from film limit 4</code> you quickly find your terminal overwhelmed by useless ASCII art attempting (and mostly failing) to provide any semblance of meaning from the result. You can throw a '\G' onto the command, but if it took 10 seconds to execute and you locked tables while doing it, you could be slowing down your website or letting your slave fall behind on sync.</p>
+
+<p>Suffice it to say, it's a much better experience if, just like with git diff, wide output is left wide, and you are optionally able to scroll horizontally with your arrow keys like you wanted in the first place.</p>
+</li>
+<li>
+<p>Color</p>
+
+<p>Most other modern programs we developers use on a daily basis (vim, ls, top, git, tmux, screen) offer to provide additional context to you via color. By consistently setting colors on a variable type or file type, programs can convey to us additional context that allows us to better grasp and understand what's happening. They help us be smarter and faster at our jobs, and detect when we've made a mistake. There's no reason we shouldn't use color to make it obvious which column(s) form the primary key of a table, or which columns are a number type or string type. The DBI statement handler contains lots of context, and we can interrogate the information_schema tables in mysql for even more.</p>
+</li>
+<li>
+<p>Unicode Box characters</p>
+
+<p>The usage of '|', '+' and '-' for drawing tables and formatting data seems a bit antiquated. Other tools are adopting Unicode characters, and most programmers are now using terminal programs that support Unicode and UTF8 encoding natively. The Unicode box symbol set allows seamless box drawing which allows you to read between the lines, so to speak. It is less obtrusive, and combining this with color you can create a more useful and clear user experience.</p>
+</li>
+</ul><p>I've thought of a number of other features, but so too have my coworkers and friends. Most people I've spoken with have ideas for future features. Next time you're using your DB shell and find yourself irritated at a feature or bug in the software that you feel could be done much better, file a feature request or, better yet, write your own plugins.</p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/ewaters" class="avatar"><img src="https://secure.gravatar.com/avatar/40fa0d9879fa1a72363d5f17c456a4a1?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" height="48"/></a> <a href="https://github.com/ewaters">ewaters</a> maintains <a href="https://github.com/ewaters/altsql-shell">AltSQL</a></p>
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/ewaters/altsql-shell/tarball/master" class="tar">tar</a><a href="https://github.com/ewaters/altsql-shell/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
