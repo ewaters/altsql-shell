@@ -126,11 +126,10 @@ use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use Params::Validate;
 use Data::Dumper;
-use Switch 'Perl6';
 use Config::Any;
 use Hash::Union qw(union);
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 our $| = 1;
 
 # Don't emit 'Wide character in output' warnings

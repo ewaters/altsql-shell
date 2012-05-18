@@ -1,0 +1,9 @@
+Revision history for App::AltSQL
+
+v0.01  Wed May 16 10:07:51 2012 -0400
+
+  - Initial release
+
+v0.02  Fri May 18 10:33:00 2012 -0400
+
+  - Remove unused dependency on Switch

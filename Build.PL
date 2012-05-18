@@ -17,7 +17,6 @@ my $build = Module::Build->new(
 		'DBI'              => 0,
 		'DBD::mysql'       => 0,
 		'DBIx::MyParsePP'  => 0,
-		'Switch'           => 0,
 		'Term::ReadLine::Zoid' => 0,
 		'JSON::XS'         => 0,
 		'Text::ASCIITable' => 0,
