@@ -1,0 +1,2544 @@
+{
+   "term_rows" : 20,
+   "end_time" : 1337459517.35406,
+   "start_time" : 1337459463.43098,
+   "frames" : [
+      [
+         "out",
+         0,
+         "Ctrl-C to reset the line; Ctrl-D to exit\r\n"
+      ],
+      [
+         "out",
+         77,
+         "Reading table information for completion of table and column names\r\nYou can turn off this feature to get a quicker startup with -A\r\n\r\n"
+      ],
+      [
+         "out",
+         9,
+         "Starting App::AltSQL\r\n\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         1312,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         79,
+         "h"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sh\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         46,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sho\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         55,
+         "w"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         95,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show \u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         95,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show t\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         118,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show ta\u001b[J\u001b[20;16H"
+      ],
+      [
+         "in",
+         95,
+         "b"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show tab\u001b[J\u001b[20;17H"
+      ],
+      [
+         "in",
+         119,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show tabl\u001b[J\u001b[20;18H"
+      ],
+      [
+         "in",
+         87,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show table\u001b[J\u001b[20;19H"
+      ],
+      [
+         "in",
+         62,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show tables\u001b[J\u001b[20;20H"
+      ],
+      [
+         "in",
+         159,
+         ";"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show tables;\u001b[J\u001b[20;21H"
+      ],
+      [
+         "in",
+         231,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show tables;\u001b[J\u001b[20;21H\u001b[20;20H\r\n"
+      ],
+      [
+         "out",
+         85,
+         "\u001b[?1h\u001b=\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513\u001b[m\r\n\u2503 \u001b[31mTables_in_sakila\u001b[0m           \u2503\u001b[m\r\n\u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2529\u001b[m\r\n\u2502 actor                      \u2502\u001b[m\r\n\u2502 actor_info                 \u2502\u001b[m\r\n\u2502 address                    \u2502\u001b[m\r\n\u2502 blah                       \u2502\u001b[m\r\n\u2502 category                   \u2502\u001b[m\r\n\u2502 city                       \u2502\u001b[m\r\n\u2502 country                    \u2502\u001b[m\r\n\u2502 customer                   \u2502\u001b[m\r\n\u2502 customer_list              \u2502\u001b[m\r\n\u2502 film                       \u2502\u001b[m\r\n\u2502 film_actor                 \u2502\u001b[m\r\n\u2502 film_category              \u2502\u001b[m\r\n\u2502 film_list                  \u2502\u001b[m\r\n\u2502 film_text                  \u2502\u001b[m\r\n\u2502 inventory                  \u2502\u001b[m\r\n\u2502 language                   \u2502\u001b[m\r\n:\u001b[K"
+      ],
+      [
+         "in",
+         857,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\r\u001b[K\u2502 nicer_but_slower_film_list \u2502\u001b[m\r\n\u2502 payment                    \u2502\u001b[m\r\n\u2502 rental                     \u2502\u001b[m\r\n\u2502 sales_by_film_category     \u2502\u001b[m\r\n\u2502 sales_by_store             \u2502\u001b[m\r\n\u2502 staff                      \u2502\u001b[m\r\n\u2502 staff_list                 \u2502\u001b[m\r\n\u2502 store                      \u2502\u001b[m\r\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\u001b[m\r\n24 rows in set (0.00 sec)\u001b[m\r\n\u001b[m\r\n\u001b[7m(END) \u001b[27m\u001b[K"
+      ],
+      [
+         "in",
+         695,
+         "q"
+      ],
+      [
+         "out",
+         0,
+         "\r\u001b[K\u001b[?1l\u001b>"
+      ],
+      [
+         "out",
+         1,
+         "\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         1141,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         79,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> se\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         111,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sel\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         87,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sele\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         166,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> selec\u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         119,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         110,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select \u001b[J\u001b[20;16H"
+      ],
+      [
+         "in",
+         207,
+         "*"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select *\u001b[J\u001b[20;17H"
+      ],
+      [
+         "in",
+         87,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * \u001b[J\u001b[20;18H"
+      ],
+      [
+         "in",
+         102,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * f\u001b[J\u001b[20;19H"
+      ],
+      [
+         "in",
+         151,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * fr\u001b[J\u001b[20;20H"
+      ],
+      [
+         "in",
+         31,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * fro\u001b[J\u001b[20;21H"
+      ],
+      [
+         "in",
+         87,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from\u001b[J\u001b[20;22H"
+      ],
+      [
+         "in",
+         70,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from \u001b[J\u001b[20;23H"
+      ],
+      [
+         "in",
+         87,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from a\u001b[J\u001b[20;24H"
+      ],
+      [
+         "in",
+         118,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from ac\u001b[J\u001b[20;25H"
+      ],
+      [
+         "in",
+         135,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from act\u001b[J\u001b[20;26H"
+      ],
+      [
+         "in",
+         71,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from acto\u001b[J\u001b[20;27H"
+      ],
+      [
+         "in",
+         111,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor\u001b[J\u001b[20;28H"
+      ],
+      [
+         "in",
+         71,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor \u001b[J\u001b[20;29H"
+      ],
+      [
+         "in",
+         127,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor l\u001b[J\u001b[20;30H"
+      ],
+      [
+         "in",
+         71,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor li\u001b[J\u001b[20;31H"
+      ],
+      [
+         "in",
+         79,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor lim\u001b[J\u001b[20;32H"
+      ],
+      [
+         "in",
+         102,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor limi\u001b[J\u001b[20;33H"
+      ],
+      [
+         "in",
+         95,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor limit\u001b[J\u001b[20;34H"
+      ],
+      [
+         "in",
+         94,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor limit \u001b[J\u001b[20;35H"
+      ],
+      [
+         "in",
+         111,
+         "5"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor limit 5\u001b[J\u001b[20;36H"
+      ],
+      [
+         "in",
+         623,
+         ";"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor limit 5;\u001b[J\u001b[20;37H"
+      ],
+      [
+         "in",
+         343,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from actor limit 5;\u001b[J\u001b[20;37H\u001b[20;36H\r\n"
+      ],
+      [
+         "out",
+         30,
+         "\u001b[?1h\u001b=\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513\u001b[m\r\n\u2503 \u001b[31mactor_id\u001b[0m \u2503 \u001b[31mfirst_name\u001b[0m \u2503 \u001b[31mlast_name\u001b[0m    \u2503 \u001b[31mlast_update\u001b[0m         \u2503\u001b[m\r\n\u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2529\u001b[m\r\n\u2502        \u001b[1m1\u001b[0m \u2502 PENELOPE   \u2502 GUINESS      \u2502 2006-02-15 04:34:33 \u2502\u001b[m\r\n\u2502        \u001b[1m2\u001b[0m \u2502 NICK       \u2502 WAHLBERG     \u2502 2006-02-15 04:34:33 \u2502\u001b[m\r\n\u2502        \u001b[1m3\u001b[0m \u2502 ED         \u2502 CHASE        \u2502 2006-02-15 04:34:33 \u2502\u001b[m\r\n\u2502        \u001b[1m4\u001b[0m \u2502 JENNIFER   \u2502 DAVIS        \u2502 2006-02-15 04:34:33 \u2502\u001b[m\r\n\u2502        \u001b[1m5\u001b[0m \u2502 JOHNNY     \u2502 LOLLOBRIGIDA \u2502 2006-02-15 04:34:33 \u2502\u001b[m\r\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\u001b[m\r\n5 rows in set (0.00 sec)\u001b[m\r\n\u001b[m\r\n\r\u001b[K\u001b[?1l\u001b>"
+      ],
+      [
+         "out",
+         1,
+         "\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         702,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         87,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> se\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         135,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sel\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         87,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sele\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         183,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> selec\u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         135,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         111,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select \u001b[J\u001b[20;16H"
+      ],
+      [
+         "in",
+         215,
+         "*"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select *\u001b[J\u001b[20;17H"
+      ],
+      [
+         "in",
+         70,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * \u001b[J\u001b[20;18H"
+      ],
+      [
+         "in",
+         103,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * f\u001b[J\u001b[20;19H"
+      ],
+      [
+         "in",
+         143,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * fr\u001b[J\u001b[20;20H"
+      ],
+      [
+         "in",
+         47,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * fro\u001b[J\u001b[20;21H"
+      ],
+      [
+         "in",
+         71,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from\u001b[J\u001b[20;22H"
+      ],
+      [
+         "in",
+         111,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from \u001b[J\u001b[20;23H"
+      ],
+      [
+         "in",
+         151,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from f\u001b[J\u001b[20;24H"
+      ],
+      [
+         "in",
+         103,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from fi\u001b[J\u001b[20;25H"
+      ],
+      [
+         "in",
+         52,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from fil\u001b[J\u001b[20;26H"
+      ],
+      [
+         "in",
+         122,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film\u001b[J\u001b[20;27H"
+      ],
+      [
+         "in",
+         263,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film \u001b[J\u001b[20;28H"
+      ],
+      [
+         "in",
+         135,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film l\u001b[J\u001b[20;29H"
+      ],
+      [
+         "in",
+         62,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film li\u001b[J\u001b[20;30H"
+      ],
+      [
+         "in",
+         87,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film lim\u001b[J\u001b[20;31H"
+      ],
+      [
+         "in",
+         94,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film limi\u001b[J\u001b[20;32H"
+      ],
+      [
+         "in",
+         102,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film limit\u001b[J\u001b[20;33H"
+      ],
+      [
+         "in",
+         87,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film limit \u001b[J\u001b[20;34H"
+      ],
+      [
+         "in",
+         112,
+         "2"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film limit 2\u001b[J\u001b[20;35H"
+      ],
+      [
+         "in",
+         127,
+         "0"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film limit 20\u001b[J\u001b[20;36H"
+      ],
+      [
+         "in",
+         223,
+         ";"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film limit 20;\u001b[J\u001b[20;37H"
+      ],
+      [
+         "in",
+         695,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from film limit 20;\u001b[J\u001b[20;37H\u001b[20;36H\r\n"
+      ],
+      [
+         "out",
+         128,
+         "\u001b[?1h\u001b=\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[m\r\n\u2503 \u001b[31mfilm_id\u001b[0m \u2503 \u001b[31mtitle\u001b[0m               \u2503 \u001b[31mdescription\u001b[0m                                   \u001b[m\r\n\u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[m\r\n\u2502       \u001b[1m1\u001b[0m \u2502 ACADEMY DINOSAUR    \u2502 A Epic Drama of a Feminist And a Mad Scientist\u001b[m\r\n\u2502       \u001b[1m2\u001b[0m \u2502 ACE GOLDFINGER      \u2502 A Astounding Epistle of a Database Administrat\u001b[m\r\n\u2502       \u001b[1m3\u001b[0m \u2502 ADAPTATION HOLES    \u2502 A Astounding Reflection of a Lumberjack And a \u001b[m\r\n\u2502       \u001b[1m4\u001b[0m \u2502 AFFAIR PREJUDICE    \u2502 A Fanciful Documentary of a Frisbee And a Lumb\u001b[m\r\n\u2502       \u001b[1m5\u001b[0m \u2502 AFRICAN EGG         \u2502 A Fast-Paced Documentary of a Pastry Chef And \u001b[m\r\n\u2502       \u001b[1m6\u001b[0m \u2502 AGENT TRUMAN        \u2502 A Intrepid Panorama of a Robot And a Boy who m\u001b[m\r\n\u2502       \u001b[1m7\u001b[0m \u2502 AIRPLANE SIERRA     \u2502 A Touching Saga of a Hunter And a Butler who m\u001b[m\r\n\u2502       \u001b[1m8\u001b[0m \u2502 AIRPORT POLLOCK     \u2502 A Epic Tale of a Moose And a Girl who must Con\u001b[m\r\n\u2502       \u001b[1m9\u001b[0m \u2502 ALABAMA DEVIL       \u2502 A Thoughtful Panorama of a Database Administra\u001b[m\r\n\u2502      \u001b[1m10\u001b[0m \u2502 ALADDIN CALENDAR    \u2502 A Action-Packed Tale of a Man And a Lumberjack\u001b[m\r\n\u2502      \u001b[1m11\u001b[0m \u2502 ALAMO VIDEOTAPE     \u2502 A Boring Epistle of a Butler And a Cat who mus\u001b[m\r\n\u2502      \u001b[1m12\u001b[0m \u2502 ALASKA PHANTOM      \u2502 A Fanciful Saga of a Hunter And a Pastry Chef \u001b[m\r\n\u2502      \u001b[1m13\u001b[0m \u2502 ALI FOREVER         \u2502 A Action-Packed Drama of a Dentist And a Croco\u001b[m\r\n\u2502      \u001b[1m14\u001b[0m \u2502 ALICE FANTASIA      \u2502 A Emotional Drama of a A Shark And a Database \u001b[m\r\n\u2502      \u001b[1m15\u001b[0m \u2502 ALIEN CENTER        \u2502 A Brilliant Drama of a Cat And a Mad Scientist\u001b[m\r\n\u2502      \u001b[1m16\u001b[0m \u2502 ALLEY EVOLUTION     \u2502 A Fast-Paced Drama of a Robot And a Composer w\u001b[m\r\n:\u001b[K"
+      ],
+      [
+         "in",
+         1381,
+         "q"
+      ],
+      [
+         "out",
+         0,
+         "\r\u001b[K\u001b[?1l\u001b>"
+      ],
+      [
+         "out",
+         2,
+         "\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         732,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         239,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> se\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         559,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         158,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         214,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         103,
+         "h"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sh\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         62,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sho\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         55,
+         "w"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         127,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show \u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         119,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show c\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         135,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show cr\u001b[J\u001b[20;16H"
+      ],
+      [
+         "in",
+         58,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show cre\u001b[J\u001b[20;17H"
+      ],
+      [
+         "in",
+         59,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show crea\u001b[J\u001b[20;18H"
+      ],
+      [
+         "in",
+         87,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show creat\u001b[J\u001b[20;19H"
+      ],
+      [
+         "in",
+         55,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create\u001b[J\u001b[20;20H"
+      ],
+      [
+         "in",
+         95,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create \u001b[J\u001b[20;21H"
+      ],
+      [
+         "in",
+         71,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create t\u001b[J\u001b[20;22H"
+      ],
+      [
+         "in",
+         87,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create ta\u001b[J\u001b[20;23H"
+      ],
+      [
+         "in",
+         103,
+         "b"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create tab\u001b[J\u001b[20;24H"
+      ],
+      [
+         "in",
+         95,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create tabl\u001b[J\u001b[20;25H"
+      ],
+      [
+         "in",
+         79,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table\u001b[J\u001b[20;26H"
+      ],
+      [
+         "in",
+         102,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table \u001b[J\u001b[20;27H"
+      ],
+      [
+         "in",
+         87,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table f\u001b[J\u001b[20;28H"
+      ],
+      [
+         "in",
+         103,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table fi\u001b[J\u001b[20;29H"
+      ],
+      [
+         "in",
+         79,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table fil\u001b[J\u001b[20;30H"
+      ],
+      [
+         "in",
+         95,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table film\u001b[J\u001b[20;31H"
+      ],
+      [
+         "in",
+         239,
+         ";"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table film;\u001b[J\u001b[20;32H"
+      ],
+      [
+         "in",
+         471,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> show create table film;\u001b[J\u001b[20;32H\u001b[20;31H\r\n"
+      ],
+      [
+         "out",
+         55,
+         "\u001b[?1h\u001b=\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[m\r\n\u2503 \u001b[31mTable\u001b[0m \u2503 \u001b[31mCreate Table\u001b[0m                                                          \u001b[m\r\n\u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u001b[m\r\n\u2502 film  \u2502 CREATE TABLE `film` (                                                 \u001b[m\r\n\u2502       \u2502   `film_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,             \u001b[m\r\n\u2502       \u2502   `title` varchar(255) NOT NULL,                                      \u001b[m\r\n\u2502       \u2502   `description` text,                                                 \u001b[m\r\n\u2502       \u2502   `release_year` year(4) DEFAULT NULL,                                \u001b[m\r\n\u2502       \u2502   `language_id` tinyint(3) unsigned NOT NULL,                         \u001b[m\r\n\u2502       \u2502   `original_language_id` tinyint(3) unsigned DEFAULT NULL,            \u001b[m\r\n\u2502       \u2502   `rental_duration` tinyint(3) unsigned NOT NULL DEFAULT '3',         \u001b[m\r\n\u2502       \u2502   `rental_rate` decimal(4,2) NOT NULL DEFAULT '4.99',                 \u001b[m\r\n\u2502       \u2502   `length` smallint(5) unsigned DEFAULT NULL,                         \u001b[m\r\n\u2502       \u2502   `replacement_cost` decimal(5,2) NOT NULL DEFAULT '19.99',           \u001b[m\r\n\u2502       \u2502   `rating` enum('G','PG','PG-13','R','NC-17') DEFAULT 'G',            \u001b[m\r\n\u2502       \u2502   `special_features` set('Trailers','Commentaries','Deleted Scenes','B\u001b[m\r\n\u2502       \u2502   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE\u001b[m\r\n\u2502       \u2502   PRIMARY KEY (`film_id`),                                            \u001b[m\r\n\u2502       \u2502   KEY `idx_title` (`title`),                                          \u001b[m\r\n:\u001b[K"
+      ],
+      [
+         "in",
+         2006,
+         "q"
+      ],
+      [
+         "out",
+         0,
+         "\r\u001b[K\u001b[?1l\u001b>"
+      ],
+      [
+         "out",
+         1,
+         "\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         1005,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         71,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> se\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         79,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sel\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         103,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sele\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         151,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> selec\u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         119,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         103,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select \u001b[J\u001b[20;16H"
+      ],
+      [
+         "in",
+         175,
+         "*"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select *\u001b[J\u001b[20;17H"
+      ],
+      [
+         "in",
+         71,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * \u001b[J\u001b[20;18H"
+      ],
+      [
+         "in",
+         111,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * f\u001b[J\u001b[20;19H"
+      ],
+      [
+         "in",
+         127,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * fr\u001b[J\u001b[20;20H"
+      ],
+      [
+         "in",
+         59,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * fro\u001b[J\u001b[20;21H"
+      ],
+      [
+         "in",
+         75,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from\u001b[J\u001b[20;22H"
+      ],
+      [
+         "in",
+         87,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from \u001b[J\u001b[20;23H"
+      ],
+      [
+         "in",
+         87,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from t\u001b[J\u001b[20;24H"
+      ],
+      [
+         "in",
+         87,
+         "h"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from th\u001b[J\u001b[20;25H"
+      ],
+      [
+         "in",
+         78,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from thi\u001b[J\u001b[20;26H"
+      ],
+      [
+         "in",
+         95,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this\u001b[J\u001b[20;27H"
+      ],
+      [
+         "in",
+         167,
+         ","
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this,\u001b[J\u001b[20;28H"
+      ],
+      [
+         "in",
+         79,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, \u001b[J\u001b[20;29H"
+      ],
+      [
+         "in",
+         102,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, t\u001b[J\u001b[20;30H"
+      ],
+      [
+         "in",
+         111,
+         "h"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, th\u001b[J\u001b[20;31H"
+      ],
+      [
+         "in",
+         87,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, tha\u001b[J\u001b[20;32H"
+      ],
+      [
+         "in",
+         79,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that\u001b[J\u001b[20;33H"
+      ],
+      [
+         "in",
+         287,
+         ","
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that,\u001b[J\u001b[20;34H"
+      ],
+      [
+         "in",
+         71,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, \u001b[J\u001b[20;35H"
+      ],
+      [
+         "in",
+         70,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, t\u001b[J\u001b[20;36H"
+      ],
+      [
+         "in",
+         79,
+         "h"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, th\u001b[J\u001b[20;37H"
+      ],
+      [
+         "in",
+         95,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the\u001b[J\u001b[20;38H"
+      ],
+      [
+         "in",
+         46,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the \u001b[J\u001b[20;39H"
+      ],
+      [
+         "in",
+         111,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the o\u001b[J\u001b[20;40H"
+      ],
+      [
+         "in",
+         111,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the ot\u001b[J\u001b[20;41H"
+      ],
+      [
+         "in",
+         62,
+         "h"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the oth\u001b[J\u001b[20;42H"
+      ],
+      [
+         "in",
+         111,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the othe\u001b[J\u001b[20;43H"
+      ],
+      [
+         "in",
+         79,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the other\u001b[J\u001b[20;44H"
+      ],
+      [
+         "in",
+         751,
+         ","
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the other,\u001b[J\u001b[20;45H"
+      ],
+      [
+         "in",
+         87,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the other, \u001b[J\u001b[20;46H"
+      ],
+      [
+         "in",
+         87,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the other, e\u001b[J\u001b[20;47H"
+      ],
+      [
+         "in",
+         79,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the other, er\u001b[J\u001b[20;48H"
+      ],
+      [
+         "in",
+         190,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the other, err\u001b[J\u001b[20;49H"
+      ],
+      [
+         "in",
+         895,
+         "\u0003"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select * from this, that, the other, err\u001b[J\u001b[20;49H\u001b[20;48H\r\n\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         1495,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> s\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         95,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> se\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         87,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sel\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         95,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> sele\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         191,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> selec\u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         159,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;1Haltsql> select\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         295,
+         "\n"
+      ],
+      [
+         "out",
+         1,
+         "\u001b[20;80H\r\n\u001b[19;1Haltsql> select\u001b[K\r\n> \u001b[J\u001b[20;3H"
+      ],
+      [
+         "in",
+         222,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> f\u001b[J\u001b[20;4H"
+      ],
+      [
+         "in",
+         79,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> fi\u001b[J\u001b[20;5H"
+      ],
+      [
+         "in",
+         87,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> fir\u001b[J\u001b[20;6H"
+      ],
+      [
+         "in",
+         127,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> firs\u001b[J\u001b[20;7H"
+      ],
+      [
+         "in",
+         70,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first\u001b[J\u001b[20;8H"
+      ],
+      [
+         "in",
+         559,
+         "_"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_\u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         191,
+         "n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_n\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         79,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_na\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         95,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_nam\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         71,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         103,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name \u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         95,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name a\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         71,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name as\u001b[J\u001b[20;16H"
+      ],
+      [
+         "in",
+         158,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name as \u001b[J\u001b[20;17H"
+      ],
+      [
+         "in",
+         95,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name as f\u001b[J\u001b[20;18H"
+      ],
+      [
+         "in",
+         118,
+         "n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name as fn\u001b[J\u001b[20;19H"
+      ],
+      [
+         "in",
+         231,
+         ","
+      ],
+      [
+         "out",
+         0,
+         "\u001b[19;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[J\u001b[20;20H"
+      ],
+      [
+         "in",
+         183,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;80H\r\n\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> \u001b[J\u001b[20;3H"
+      ],
+      [
+         "in",
+         231,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> l\u001b[J\u001b[20;4H"
+      ],
+      [
+         "in",
+         71,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> la\u001b[J\u001b[20;5H"
+      ],
+      [
+         "in",
+         23,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> las\u001b[J\u001b[20;6H"
+      ],
+      [
+         "in",
+         87,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last\u001b[J\u001b[20;7H"
+      ],
+      [
+         "in",
+         151,
+         "_"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_\u001b[J\u001b[20;8H"
+      ],
+      [
+         "in",
+         183,
+         "n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_n\u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         56,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_na\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         109,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_nam\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         94,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         207,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name \u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         118,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name a\u001b[J\u001b[20;14H"
+      ],
+      [
+         "in",
+         55,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as\u001b[J\u001b[20;15H"
+      ],
+      [
+         "in",
+         103,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as \u001b[J\u001b[20;16H"
+      ],
+      [
+         "in",
+         127,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as l\u001b[J\u001b[20;17H"
+      ],
+      [
+         "in",
+         151,
+         "n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[J\u001b[20;18H"
+      ],
+      [
+         "in",
+         223,
+         ","
+      ],
+      [
+         "out",
+         0,
+         "\u001b[18;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[J\u001b[20;19H"
+      ],
+      [
+         "in",
+         239,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;80H\r\n\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> \u001b[J\u001b[20;3H"
+      ],
+      [
+         "in",
+         423,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> f\u001b[J\u001b[20;4H"
+      ],
+      [
+         "in",
+         327,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> fr\u001b[J\u001b[20;5H"
+      ],
+      [
+         "in",
+         134,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> fro\u001b[J\u001b[20;6H"
+      ],
+      [
+         "in",
+         62,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> from\u001b[J\u001b[20;7H"
+      ],
+      [
+         "in",
+         127,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> from \u001b[J\u001b[20;8H"
+      ],
+      [
+         "in",
+         199,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> from a\u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         463,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> from \u001b[J\u001b[20;8H"
+      ],
+      [
+         "in",
+         142,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> from\u001b[J\u001b[20;7H"
+      ],
+      [
+         "in",
+         159,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> fro\u001b[J\u001b[20;6H"
+      ],
+      [
+         "in",
+         151,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> fr\u001b[J\u001b[20;5H"
+      ],
+      [
+         "in",
+         142,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> f\u001b[J\u001b[20;4H"
+      ],
+      [
+         "in",
+         151,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[K\r\n> \u001b[J\u001b[20;3H"
+      ],
+      [
+         "in",
+         182,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln,\u001b[J\u001b[19;19H"
+      ],
+      [
+         "in",
+         223,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[J\u001b[19;18H"
+      ],
+      [
+         "in",
+         303,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> \u001b[J\u001b[20;3H"
+      ],
+      [
+         "in",
+         358,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> a\u001b[J\u001b[20;4H"
+      ],
+      [
+         "in",
+         535,
+         ""
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> \u001b[J\u001b[20;3H"
+      ],
+      [
+         "in",
+         247,
+         "f"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> f\u001b[J\u001b[20;4H"
+      ],
+      [
+         "in",
+         159,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> fr\u001b[J\u001b[20;5H"
+      ],
+      [
+         "in",
+         60,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> fro\u001b[J\u001b[20;6H"
+      ],
+      [
+         "in",
+         89,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from\u001b[J\u001b[20;7H"
+      ],
+      [
+         "in",
+         62,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from \u001b[J\u001b[20;8H"
+      ],
+      [
+         "in",
+         87,
+         "a"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from a\u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         118,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from ac\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         151,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from act\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         79,
+         "o"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from acto\u001b[J\u001b[20;12H"
+      ],
+      [
+         "in",
+         95,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[17;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[J\u001b[20;13H"
+      ],
+      [
+         "in",
+         199,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[20;80H\r\n\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> \u001b[J\u001b[20;3H"
+      ],
+      [
+         "in",
+         230,
+         "l"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> l\u001b[J\u001b[20;4H"
+      ],
+      [
+         "in",
+         79,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> li\u001b[J\u001b[20;5H"
+      ],
+      [
+         "in",
+         54,
+         "m"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> lim\u001b[J\u001b[20;6H"
+      ],
+      [
+         "in",
+         103,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limi\u001b[J\u001b[20;7H"
+      ],
+      [
+         "in",
+         110,
+         "t"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit\u001b[J\u001b[20;8H"
+      ],
+      [
+         "in",
+         111,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         95,
+         "5"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit 5\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         231,
+         ";"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit 5;\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         399,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit 5;\u001b[J\u001b[20;11H\u001b[20;10H\r\n"
+      ],
+      [
+         "out",
+         23,
+         "\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513\r\n\u2503 \u001b[31mfn\u001b[0m       \u2503 \u001b[31mln\u001b[0m           \u2503\r\n\u2521\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2529\r\n\u2502 PENELOPE \u2502 GUINESS      \u2502\r\n\u2502 NICK     \u2502 WAHLBERG     \u2502\r\n\u2502 ED       \u2502 CHASE        \u2502\r\n\u2502 JENNIFER \u2502 DAVIS        \u2502\r\n\u2502 JOHNNY   \u2502 LOLLOBRIGIDA \u2502\r\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\r\n5 rows in set (0.00 sec)\r\n\r\n\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         1055,
+         "\u001b[A"
+      ],
+      [
+         "out",
+         1,
+         "\u001b[20;80H\r\n\r\n\r\n\r\n\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit 5;\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         1006,
+         "\u001b"
+      ],
+      [
+         "out",
+         55,
+         "\u001b[16;1Haltsql> select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit 5;\u001b[J\u001b[20;10H"
+      ],
+      [
+         "in",
+         1056,
+         "v"
+      ],
+      [
+         "out",
+         16,
+         "\r\n"
+      ],
+      [
+         "out",
+         41,
+         "\u001b[?1049h\u001b[?1h\u001b="
+      ],
+      [
+         "out",
+         1,
+         "\u001b[1;20r\u001b[?12;25h\u001b[?12l\u001b[?25h\u001b[27m\u001b[m\u001b[H\u001b[2J\u001b[?25l\u001b[20;1H\"/var/folders/nm/hngld30s5x3drcjcsd5x1mbm0000gn/T/PERL_RL_Zoid_OqCHI\"\r<olders/nm/hngld30s5x3drcjcsd5x1mbm0000gn/T/PERL_RL_Zoid_OqCHI\" [noeol] 5L, 60C"
+      ],
+      [
+         "out",
+         1,
+         "\u001b[>c\u001b[1;1Hselect\r\nfirst_name as fn,\r\nlast_name as ln\r\nfrom actor\r\nlimit 5;\r\n\u001b[1m\u001b[34m~                                                                               \u001b[7;1H~                                                                               \u001b[8;1H~                                                                               \u001b[9;1H~                                                                               \u001b[10;1H~                                                                               \u001b[11;1H~                                                                               \u001b[12;1H~                                                                               \u001b[13;1H~                                                                               \u001b[14;1H~                                                                               \u001b[15;1H~                                                                               \u001b[16;1H~                                                                           "
+      ],
+      [
+         "out",
+         0,
+         "    \u001b[17;1H~                                                                               \u001b[18;1H~                                                                               \u001b[19;1H~                                                                               \u001b[1;1H\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         874,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\u001b[m\u001b[20;1H\u001b[1m-- INSERT --\u001b[m\u001b[20;13H\u001b[K\u001b[1;1H\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         263,
+         "d"
+      ],
+      [
+         "out",
+         1,
+         "\u001b[?25ldselect\rd\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         174,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\bdeselect\rde\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         143,
+         "s"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25lsselect\rdes\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         174,
+         "c"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\bscselect\rdesc\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         95,
+         "r"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\bcrselect\b\b\b\b\b\b\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         111,
+         "i"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\briselect\b\b\b\b\b\b\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         119,
+         "b"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\bibselect\b\b\b\b\b\b\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         110,
+         "e"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\bbeselect\b\b\b\b\b\b\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         159,
+         " "
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\be select\b\b\b\b\b\b\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         142,
+         "\u001b"
+      ],
+      [
+         "out",
+         26,
+         "\u001b[20;1H\u001b[K\u001b[1;9H"
+      ],
+      [
+         "in",
+         477,
+         ":"
+      ],
+      [
+         "out",
+         0,
+         "\u001b[?25l\u001b[?12l\u001b[?25h\u001b[?25l\u001b[20;1H:\u001b[?12l\u001b[?25h"
+      ],
+      [
+         "in",
+         167,
+         "x"
+      ],
+      [
+         "out",
+         0,
+         "x"
+      ],
+      [
+         "in",
+         327,
+         "\n"
+      ],
+      [
+         "out",
+         0,
+         "\r\u001b[?25l\"/private/var/folders/nm/hngld30s5x3drcjcsd5x1mbm0000gn/T/PERL_RL_Zoid_OqCHI\""
+      ],
+      [
+         "out",
+         2,
+         "\r<olders/nm/hngld30s5x3drcjcsd5x1mbm0000gn/T/PERL_RL_Zoid_OqCHI\" 5L, 70C written\r\r\n\u001b[?1l\u001b>\u001b[?12l\u001b[?25h\u001b[?1049l"
+      ],
+      [
+         "out",
+         2,
+         "\u001b[20;80H\r\n\r\n\r\n\r\n\u001b[16;1Haltsql> describe select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit 5;\u001b[J\u001b[20;11H"
+      ],
+      [
+         "in",
+         1313,
+         "\n"
+      ],
+      [
+         "out",
+         1,
+         "\u001b[16;1Haltsql> describe select\u001b[K\r\n> first_name as fn,\u001b[K\r\n> last_name as ln\u001b[K\r\n> from actor\u001b[K\r\n> limit 5;\u001b[J\u001b[20;11H\u001b[20;10H\r\n"
+      ],
+      [
+         "out",
+         32,
+         "\u001b[?1h\u001b=\u250f\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u001b[m\r\n\u2503 \u001b[31mid\u001b[0m \u2503 \u001b[31mselect_type\u001b[0m \u2503 \u001b[31mtable\u001b[0m \u2503 \u001b[31mtype\u001b[0m \u2503 \u001b[31mpossible_keys\u001b[0m \u2503 \u001b[31mkey\u001b[0m  \u2503 \u001b[31mkey_len\u001b[0m \u2503 \u001b[31mref\u001b[0m  \u2503 \u001b[31mrows\u001b[0m\u001b[m\r\n\u2521\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u2501\u2547\u2501\u2501\u2501\u2501\u2501\u001b[m\r\n\u2502  \u001b[33m1\u001b[0m \u2502 SIMPLE      \u2502 actor \u2502 ALL  \u2502 \u001b[34mNULL\u001b[0m          \u2502 \u001b[34mNULL\u001b[0m \u2502 \u001b[34mNULL\u001b[0m    \u2502 \u001b[34mNULL\u001b[0m \u2502  \u001b[33m200\u001b[0m\u001b[m\r\n\u2514\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u001b[m\r\n1 rows in set (0.00 sec)\u001b[m\r\n\u001b[m\r\n\u001b[7m(END) \u001b[27m\u001b[K"
+      ],
+      [
+         "in",
+         1310,
+         "q"
+      ],
+      [
+         "out",
+         0,
+         "\r\u001b[K\u001b[?1l\u001b>"
+      ],
+      [
+         "out",
+         1,
+         "\u001b]0;altsql-shell\u0007\u001b[20;1Haltsql> \u001b[J\u001b[20;9H"
+      ],
+      [
+         "in",
+         1061,
+         "\u0004"
+      ],
+      [
+         "out",
+         0,
+         "\r\n"
+      ]
+   ],
+   "command" : [
+      "altsql",
+      "-u",
+      "root",
+      "sakila"
+   ],
+   "term_cols" : 80
+}

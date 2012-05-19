@@ -1,0 +1,92 @@
+.shellcast {
+	display: inline-block;
+}
+
+.terminal-wrapper {
+	position: relative;
+	display: inline-block;
+	background: black;
+	color: white;
+	padding: 4px;
+	margin: 0px;
+}
+.terminal {
+	font-family: Menlo;
+	line-height: 1.3em;
+	font-size: 0.8em;
+}
+.terminal .reverse-video {
+	background: white;
+	color: black;
+}
+
+.shellcast .action-cover {
+	position: absolute;
+	left: 0px;
+	background: white;
+	color: red;
+	opacity: 0.5;
+	width: 100%;
+	height: 80px;
+	text-align: center;
+	font-size: 4em;
+	font-family: Arial;
+	font-weight: bold;
+}
+
+.shellcast .capture-mouse-events {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.shellcast .input-display {
+	height: 24px;
+	overflow: hidden;
+}
+
+.shellcast .input-display kbd {
+	float: right;
+	margin: 2px;
+}
+
+
+.terminal .tty_fg0 { color: #2e3436; }
+.terminal .tty_fg1 { color: #cc0000; }
+.terminal .tty_fg2 { color: #4e9a06; }
+.terminal .tty_fg3 { color: #c4a000; }
+.terminal .tty_fg4 { color: #3465a4; }
+.terminal .tty_fg5 { color: #75507b; }
+.terminal .tty_fg6 { color: #06989a; }
+.terminal .tty_fg7 { color: #d3d7cf; }
+.terminal .tty_fg8 { color: #555753; }
+.terminal .tty_fg9 { color: #ef2929; }
+.terminal .tty_fg10 { color: #8ae234; }
+.terminal .tty_fg11 { color: #fce94f; }
+.terminal .tty_fg12 { color: #729fcf; }
+.terminal .tty_fg13 { color: #ad7fa8; }
+.terminal .tty_fg14 { color: #34e2e2; }
+.terminal .tty_fg15 { color: #eeeeec; }
+
+.terminal .tty_bg0 { background-color: #2e3436; }
+.terminal .tty_bg1 { background-color: #cc0000; }
+.terminal .tty_bg2 { background-color: #4e9a06; }
+.terminal .tty_bg3 { background-color: #c4a000; }
+.terminal .tty_bg4 { background-color: #3465a4; }
+.terminal .tty_bg5 { background-color: #75507b; }
+.terminal .tty_bg6 { background-color: #06989a; }
+.terminal .tty_bg7 { background-color: #d3d7cf; }
+.terminal .tty_bg8 { background-color: #555753; }
+.terminal .tty_bg9 { background-color: #ef2929; }
+.terminal .tty_bg10 { background-color: #8ae234; }
+.terminal .tty_bg11 { background-color: #fce94f; }
+.terminal .tty_bg12 { background-color: #729fcf; }
+.terminal .tty_bg13 { background-color: #ad7fa8; }
+.terminal .tty_bg14 { background-color: #34e2e2; }
+.terminal .tty_bg15 { background-color: #eeeeec; }
+
+.terminal .tty_b { font-weight: bold; }
+.terminal .tty_u { text-decoration: underline; }

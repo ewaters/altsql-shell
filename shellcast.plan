@@ -1,0 +1,17 @@
+show tables;
+
+select * from actor limit 5;
+
+select * from film limit 20;
+
+show create table film;
+
+select * from this, that, the other, errr Ctrl-c
+
+select
+first_name as fn,
+last_name as ln
+from actor
+limit 5;
+
+VI edit the select
