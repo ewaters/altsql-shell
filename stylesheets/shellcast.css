@@ -11,7 +11,7 @@
 	margin: 0px;
 }
 .terminal {
-	font-family: Menlo;
+	font-family: 'MesloLGS', 'Menlo', monospace;
 	line-height: 1.3em;
 	font-size: 0.8em;
 }
