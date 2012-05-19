@@ -37,7 +37,7 @@ sub BUILD {
 sub _build_term {
 	my $self = shift;
 
-	my $term = Term::ReadLine::Zoid->new("mysql-client");
+	my $term = Term::ReadLine::Zoid->new("altsql-shell");
 	$self->{term} = $term;
 
 	$term->Attribs->{completion_function} = sub {
