@@ -4,3 +4,5 @@ MYMETA.yml
 deps/
 *.bak
 bin/shutterstock*
+*.tar.gz
+format_test

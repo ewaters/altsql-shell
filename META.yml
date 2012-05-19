@@ -6,7 +6,8 @@ build_requires:
   Test::Most: 0
 configure_requires:
   Module::Build: 0.4
-generated_by: 'Module::Build version 0.3607'
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -15,23 +16,31 @@ name: App-AltSQL
 provides:
   App::AltSQL:
     file: lib/App/AltSQL.pm
-    version: 0.01
+    version: 0.02
   App::AltSQL::Model:
     file: lib/App/AltSQL/Model.pm
+    version: 0
   App::AltSQL::Model::MySQL:
     file: lib/App/AltSQL/Model/MySQL.pm
+    version: 0
   App::AltSQL::Plugin::Tail:
     file: lib/App/AltSQL/Plugin/Tail.pm
+    version: 0
   App::AltSQL::Role:
     file: lib/App/AltSQL/Role.pm
+    version: 0
   App::AltSQL::Term:
     file: lib/App/AltSQL/Term.pm
+    version: 0
   App::AltSQL::View:
     file: lib/App/AltSQL/View.pm
+    version: 0
   App::AltSQL::View::Plugin::Color:
     file: lib/App/AltSQL/View/Plugin/Color.pm
+    version: 0
   App::AltSQL::View::Plugin::UnicodeBox:
     file: lib/App/AltSQL/View/Plugin/UnicodeBox.pm
+    version: 0
 requires:
   Config::Any: 0
   DBD::mysql: 0
@@ -43,7 +52,6 @@ requires:
   Moose: 0
   MooseX::Object::Pluggable: 0
   Params::Validate: 0
-  Switch: 0
   Sys::SigAction: 0
   Term::ANSIColor: 0.04
   Term::ReadLine::Zoid: 0
@@ -53,4 +61,4 @@ requires:
   Text::UnicodeBox: 0.03
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02

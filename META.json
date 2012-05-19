@@ -1,0 +1,94 @@
+{
+   "abstract" : "A drop in replacement to the MySQL prompt with a pluggable Perl interface",
+   "author" : [
+      "Eric Waters <ewaters@gmail.com>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "App-AltSQL",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::Most" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.4"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Config::Any" : "0",
+            "DBD::mysql" : "0",
+            "DBI" : "0",
+            "DBIx::MyParsePP" : "0",
+            "Getopt::Long" : "2.38",
+            "Hash::Union" : "0",
+            "JSON::XS" : "0",
+            "Moose" : "0",
+            "MooseX::Object::Pluggable" : "0",
+            "Params::Validate" : "0",
+            "Sys::SigAction" : "0",
+            "Term::ANSIColor" : "0.04",
+            "Term::ReadLine::Zoid" : "0",
+            "Test::Most" : "0",
+            "Text::ASCIITable" : "0",
+            "Text::CharWidth" : "0",
+            "Text::UnicodeBox" : "0.03"
+         }
+      }
+   },
+   "provides" : {
+      "App::AltSQL" : {
+         "file" : "lib/App/AltSQL.pm",
+         "version" : "0.02"
+      },
+      "App::AltSQL::Model" : {
+         "file" : "lib/App/AltSQL/Model.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Model::MySQL" : {
+         "file" : "lib/App/AltSQL/Model/MySQL.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Tail" : {
+         "file" : "lib/App/AltSQL/Plugin/Tail.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Role" : {
+         "file" : "lib/App/AltSQL/Role.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Term" : {
+         "file" : "lib/App/AltSQL/Term.pm",
+         "version" : 0
+      },
+      "App::AltSQL::View" : {
+         "file" : "lib/App/AltSQL/View.pm",
+         "version" : 0
+      },
+      "App::AltSQL::View::Plugin::Color" : {
+         "file" : "lib/App/AltSQL/View/Plugin/Color.pm",
+         "version" : 0
+      },
+      "App::AltSQL::View::Plugin::UnicodeBox" : {
+         "file" : "lib/App/AltSQL/View/Plugin/UnicodeBox.pm",
+         "version" : 0
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.02"
+}
