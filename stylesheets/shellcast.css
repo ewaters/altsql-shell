@@ -11,8 +11,8 @@
 	margin: 0px;
 }
 .terminal {
-	font-family: 'MesloLGS', 'Menlo', monospace;
-	line-height: 1.3em;
+	font-family: 'FreeMono', monospace;
+	line-height: 1.0em;
 	font-size: 0.8em;
 }
 .terminal .reverse-video {

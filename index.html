@@ -23,15 +23,16 @@
 	background: #2A2A2A;
   }
   .shellcast .terminal {
-	font-family: 'MesloLGS', monospace;
+	font-family: 'FreeMono', monospace;
+	line-height: 1.0em;
   }
   .shellcast .terminal-wrapper {
     background: #3B3B3B;
-	color: #D6D6D6;
+	color: white;
   }
   .shellcast .terminal .reverse-video {
     color: #3B3B3B;
-	background: #D6D6D6;
+	background: white;
   }
   .shellcast .terminal .tty_fg1 { color: yellow }
   </style>
@@ -76,7 +77,7 @@
 		<span class="blc"></span><span class="trc"></span>
 		</div>
 		<article class="markdown-body">
-		  <p>AltSQL is a way to improve your user experience with <code>mysql</code>, <code>sqlite3</code>, <code>psql</code> and other tool that Perl has DBI drivers for. Currently written for MySQL only, the long term goal of this project is to provide users of the various SQL-based databases with a familiar command line interface but with modern improvements such as color, unicode box tables, and tweaks to the user interface that are fast and easy to prototype and experiment with.</p>
+		  <p>AltSQL is a way to improve your user experience with <code>mysql</code>, <code>sqlite3</code>, <code>psql</code> and other tools that Perl has DBI drivers for. Currently written for MySQL only, the long term goal of this project is to provide users of the various SQL-based databases with a familiar command line interface but with modern improvements such as color, unicode box tables, and tweaks to the user interface that are fast and easy to prototype and experiment with.</p>
 
 <h3>Quick Start</h3>
 
@@ -92,7 +93,7 @@ I'm hard coding this for now so that the renderer can finish quickly and so that
 <h3> moving header can know when to change
 -->
 
-<div id='shellcast' style="height: 332px;"></div>
+<div id='shellcast' style="min-height: 100px;"></div>
 <script>
 new Shellcast({
 	url: 'javascripts/ttyrec.38200.json',
