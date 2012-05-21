@@ -37,7 +37,8 @@ Shellcast.ascii_table_map = {
 	10:  "\u21a9", // new line
 	11:  "\u21e5", // tab
 	13:  "\u21a9", // new line
-	32:  "\u2423", // space
+	27:  'ESC',
+	32:  "&nbsp;", // space
 	127: "\u2190DEL",
 };
 
@@ -111,7 +112,17 @@ Shellcast.prototype.addInputKey = function (key) {
 
 	var kbd = $('<kbd class="light">' + text + '</kbd>');
 	self.inputDisplayDiv.prepend(kbd);
-	kbd.delay(1000).fadeOut(2000, 'swing');
+
+	// Add margin-left padding to space out keys that were typed after a delay
+	var now = new Date().valueOf();
+	if (self.lastAddInputKey === undefined)
+		self.lastAddInputKey = now;
+	var elapsed = now - self.lastAddInputKey;
+	self.lastAddInputKey = now;
+	kbd.css('margin-left', Math.floor(elapsed / 50) + 'px');
+
+	// Remove the keys after some time elapses
+	window.setTimeout(function () { kbd.remove() }, 10000);
 }
 
 Shellcast.prototype.hoverIn = function () {
