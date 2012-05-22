@@ -28,6 +28,8 @@ my $build = Module::Build->new(
 		'Test::Most'       => 0,
 		'Getopt::Long'     => 2.38,
 		'Text::UnicodeBox' => 0.03,
+ 		'YAML'             => 0,
+ 		'Data::Dumper'     => 0,
 	},
 	create_makefile_pl => 'passthrough',
 	create_readme      => 1,
