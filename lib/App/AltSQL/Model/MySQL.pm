@@ -80,6 +80,8 @@ sub read_my_dot_cnf {
     }
   }
   
+  close MYCNF;
+  
 }
 
 sub db_connect {
