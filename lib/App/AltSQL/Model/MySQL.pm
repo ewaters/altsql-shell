@@ -69,20 +69,25 @@ sub find_and_read_configs {
 sub read_my_dot_cnf {
   my $self = shift;
   my $path = shift;
-    
+  
+  my @valid_keys = qw( user password host );
+  
   open MYCNF, "<$path" or return;
   
-  # skip ahead to a [client] section, then read until you hit a new section
+  # ignore lines in file until we hit a [client] section
+  # then read key=value pairs
   my $in_client = 0;
   while(<MYCNF>) {
-    if ($in_client == 0) {
-      if (/^\s*\[client\]\s*$/) {
-        $in_client++;
-      }
-    } else {
-      chomp;
+    if (/^\s*\[(.*?)\]\s*$/) {                  # we've hit a section
+      if ("$1" eq 'client')   { $in_client++; } # we've hit a client section, increment it
+      if ($in_client > 1)     { last; }         # end because we're done; we already read the client section
+    } elsif ($in_client == 1) {
+      # read a key/value pair
       /^\s*(.+?)\s*=\s*(.+?)\s*$/;
       my ($key, $val) = ($1, $2);
+      
+      # verify that the field is one of the supported ones
+      unless ( grep $_ eq $key, @valid_keys ) { next; }
       
       # override anything that was set on the commandline with the stuff read from the config.
       $self->{$key} = $val;
