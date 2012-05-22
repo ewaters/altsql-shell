@@ -177,8 +177,8 @@ around call_command => sub {
         return 1;
     }
 
-    my $sth = $self->model->dbh->prepare($query);
-    $sth->execute();
+    my $sth = $self->model->execute_sql($query);
+	return 1 unless $sth; # handled; error occurred has has been reported to user
 
     my @headers;
 
