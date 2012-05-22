@@ -47,6 +47,41 @@ sub args_spec {
 	);
 }
 
+sub BUILD {
+  my $self = shift;
+  
+  # locate and read the my.conf
+  $self->read_my_dot_cnf();
+}
+
+sub read_my_dot_cnf {
+  my $self = shift;
+  
+  # for now, only look at ~/.my.cnf
+  my $my_cnf_path = $ENV{HOME} . '/.my.cnf';
+  (-e $my_cnf_path) || return;
+  
+  open MYCNF, "<$my_cnf_path" or die "Error opening $my_cnf_path\n";
+  
+  # skip ahead to a [client] section, then read until you hit a new section
+  my $in_client = 0;
+  while(<MYCNF>) {
+    if ($in_client == 0) {
+      if (/^\s*\[client\]\s*$/) {
+        $in_client++;
+      }
+    } else {
+      chomp;
+      /^\s*(.+?)\s*=\s*(.+?)\s*$/;
+      my ($key, $val) = ($1, $2);
+      
+      # override anything that was set on the commandline with the stuff read from the config.
+      $self->{$key} = $val;
+    }
+  }
+  
+}
+
 sub db_connect {
 	my $self = shift;
 	my $dsn = 'DBI:mysql:' . join (';',
