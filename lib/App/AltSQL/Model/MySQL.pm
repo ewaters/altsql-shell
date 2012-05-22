@@ -51,17 +51,26 @@ sub BUILD {
   my $self = shift;
   
   # locate and read the my.conf
-  $self->read_my_dot_cnf();
+  $self->find_and_read_configs();
+}
+
+sub find_and_read_configs {
+  my $self = shift;
+  my @config_paths = ( 
+    "$ENV{HOME}/.my.cnf",
+  );
+  
+  foreach my $path (@config_paths) {
+    (-e $path) or next;
+    $self->read_my_dot_cnf($path);
+  }
 }
 
 sub read_my_dot_cnf {
   my $self = shift;
-  
-  # for now, only look at ~/.my.cnf
-  my $my_cnf_path = $ENV{HOME} . '/.my.cnf';
-  (-e $my_cnf_path) || return;
-  
-  open MYCNF, "<$my_cnf_path" or die "Error opening $my_cnf_path\n";
+  my $path = shift;
+    
+  open MYCNF, "<$path" or return;
   
   # skip ahead to a [client] section, then read until you hit a new section
   my $in_client = 0;
@@ -81,7 +90,6 @@ sub read_my_dot_cnf {
   }
   
   close MYCNF;
-  
 }
 
 sub db_connect {
