@@ -5,24 +5,133 @@ use Moose::Util qw( apply_all_roles );
 
 use App::AltSQL::Plugin::Dump::Format;
 
-=head1 Dump
+=head1 Name
 
-The SQL:
+Dump AltSQL Plugin
 
-  .dump csv filename.csv SELECT * from orders;
+=head1 Synopsis
 
-Will:
+Usage:
 
-  * Create filename.csv
-  * Populate the file with the result
+ .dump <file>.[csv|html|json|pl|pm|sql|xls|xml|yaml|yml] <query>;
 
-Other formats:
+=head1 Description
 
-  .dump json filename.json SELECT * from orders;
-  .dump html filename.html SELECT * from orders;
-  .dump sql filename.sql SELECT * from orders;
-  .dump xml filename.sql SELECT * from orders;
-  .dump xml-a filename.sql SELECT * from orders;
+This plugin will allow you to dump out results from
+a sql query into one of many data formats.
+
+=head1 Examples
+
+Given:
+
+ CREATE TABLE `users` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `name` varchar(32) NOT NULL,
+   PRIMARY KEY (`id`)
+ );
+
+CSV:
+
+ .dump out.csv select * from users;
+
+out.csv:
+
+ "id","name"
+ "1","Moo"
+ "2","Pie"
+ "3","Cow"
+
+HTML:
+
+ .dump out.html select * from users;
+
+out.html:
+
+=begin html
+
+<style>table{margin: 1em 1em 1em 2em;background: whitesmoke;border-collapse: collapse;}table th, table td{border: 1px gainsboro solid;padding: 0.2em;}table th{background: gainsboro;text-align: left;}</style><table><tr><th>id</th><th>name</th></tr><tr><td>1</td><td>Moo</td></tr><tr><td>2</td><td>Pie</td></tr><tr><td>3</td><td>Cow</td></tr></table>
+
+=end html
+
+JSON:
+
+ .dump out.json select * from users;
+
+out.json:
+
+ [{"name":"Moo","id":"1"},{"name":"Pie","id":"2"},{"name":"Cow","id":"3"}]
+
+PERL:
+
+ .dump out.[pl|pm] select * from users;
+
+out.[pl|pm]:
+
+ $VAR1 = [
+   {
+     'id' => '1',
+     'name' => 'Moo'
+   },
+   {
+     'id' => '2',
+     'name' => 'Pie'
+   },
+   {
+     'id' => '3',
+     'name' => 'Cow'
+   },
+ ];
+
+SQL:
+
+ .dump out.sql select * from users;
+
+out.sql:
+
+ INSERT INTO table (`id`,`name`) VALUES('1','Moo'),('2','Pie'),('3','Cow');
+
+XLS:
+
+ .dump out.xls select * from users;
+
+out.xls:
+
+ You just get a excel spreadsheet...
+
+XML:
+
+ .dump out.xml select * from users;
+
+out.xml:
+
+ <table>
+   <row>
+     <field name="id">1</field>
+     <field name="name">Moo</field>
+   </row>
+   <row>
+     <field name="id">2</field>
+     <field name="name">Pie</field>
+   </row>
+   <row>
+     <field name="id">3</field>
+     <field name="name">Cow</field>
+   </row>
+ </table>
+
+YAML:
+
+ .dump out.[yaml|yml] select * from users;
+
+out.[yaml|yml]:
+
+ ---
+ - id: 1
+   name: Moo
+ - id: 2
+   name: Pie
+ - id: 3
+   name: Cow
 
 =cut
 
