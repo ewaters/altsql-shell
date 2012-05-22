@@ -160,11 +160,13 @@ sub render {
 
 Given the table data that was extracted from the statement handler, compose a nicely formatted table for showing to the user.
 
+Optionally pass in the table data to be used.
+
 =cut
 
 sub render_table {
-	my $self = shift;
-	my $data = $self->table_data;
+	my ($self, $data) = @_;
+	$data ||= $self->table_data;
 
 	my %table = (
 		alignment => [ map { $_->{is_num} ? 'right' : 'left' } @{ $data->{columns} } ],
@@ -201,11 +203,13 @@ sub _render_table_data {
 
 Rather then using ASCII art to horizontally format each row, use one row of output per cell of data.
 
+Optionally pass in the table data to be used.
+
 =cut
 
 sub render_one_row_per_column {
-	my $self = shift;
-	my $data = $self->table_data;
+	my ($self, $data) = @_;
+	$data ||= $self->table_data;
 
 	my $max_length_of_column = 0;
 	foreach my $column (@{ $data->{columns} }) {
