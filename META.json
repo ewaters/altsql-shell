@@ -42,7 +42,7 @@
             "Test::Most" : "0",
             "Text::ASCIITable" : "0",
             "Text::CharWidth" : "0",
-            "Text::UnicodeBox" : "0.03"
+            "Text::UnicodeBox" : "0.03",
             "YAML" : "0",
             "Data::Dumper" : "0",
          }
