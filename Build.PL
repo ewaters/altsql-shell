@@ -30,7 +30,6 @@ my $build = Module::Build->new(
 		'Text::UnicodeBox' => 0.03,
  		'YAML'             => 0,
  		'Data::Dumper'     => 0,
- 		'XML::Simple'      => 0,
 	},
 	create_makefile_pl => 'passthrough',
 	create_readme      => 1,

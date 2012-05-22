@@ -61,7 +61,6 @@ requires:
   Text::UnicodeBox: 0.03
   YAML: 0
   Data::Dumper: 0
-  XML::Simple: 0
 resources:
   license: http://dev.perl.org/licenses/
 version: 0.02
