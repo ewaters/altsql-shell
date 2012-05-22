@@ -4,30 +4,23 @@ use Moose::Role;
 use XML::Simple;
 
 sub format {
-    my ($self, $header, $result, $filename, $option) = @_;
+    my ($self, %params) = @_;
 
-    return if !$result || !@$result;
+    my @xml;
 
-    if (!@$header) {
-        @$header = sort keys %{ $result->[0] };
-    }
+    my $table_data = $params{table_data};
+    my $col = $table_data->{columns};
 
-    my @node_result;
-
-    # defualt behavior is to show xml nodes for your row.
-    # a means it will show them as attributes ( ex: <anon id="1" name="joe" sex="male" />
-    if ($option && $option eq 'a') {
-        return XMLout( $result );
-    } else {
-        for my $row (@$result) {
-            my $new_row;
-            $new_row->{$_} = [ $row->{$_} ] for (sort keys %$row);
-
-
-            push @node_result, $new_row;
+    for my $row ( @{ $table_data->{rows} } ) {
+        my $new_row;
+        for my $i ( 0..(@$row - 1) ) {
+            my $name = $col->[$i]->{name};
+            push @{ $new_row->{field} }, { name => $name, content => $row->[$i] };
         }
-        return XMLout( \@node_result );
+        push @xml, $new_row;
     }
+
+    return XMLout( { row => \@xml }, RootName => 'table', );
 }
 
 1;

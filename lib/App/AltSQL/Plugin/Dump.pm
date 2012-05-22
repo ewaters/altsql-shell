@@ -70,7 +70,7 @@ around call_command => sub {
     };
 
     if ($@) {
-        $self->log_error("Sorry $format is not a supported format.");
+        $self->log_error("Sorry $format is not a supported format. $@");
         return 1;
     }
 
@@ -78,19 +78,27 @@ around call_command => sub {
     $sth->execute();
 
     my @headers;
+
+    my %table_data;
+
     if ( $sth->{NUM_OF_FIELDS} ) {
         for my $i (0 .. $sth->{NUM_OF_FIELDS} - 1) {
-            push @headers, $sth->{NAME}[$i];
+            push @{ $table_data{columns} }, { name => $sth->{NAME}[$i] };
         }
     }
 
-    my $result = $sth->fetchall_arrayref({});
-    my $data = $formatter->format( \@headers, $result, $filename, $option );
+    $table_data{rows} = $sth->fetchall_arrayref() || [];
 
-    if ($data) {
-        open(FILE, '>', $filename);
-        print FILE $data;
-        close(FILE);
+    if ( @{ $table_data{rows} } ) {
+        my $data = $formatter->format(
+            table_data => \%table_data,
+            filename   => $filename,
+        );
+        if ($data) {
+            open(FILE, '>', $filename);
+            print FILE $data;
+            close(FILE);
+        }
     }
 
     return 1;

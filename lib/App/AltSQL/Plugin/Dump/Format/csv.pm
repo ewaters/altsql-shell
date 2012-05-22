@@ -3,18 +3,16 @@ package App::AltSQL::Plugin::Dump::Format::csv;
 use Moose::Role;
 
 sub format {
-    my ($self, $header, $result) = @_;
+    my ($self, %params) = @_;
 
-    return if !$result || !@$result;
+    my $table_data = $params{table_data};
 
-    if (!@$header) {
-        @$header = sort keys %{ $result->[0] };
-    }
+    # make headers for the csv file
+    my $csv = join( ",", map{ escape($_->{name}) } @{ $table_data->{columns} } ) . "\n";
 
-    my $csv = join( ",", map{ '"' . escape($_) . '"' } @$header ) . "\n";
-
-    for my $row (@$result) {
-        $csv .= join( ",", map{ '"' . escape($row->{$_}) . '"' } @$header ) . "\n";
+    # print out the rows
+    for my $row (@{ $table_data->{rows} }) {
+        $csv .= join( ",", map{ escape($_) } @$row ) . "\n";
     }
 
     return $csv;
@@ -24,7 +22,7 @@ sub escape {
     my ($value) = @_;
     return '' if !defined $value;
     $value =~ s/"/""/g;
-    return $value;
+    return '"' . $value . '"';
 }
 
 1;

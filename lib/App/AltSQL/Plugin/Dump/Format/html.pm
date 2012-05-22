@@ -3,25 +3,18 @@ package App::AltSQL::Plugin::Dump::Format::html;
 use Moose::Role;
 
 sub format {
-    my ($self, $header, $result) = @_;
+    my ($self, %params) = @_;
 
-    return if !$result || !@$result;
-
-    if (!@$header) {
-        @$header = sort keys %{ $result->[0] };
-    }
+    my $table_data = $params{table_data};
 
     # ehhh prob shouldn't put this here but couldn't resist.
-    my $css =
-        '<style>table{margin: 1em 1em 1em 2em;background: whitesmoke;border-collapse: collapse;}
-         table th, table td{border: 1px gainsboro solid;padding: 0.2em;}
-         table th{background: gainsboro;text-align: left;}</style>';
+    my $css = '<style>table{margin: 1em 1em 1em 2em;background: whitesmoke;border-collapse: collapse;}table th, table td{border: 1px gainsboro solid;padding: 0.2em;}table th{background: gainsboro;text-align: left;}</style>';
 
-    my $html  = qq|<html><head><style>$css</style></head><body><table>|;
-       $html .= '<tr>' . join( '', map{'<th>' . escape($_) . '</th>' } @$header ) . '</tr>';
+    my $html  = "<html><head><style>$css</style></head><body><table>";
+       $html .= '<tr>' . join( '', map{ '<th>' . escape($_->{name}) . '</th>' } @{ $table_data->{columns} } ) . "</tr>";
 
-    for my $row (@$result) {
-        $html .=  '<tr>' . join( '', map {'<td>' . escape($row->{$_}) . '</td>' } @$header ) . '</tr>';
+    for my $row (@{ $table_data->{rows} }) {
+        $html .=  '<tr>' . join( '', map {'<td>' . escape($_) . '</td>' } @$row ) . '</tr>';
     }
 
     $html .= '</table>';
