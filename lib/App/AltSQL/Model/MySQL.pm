@@ -78,6 +78,9 @@ sub read_my_dot_cnf {
   # then read key=value pairs
   my $in_client = 0;
   while(<MYCNF>) {
+    # ignore commented lines:
+    /^\s*#/ && next;
+    
     if (/^\s*\[(.*?)\]\s*$/) {                  # we've hit a section
       if ("$1" eq 'client')   { $in_client++; } # we've hit a client section, increment it
       if ($in_client > 1)     { last; }         # end because we're done; we already read the client section
