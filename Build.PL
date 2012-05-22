@@ -7,9 +7,10 @@ my $build = Module::Build->new(
 	configure_requires => {
 		'Module::Build' => 0.4,
 	},
-	test_requires => {
+	build_requires => {
 		'Test::More' => 0,
 		'Test::Deep' => 0,
+		'File::Temp' => 0,
 	},
 	requires => {
 		'Moose'            => 0,

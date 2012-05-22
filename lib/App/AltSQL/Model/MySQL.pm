@@ -18,12 +18,8 @@ has 'sql_parser' => (is => 'ro', default => sub {
 has 'dbh'        => (is => 'rw');
 has 'current_database' => (is => 'rw');
 
-has 'host' => ( is => 'ro' );
-has 'user' => ( is => 'ro' );
-has 'password' => ( is => 'ro' );
-has 'database' => ( is => 'ro' );
-has 'port' => ( is => 'ro' );
-has 'no_auto_rehash' => ( is => 'ro' );
+has [qw(host user password database port)] => ( is => 'ro' );
+has [qw(no_auto_rehash select_limit safe_update prompt)] => ( is => 'ro' );
 
 sub args_spec {
 	return (
