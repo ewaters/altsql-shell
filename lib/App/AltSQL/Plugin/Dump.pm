@@ -147,9 +147,9 @@ around call_command => sub {
         return $self->orig(@args);
     }
 
-    my ($filename, $query) = $input =~ m{^\.dump\s*([^\s]+)\s*(.*?)$};
+    my ($filename, $query) = $input =~ m{^\.dump\s*([^\s]+)\s*(.*?)\s*$};
 
-    if (!$filename) {
+    if (!$filename || !$query) {
         $self->log_error("Usage: .dump \$filename \$sql");
         $self->log_error("Available formats: csv, xls, html, json, [pl|pm], sql, xml, [yml|yaml]");
 
