@@ -96,7 +96,7 @@ Write your configuration file to either the system or the local configuration lo
   ---
   plugins:
     - Tail
-	- Dump
+    - Dump
 
   view_plugins:
     - Color

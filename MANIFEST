@@ -1,8 +1,18 @@
 bin/altsql
-Build.PL
+Changes
 lib/App/AltSQL.pm
 lib/App/AltSQL/Model.pm
 lib/App/AltSQL/Model/MySQL.pm
+lib/App/AltSQL/Plugin/Dump.pm
+lib/App/AltSQL/Plugin/Dump/Format.pm
+lib/App/AltSQL/Plugin/Dump/Format/csv.pm
+lib/App/AltSQL/Plugin/Dump/Format/html.pm
+lib/App/AltSQL/Plugin/Dump/Format/json.pm
+lib/App/AltSQL/Plugin/Dump/Format/perl.pm
+lib/App/AltSQL/Plugin/Dump/Format/sql.pm
+lib/App/AltSQL/Plugin/Dump/Format/xls.pm
+lib/App/AltSQL/Plugin/Dump/Format/xml.pm
+lib/App/AltSQL/Plugin/Dump/Format/yaml.pm
 lib/App/AltSQL/Plugin/Tail.pm
 lib/App/AltSQL/Role.pm
 lib/App/AltSQL/Term.pm
@@ -12,11 +22,10 @@ lib/App/AltSQL/View/Plugin/UnicodeBox.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
+META.json
+META.yml
+README
+README.pod
 t/001_arguments.t
 t/sql/sakila-data.sql
 t/sql/sakila-schema.sql
-README.pod
-Changes
-META.yml
-META.json
-README

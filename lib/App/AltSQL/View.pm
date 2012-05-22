@@ -12,7 +12,6 @@ This is an internal class used by L<App::AltSQL> to capture the output of a DBI 
 
 use Moose;
 use Data::Dumper;
-use Text::ASCIITable;
 use Text::CharWidth qw(mbswidth);
 use Time::HiRes qw(gettimeofday);
 use Params::Validate;
@@ -188,6 +187,7 @@ sub render_table {
 
 sub _render_table_data {
 	my ($self, $data) = @_;
+	require Text::ASCIITable;
 	my $table = Text::ASCIITable->new({ allowANSI => 1 });
 
 	$table->setCols(@{ $data->{columns} });
