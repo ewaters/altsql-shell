@@ -505,7 +505,7 @@ sub create_view {
 	);
 
 	if (my $plugins = $self->config->{view_plugins}) {
-		$view->load_plugin($_) foreach @$plugins;
+		$view->load_plugins(@$plugins);
 	}
 
 	return $view;
