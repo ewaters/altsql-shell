@@ -151,7 +151,7 @@ around call_command => sub {
 
     if (!$filename) {
         $self->log_error("Usage: .dump \$filename \$sql");
-        $self->log_error("Available formats: csv, xls, html, json, [pl|pm], php, sql, [xml|xml-a], [yml|yaml]");
+        $self->log_error("Available formats: csv, xls, html, json, [pl|pm], sql, xml, [yml|yaml]");
 
         return 1; # handled, won't run this as a query
     }
@@ -164,12 +164,6 @@ around call_command => sub {
     elsif ($ext =~ /^yml|yaml$/i) { $format = 'yaml';  }
     else                          { $format = lc $ext; }
 
-    # todo: really hate the way i did  this, fix later.
-    if ($format =~ /-/) {
-        # we pass everything to the right of - as params yuk
-        ($format, $option) = split(/-/,$format);
-    }
-
     my $formatter = App::AltSQL::Plugin::Dump::Format->new();
 
     local $@;
@@ -179,7 +173,7 @@ around call_command => sub {
     };
 
     if ($@) {
-        $self->log_error("Sorry $format is not a supported format. $@");
+        $self->log_error("Sorry $format is not a supported format because:\n$@");
         return 1;
     }
 
