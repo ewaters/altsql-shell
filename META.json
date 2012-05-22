@@ -46,7 +46,6 @@
             "YAML" : "0",
             "Data::Dumper" : "0",
             "XML::Simple" : "0",
-            "Spreadsheet::WriteExcel::Big" : "0",
          }
       }
    },

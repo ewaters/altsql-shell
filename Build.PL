@@ -31,7 +31,6 @@ my $build = Module::Build->new(
  		'YAML'             => 0,
  		'Data::Dumper'     => 0,
  		'XML::Simple'      => 0,
- 		'Spreadsheet::WriteExcel::Big' => 0,
 	},
 	create_makefile_pl => 'passthrough',
 	create_readme      => 1,
