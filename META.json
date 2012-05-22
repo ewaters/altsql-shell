@@ -29,20 +29,19 @@
             "Config::Any" : "0",
             "DBD::mysql" : "0",
             "DBI" : "0",
-            "DBIx::MyParsePP" : "0",
+            "Data::Dumper" : "0",
             "Getopt::Long" : "2.38",
             "Hash::Union" : "0",
-            "JSON::XS" : "0",
+            "JSON" : "0",
             "Moose" : "0",
             "MooseX::Object::Pluggable" : "0",
             "Params::Validate" : "0",
             "Sys::SigAction" : "0",
             "Term::ANSIColor" : "0.04",
             "Term::ReadLine::Zoid" : "0",
-            "Test::Most" : "0",
-            "Text::ASCIITable" : "0",
             "Text::CharWidth" : "0",
-            "Text::UnicodeBox" : "0.03"
+            "Text::UnicodeBox" : "0.03",
+            "YAML" : "0"
          }
       }
    },
@@ -57,6 +56,46 @@
       },
       "App::AltSQL::Model::MySQL" : {
          "file" : "lib/App/AltSQL/Model/MySQL.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::csv" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/csv.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::html" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/html.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::json" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/json.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::perl" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/perl.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::sql" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/sql.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::xls" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/xls.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::xml" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/xml.pm",
+         "version" : 0
+      },
+      "App::AltSQL::Plugin::Dump::Format::yaml" : {
+         "file" : "lib/App/AltSQL/Plugin/Dump/Format/yaml.pm",
          "version" : 0
       },
       "App::AltSQL::Plugin::Tail" : {

@@ -2,22 +2,24 @@ package App::AltSQL::Model::MySQL;
 
 use Moose;
 use DBI;
-use DBIx::MyParsePP;
 use Sys::SigAction qw(set_sig_handler);
 use Time::HiRes qw(gettimeofday tv_interval);
 
 extends 'App::AltSQL::Model';
 
-has 'sql_parser' => (is => 'ro', default => sub { DBIx::MyParsePP->new() });
+has 'sql_parser' => (is => 'ro', default => sub {
+	# Let this be deferred until it's needed, and okay for us to proceed if it's not present
+	eval "require DBIx::MyParsePP;";
+	if ($@) {
+		return 0; # when we use this we check for definedness as well as boolean
+	}
+	return DBIx::MyParsePP->new();
+});
 has 'dbh'        => (is => 'rw');
 has 'current_database' => (is => 'rw');
 
-has 'host' => ( is => 'ro' );
-has 'user' => ( is => 'ro' );
-has 'password' => ( is => 'ro' );
-has 'database' => ( is => 'ro' );
-has 'port' => ( is => 'ro' );
-has 'no_auto_rehash' => ( is => 'ro' );
+has [qw(host user password database port)] => ( is => 'ro' );
+has [qw(no_auto_rehash select_limit safe_update prompt)] => ( is => 'ro' );
 
 sub args_spec {
 	return (
@@ -149,24 +151,48 @@ sub handle_sql_input {
 		$self->update_autocomplete_entries($database);
 	}
 
-	# Attempt to parse the input with a SQL parser
-	my $parsed = $self->sql_parser->parse($input);
-	if (! defined $parsed->root) {
-		$self->show_sql_error($input, $parsed->pos, $parsed->line);
-		return;
-	}
+	# Figure out the verb of the SQL by either using regex or a parser.  If we
+	# use the parser, we get error checking here instead of the server.
+	my $verb;
+	if (defined $self->sql_parser && $self->sql_parser) {
+		# Attempt to parse the input with a SQL parser
+		my $parsed = $self->sql_parser->parse($input);
+		if (! defined $parsed->root) {
+			$self->show_sql_error($input, $parsed->pos, $parsed->line);
+			return;
+		}
 
-	# Figure out the verb
-	my $statement = $parsed->root->extract('statement');
-	if (! $statement) {
-		$self->log_error("Not sure what to do with this; no 'statement' in the parse tree");
-		return;
+		# Figure out the verb
+		my $statement = $parsed->root->extract('statement');
+		if (! $statement) {
+			$self->log_error("Not sure what to do with this; no 'statement' in the parse tree");
+			return;
+		}
+		$verb = $statement->children->[0];
 	}
-	my $verb = $statement->children->[0];
+	else {
+		($verb, undef) = split /\s+/, $input, 2;
+	}
 
 	# Run the SQL
 	
 	my $t0 = gettimeofday;
+
+	my $sth = $self->execute_sql($input);
+	return unless $sth; # error may have been reached (and reported)
+
+	my %timing = ( prepare_execute => gettimeofday - $t0 );
+
+	my $view = $self->app->create_view(
+		sth => $sth,
+		timing => \%timing,
+		verb => $verb,
+	);
+	$view->render(%$render_opts);
+}
+
+sub execute_sql {
+	my ($self, $input) = @_;
 
 	my $sth = $self->dbh->prepare($input);
 
@@ -188,14 +214,7 @@ sub handle_sql_input {
 		return;
 	}
 
-	my %timing = ( prepare_execute => gettimeofday - $t0 );
-
-	my $view = $self->app->create_view(
-		sth => $sth,
-		timing => \%timing,
-		verb => $verb,
-	);
-	$view->render(%$render_opts);
+	return $sth;
 }
 
 sub update_db_types {
