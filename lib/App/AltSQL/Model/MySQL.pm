@@ -93,7 +93,7 @@ sub read_my_dot_cnf {
       unless ( grep $_ eq $key, @valid_keys ) { next; }
             
       # override anything that was set on the commandline with the stuff read from the config.
-      $self->{$key} = $val;
+      unless ($self->{$key}) { $self->{$key} = $val };
     }
   }
   
