@@ -70,7 +70,7 @@ sub read_my_dot_cnf {
   my $self = shift;
   my $path = shift;
   
-  my @valid_keys = qw( user password host );
+  my @valid_keys = qw( user password host port database );
   
   open MYCNF, "<$path" or return;
   
@@ -91,7 +91,7 @@ sub read_my_dot_cnf {
       
       # verify that the field is one of the supported ones
       unless ( grep $_ eq $key, @valid_keys ) { next; }
-      
+            
       # override anything that was set on the commandline with the stuff read from the config.
       $self->{$key} = $val;
     }
