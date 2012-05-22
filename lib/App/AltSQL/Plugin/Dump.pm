@@ -147,7 +147,7 @@ around call_command => sub {
         return $self->orig(@args);
     }
 
-    my ($filename, $query) = $input =~ m{^\.dump\s*([^\s]+)\s*(.*?)\s*$};
+    my (undef, $filename, $query) = split /\s+/, $input, 3;
 
     if (!$filename || !$query) {
         $self->log_error("Usage: .dump \$filename \$sql");
