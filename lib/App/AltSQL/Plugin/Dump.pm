@@ -144,7 +144,7 @@ around call_command => sub {
 
     if ($command ne 'dump') {
         # Call next chained command
-        return $self->orig(@args);
+        return $self->$orig(@args);
     }
 
     my (undef, $filename, $query) = split /\s+/, $input, 3;
@@ -203,6 +203,8 @@ around call_command => sub {
             close(FILE);
         }
     }
+
+	$self->log_info("Wrote ".($sth->{NUM_OF_FIELDS} || 0)." rows to file $filename");
 
     return 1;
 };

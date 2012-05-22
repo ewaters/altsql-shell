@@ -96,6 +96,7 @@ Write your configuration file to either the system or the local configuration lo
   ---
   plugins:
     - Tail
+	- Dump
 
   view_plugins:
     - Color
@@ -144,7 +145,7 @@ my %_default_classes = (
 	model => 'App::AltSQL::Model::MySQL',
 );
 my %default_config = (
-	plugins => [ 'Tail' ],
+	plugins => [ 'Tail', 'Dump' ],
 	view_plugins => [ 'Color', 'UnicodeBox' ],
 );
 
@@ -388,7 +389,7 @@ sub new_from_cli {
 	my $self = $class->new(args => $args, config => $config || \%default_config);
 
 	# Load in any plugins that are configured
-	foreach my $plugin (@{ $config->{plugins} }) {
+	foreach my $plugin (@{ $self->config->{plugins} }) {
 		$self->load_plugin($plugin);
 	}
 

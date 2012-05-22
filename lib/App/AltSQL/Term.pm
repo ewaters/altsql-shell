@@ -3,7 +3,7 @@ package App::AltSQL::Term;
 use Moose;
 use Term::ReadLine::Zoid;
 use Data::Dumper;
-use JSON::XS;
+use JSON qw(encode_json decode_json);
 
 with 'App::AltSQL::Role';
 with 'MooseX::Object::Pluggable';
