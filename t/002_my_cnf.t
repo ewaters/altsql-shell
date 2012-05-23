@@ -14,16 +14,15 @@ my $app = bless {}, 'App::AltSQL';
 {
 	my $instance = App::AltSQL::Model::MySQL->new( app => $app );
 
-	my ($fh, $filename) = write_config(<<ENDFILE);
+	my $filename = write_config(<<ENDFILE);
 [client]
-user = edfwaters
+user = ewaters
 password = 12345
 host=localhost
 database = sakila
 
 ENDFILE
 
-	warn "TESTFILENAME: $filename\n";
 	$instance->read_my_dot_cnf($filename);
 
 	cmp_deeply(
@@ -41,7 +40,7 @@ ENDFILE
 {
 	my $instance = App::AltSQL::Model::MySQL->new( app => $app );
 
-	my ($fh, $filename) = write_config(<<ENDFILE);
+	my $filename = write_config(<<ENDFILE);
 [client]
 user = edfwaters
 password = 12345
@@ -72,7 +71,7 @@ ENDFILE
 {
 	my $instance = App::AltSQL::Model::MySQL->new( app => $app );
 
-	my ($fh, $filename) = write_config(<<ENDFILE);
+	my $filename = write_config(<<ENDFILE);
 [client]
 user = edfwaters
 password = 12345
@@ -104,7 +103,7 @@ ENDFILE
 {
 	my $instance = App::AltSQL::Model::MySQL->new( app => $app );
 
-	my ($fh, $filename) = write_config(<<ENDFILE);
+	my $filename = write_config(<<ENDFILE);
 [client]
 
 user=firesun
@@ -144,5 +143,6 @@ sub write_config {
 	my $config = shift;
 	my ($fh, $filename) = tempfile(File::Spec->catfile('', 'tmp', 'myXXXX'), SUFFIX => '.cnf');
 	print $fh $config;
-	return ($fh, $filename);
+	close($fh);
+	return $filename;
 }
