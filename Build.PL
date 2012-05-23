@@ -16,6 +16,7 @@ my $build = Module::Build->new(
 		'Moose'            => 0,
 		'MooseX::Object::Pluggable' => 0,
 		'Params::Validate' => 0,
+		'Data::Structure::Util' => 0,
 		'DBI'              => 0,
 		'DBD::mysql'       => 0,
 		'Term::ReadLine::Zoid' => 0,
