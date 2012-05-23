@@ -119,7 +119,7 @@ sub read_my_dot_cnf {
       unless ( grep $_ eq $key, @valid_keys ) { next; }
             
 			# if this key is expected to be a boolean, fix the value
-			if (grep $_ eq $key, @boolean_keys ) {
+			if ( grep $_ eq $key, @boolean_keys ) {
 				if ($val eq '0' || $val eq 'false') {
 					$val = 0;
 				} else {
