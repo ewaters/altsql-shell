@@ -215,6 +215,7 @@ sub BUILD {
 		}
 	}
 
+	$self->model->find_and_read_configs();
 	$self->model->db_connect();
 }
 
