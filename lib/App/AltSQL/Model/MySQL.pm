@@ -26,25 +26,17 @@ sub args_spec {
 		host => {
 			cli  => 'host|h=s',
 			help => '-h HOSTNAME | --host HOSTNAME',
-
-			cnf	 => 'host',
 		},
 		user => {
 			cli  => 'user|u=s',
 			help => '-u USERNAME | --user USERNAME',
-
-			cnf  => 'user',
 		},
 		password => {
 			help => '-p | --password=PASSWORD | -pPASSWORD',
-
-			cnf => 'password',
 		},
 		database => {
 			cli  => 'database|d=s',
 			help => '-d DATABASE | --database DATABASE',
-
-			cnf => 'database',
 		},
 		port => {
 			cli  => 'port=i',
