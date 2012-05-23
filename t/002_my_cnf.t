@@ -4,6 +4,8 @@ use Test::Most;
 use File::Temp qw(tempfile);
 use File::Spec;
 
+use Data::Structure::Util qw( unbless );
+
 BEGIN {
 	use_ok 'App::AltSQL';
 	use_ok 'App::AltSQL::Model::MySQL';
@@ -24,7 +26,7 @@ database = sakila
 ENDFILE
 
 	$instance->read_my_dot_cnf($filename);
-
+	unbless($instance);
 	cmp_deeply(
 		$instance,
 		superhashof({
@@ -54,6 +56,7 @@ safe-update = false
 ENDFILE
 
 	$instance->read_my_dot_cnf($filename);
+	unbless( $instance );
 	cmp_deeply(
 		$instance,
 		superhashof({
@@ -85,6 +88,7 @@ safe-update = false
 ENDFILE
 
 	$instance->read_my_dot_cnf($filename);
+	unbless($instance);
 	cmp_deeply(
 		$instance,
 		superhashof({
@@ -123,6 +127,7 @@ database = sakila
 ENDFILE
 
 	$instance->read_my_dot_cnf($filename);
+	unbless($instance);
 	cmp_deeply(
 		$instance,
 		superhashof({
