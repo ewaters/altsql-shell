@@ -73,7 +73,6 @@ provides:
     version: 0
 requires:
   Config::Any: 0
-  Data::Structure::Util: 0
   DBD::mysql: 0
   DBI: 0
   Data::Dumper: 0
