@@ -73,29 +73,21 @@ sub read_my_dot_cnf {
   my $self = shift;
   my $path = shift;
 
-	warn "Reading in file: $path\n";
-  
   my @valid_keys = qw( user password host port database prompt safe_update ); # keys we'll read
   my @valid_sections = qw( client mysql ); # valid [section] names
 	my @boolean_keys = qw( safe_update );
 
-	#warn `ls -l $path`;
-
   open MYCNF, "<$path";
   
-	warn "got file open...\n";
-
   # ignore lines in file until we hit a valid [section]
   # then read key=value pairs
   my $in_valid_section = 0;
   while(<MYCNF>) {
 
-		warn "reading line: $_\n";
     # ignore commented lines:
     /^\s*#/ && next;
     
     if (/^\s*\[(.*?)\]\s*$/) {                  # we've hit a section
-			warn "section: $1\n";
 			# verify that we're inside a valid section,
 			# and if so, set $in_valid_section
 			if ( grep $_ eq $1, @valid_sections ) {
@@ -108,8 +100,7 @@ sub read_my_dot_cnf {
       # read a key/value pair
       /^\s*(.+?)\s*=\s*(.+?)\s*$/;
       my ($key, $val) = ($1, $2);
-
-			warn "Reading $key => $val\n";
+			$key || next;
 
 			# substitute - in the $key with _ (eg: safe-update => safe_update)
 			$key =~ s/-/_/g;
