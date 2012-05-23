@@ -9,7 +9,9 @@ extends 'App::AltSQL::Model';
 
 has 'sql_parser' => (is => 'ro', default => sub {
 	# Let this be deferred until it's needed, and okay for us to proceed if it's not present
-	eval "require DBIx::MyParsePP;";
+	eval {
+		require DBIx::MyParsePP;
+	};
 	if ($@) {
 		return 0; # when we use this we check for definedness as well as boolean
 	}
@@ -49,37 +51,49 @@ sub args_spec {
 	);
 }
 
+sub setup {
+	my $self = shift;
+	$self->find_and_read_configs();
+
+	# If the user has configured a custom prompt in .my.cnf, use that in the Term instance
+	if ($self->prompt) {
+		my $role = Moose::Meta::Role->create_anon_role();
+		$role->add_method(prompt => sub { $self->render_prompt() });
+		$role->apply($self->app->term);
+	}
+}
+
 sub find_and_read_configs {
-  my $self = shift;
-  my @config_paths = ( 
-    "$ENV{HOME}/.my.cnf",
-  );
-  
-  foreach my $path (@config_paths) {
-    (-e $path) or next;
-    $self->read_my_dot_cnf($path);
-  }
+	my $self = shift;
+	my @config_paths = ( 
+		"$ENV{HOME}/.my.cnf",
+	);
+
+	foreach my $path (@config_paths) {
+		(-e $path) or next;
+		$self->read_my_dot_cnf($path);
+	}
 }
 
 sub read_my_dot_cnf {
-  my $self = shift;
-  my $path = shift;
+	my $self = shift;
+	my $path = shift;
 
-  my @valid_keys = qw( user password host port database prompt safe_update select_limit no_auto_rehash ); # keys we'll read
-  my @valid_sections = qw( client mysql ); # valid [section] names
+	my @valid_keys = qw( user password host port database prompt safe_update select_limit no_auto_rehash ); # keys we'll read
+	my @valid_sections = qw( client mysql ); # valid [section] names
 	my @boolean_keys = qw( safe_update no_auto_rehash );
 
-  open MYCNF, "<$path";
-  
-  # ignore lines in file until we hit a valid [section]
-  # then read key=value pairs
-  my $in_valid_section = 0;
-  while(<MYCNF>) {
+	open MYCNF, "<$path";
 
-    # ignore commented lines:
-    /^\s*#/ && next;
-    
-    if (/^\s*\[(.*?)\]\s*$/) {                  # we've hit a section
+	# ignore lines in file until we hit a valid [section]
+	# then read key=value pairs
+	my $in_valid_section = 0;
+	while(<MYCNF>) {
+
+		# ignore commented lines:
+		/^\s*#/ && next;
+
+		if (/^\s*\[(.*?)\]\s*$/) {                  # we've hit a section
 			# verify that we're inside a valid section,
 			# and if so, set $in_valid_section
 			if ( grep $_ eq $1, @valid_sections ) {
@@ -88,8 +102,8 @@ sub read_my_dot_cnf {
 				$in_valid_section = 0;
 			}
 
-    } elsif ($in_valid_section) {
-      # read a key/value pair
+		} elsif ($in_valid_section) {
+			# read a key/value pair
 			#/^\s*(.+?)\s*=\s*(.+?)\s*$/;
 			#my ($key, $val) = ($1, $2);
 			my ($key, $val) = split /\s*=\s*/, $_, 2;
@@ -106,10 +120,10 @@ sub read_my_dot_cnf {
 			if ($key eq 'skip_auto_rehash') {
 				$key = 'no_auto_rehash';
 			}
-      
-      # verify that the field is one of the supported ones
-      unless ( grep $_ eq $key, @valid_keys ) { next; }
-            
+
+			# verify that the field is one of the supported ones
+			unless ( grep $_ eq $key, @valid_keys ) { next; }
+
 			# if this key is expected to be a boolean, fix the value
 			if ( grep $_ eq $key, @boolean_keys ) {
 				if ($val eq '0' || $val eq 'false') {
@@ -120,12 +134,12 @@ sub read_my_dot_cnf {
 				}
 			}
 
-      # override anything that was set on the commandline with the stuff read from the config.
-      unless ($self->{$key}) { $self->{$key} = $val };
-    }
-  }
-  
-  close MYCNF;
+			# override anything that was set on the commandline with the stuff read from the config.
+			unless ($self->{$key}) { $self->{$key} = $val };
+		}
+	}
+
+	close MYCNF;
 }
 
 sub db_connect {
@@ -284,6 +298,86 @@ sub show_sql_error {
 	$self->log_error("There was an error parsing the SQL statement on line $line_number:");
 	$self->log_error($line);
 	$self->log_error(('-' x ($char_number - 1)) . '^');
+}
+
+my %prompt_substitutions = (
+	S    => ';',
+	"'"  => "'",
+	'"'  => '"',
+	v    => 'TODO-server-version',
+	p    => sub { shift->{self}->port },
+	'\\' => '\\',
+	n    => "\n",
+	t    => "\t",
+	'_'  => ' ',
+	' '  => ' ',
+	d    => sub { shift->{self}->current_database },
+	h    => sub { shift->{self}->host },
+	c    => sub { ++( shift->{self}{_statement_counter} ) },
+	u    => sub { shift->{self}->user },
+	U    => 'TODO-username@hostname',
+);
+my %date_prompt_substitutions = (
+	D    => sub { shift->{date}->strftime('%a, %d %b %H:%M:%S %Y') },
+	w    => sub { shift->{date}->day_abbr },
+	y    => sub { shift->{date}->stftime('%y') },
+	Y    => sub { shift->{date}->stftime('%Y') },
+	o    => sub { shift->{date}->month },
+	O    => sub { shift->{date}->mont_abbr },
+	R    => sub { shift->{date}->hour },
+	r    => sub { shift->{date}->strftime('%I') },
+	m    => sub { shift->{date}->strftime('%M') },
+	s    => sub { shift->{date}->strftime('%S') },
+	P    => sub { shift->{date}->strftime('%p') },
+);
+
+sub render_prompt {
+	my ($self, $now) = @_;
+
+	if (! defined $self->{_has_datetime}) {
+		eval { require DateTime; };
+		$self->{_has_datetime} = $@ ? 0 : 1;
+	}
+
+	if (! $now && $self->{_has_datetime}) {
+		$now = DateTime->now( time_zone => 'local' );
+	}
+
+	my %context = (
+		self => $self,
+		date => $now,
+	);
+
+	my $warn_datetime = 0;
+	my $parsed_prompt = $self->prompt;
+	$parsed_prompt =~ s{\\\\(.)}{
+		my $substitute = $prompt_substitutions{$1} || $date_prompt_substitutions{$1};
+		if (! $substitute) {
+			"$1";
+		}
+		elsif (ref $substitute) {
+			if ($date_prompt_substitutions{$1} && ! $now) {
+				$warn_datetime++;
+				'?';
+			}
+			else {
+				$substitute->(\%context);
+			}
+		}
+		else {
+			$substitute;
+		}
+	}exg;
+
+	if ($warn_datetime && ! $self->{_warned_datetime}) {
+		$self->log_error("Prompt uses date variables; install DateTime to render them");
+		$self->{_warned_datetime}++;
+	}
+	
+	# Prelimary code: support color prompts like '\[\033[00;31m\]'
+	$parsed_prompt =~ s{\\\[ \\033 (.+?) \\\]}{\033$1}xg;
+	
+	return $parsed_prompt;
 }
 
 no Moose;

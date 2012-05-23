@@ -215,7 +215,11 @@ sub BUILD {
 		}
 	}
 
-	$self->model->find_and_read_configs();
+	# Call setup on each subclass now that they're all created
+	foreach my $subclass (qw(term model)) {
+		$self->{$subclass}->setup();
+	}
+
 	$self->model->db_connect();
 }
 

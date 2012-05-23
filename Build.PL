@@ -32,6 +32,8 @@ my $build = Module::Build->new(
  		'YAML'             => 0,
 	},
 	suggests => {
+		'DateTime'         => 0,
+		'JSON::XS'         => 0,
 		'DBIx::MyParsePP'  => 0,
 		'Text::ASCIITable' => 0,
 	},
