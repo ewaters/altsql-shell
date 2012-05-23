@@ -26,17 +26,25 @@ sub args_spec {
 		host => {
 			cli  => 'host|h=s',
 			help => '-h HOSTNAME | --host HOSTNAME',
+
+			cnf	 => 'host',
 		},
 		user => {
 			cli  => 'user|u=s',
 			help => '-u USERNAME | --user USERNAME',
+
+			cnf  => 'user',
 		},
 		password => {
 			help => '-p | --password=PASSWORD | -pPASSWORD',
+
+			cnf => 'password',
 		},
 		database => {
 			cli  => 'database|d=s',
 			help => '-d DATABASE | --database DATABASE',
+
+			cnf => 'database',
 		},
 		port => {
 			cli  => 'port=i',
@@ -71,12 +79,18 @@ sub read_my_dot_cnf {
   my @valid_sections = qw( client mysql ); # valid [section] names
 	my @boolean_keys = qw( safe_update );
 
+	#warn `ls -l $path`;
+
   open MYCNF, "<$path";
   
+	warn "got file open...\n";
+
   # ignore lines in file until we hit a valid [section]
   # then read key=value pairs
   my $in_valid_section = 0;
   while(<MYCNF>) {
+
+		warn "reading line: $_\n";
     # ignore commented lines:
     /^\s*#/ && next;
     

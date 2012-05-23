@@ -16,7 +16,65 @@ my $app = bless {}, 'App::AltSQL';
 
 	my ($fh, $filename) = write_config(<<ENDFILE);
 [client]
-user = ewaters
+user = edfwaters
+password = 12345
+host=localhost
+database = sakila
+
+ENDFILE
+
+	warn "TESTFILENAME: $filename\n";
+	$instance->read_my_dot_cnf($filename);
+
+	cmp_deeply(
+		$instance,
+		superhashof({
+			user        => 'ewaters',
+			password    => '12345',
+			host        => 'localhost',
+			database    => 'sakila',
+		}),
+		'Perfectly Simple my.cnf',
+	);
+	unlink $filename;
+}
+{
+	my $instance = App::AltSQL::Model::MySQL->new( app => $app );
+
+	my ($fh, $filename) = write_config(<<ENDFILE);
+[client]
+user = edfwaters
+password = 12345
+host = localhost
+
+[mysql]
+database = sakila
+default-character-set = utf8
+prompt = \\\\u@\\\\h[\\\\R:\\\\m:\\\\s]>
+safe-update = false
+ENDFILE
+
+	$instance->read_my_dot_cnf($filename);
+	cmp_deeply(
+		$instance,
+		superhashof({
+			user        => 'ewaters',
+			password    => '12345',
+			host        => 'localhost',
+			database    => 'sakila',
+			safe_update => 0,
+			prompt      => '\\u@\\h[\\R:\\m:\\s]>',
+		}),
+		'Multi-section my.cnf',
+	);
+	unlink $filename;
+}
+{
+	my $instance = App::AltSQL::Model::MySQL->new( app => $app );
+
+	my ($fh, $filename) = write_config(<<ENDFILE);
+[client]
+user = edfwaters
 password = 12345
 host = localhost
 
