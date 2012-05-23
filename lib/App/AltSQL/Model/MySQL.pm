@@ -49,13 +49,6 @@ sub args_spec {
 	);
 }
 
-sub BUILD {
-  my $self = shift;
-  
-  # locate and read the my.conf
-  $self->find_and_read_configs();
-}
-
 sub find_and_read_configs {
   my $self = shift;
   my @config_paths = ( 
@@ -71,29 +64,55 @@ sub find_and_read_configs {
 sub read_my_dot_cnf {
   my $self = shift;
   my $path = shift;
+
+	warn "Reading in file: $path\n";
   
-  my @valid_keys = qw( user password host port database );
+  my @valid_keys = qw( user password host port database prompt safe_update ); # keys we'll read
+  my @valid_sections = qw( client mysql ); # valid [section] names
+	my @boolean_keys = qw( safe_update );
+
+  open MYCNF, "<$path";
   
-  open MYCNF, "<$path" or return;
-  
-  # ignore lines in file until we hit a [client] section
+  # ignore lines in file until we hit a valid [section]
   # then read key=value pairs
-  my $in_client = 0;
+  my $in_valid_section = 0;
   while(<MYCNF>) {
     # ignore commented lines:
     /^\s*#/ && next;
     
     if (/^\s*\[(.*?)\]\s*$/) {                  # we've hit a section
-      if ("$1" eq 'client')   { $in_client++; } # we've hit a client section, increment it
-      if ($in_client > 1)     { last; }         # end because we're done; we already read the client section
-    } elsif ($in_client == 1) {
+			warn "section: $1\n";
+			# verify that we're inside a valid section,
+			# and if so, set $in_valid_section
+			if ( grep $_ eq $1, @valid_sections ) {
+				$in_valid_section = 1;
+			} else {
+				$in_valid_section = 0;
+			}
+
+    } elsif ($in_valid_section) {
       # read a key/value pair
       /^\s*(.+?)\s*=\s*(.+?)\s*$/;
       my ($key, $val) = ($1, $2);
+
+			warn "Reading $key => $val\n";
+
+			# substitute - in the $key with _ (eg: safe-update => safe_update)
+			$key =~ s/-/_/g;
       
       # verify that the field is one of the supported ones
       unless ( grep $_ eq $key, @valid_keys ) { next; }
             
+			# if this key is expected to be a boolean, fix the value
+			if (grep $_ eq $val, @boolean_keys ) {
+				if ($val eq '0' || $val eq 'false') {
+					$val = 0;
+				} else {
+					# this includes empty values
+					$val = 1;
+				}
+			}
+
       # override anything that was set on the commandline with the stuff read from the config.
       unless ($self->{$key}) { $self->{$key} = $val };
     }
