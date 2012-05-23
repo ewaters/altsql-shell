@@ -3,7 +3,10 @@ abstract: 'A drop in replacement to the MySQL prompt with a pluggable Perl inter
 author:
   - 'Eric Waters <ewaters@gmail.com>'
 build_requires:
-  Test::Most: 0
+  Data::Structure::Util: 0
+  File::Temp: 0
+  Test::Deep: 0
+  Test::More: 0
 configure_requires:
   Module::Build: 0.4
 dynamic_config: 1
@@ -73,7 +76,6 @@ provides:
     version: 0
 requires:
   Config::Any: 0
-  Data::Structure::Util: 0
   DBD::mysql: 0
   DBI: 0
   Data::Dumper: 0

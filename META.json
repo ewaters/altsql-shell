@@ -16,7 +16,10 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Test::Most" : "0"
+            "Data::Structure::Util" : "0",
+            "File::Temp" : "0",
+            "Test::Deep" : "0",
+            "Test::More" : "0"
          }
       },
       "configure" : {
@@ -27,7 +30,6 @@
       "runtime" : {
          "requires" : {
             "Config::Any" : "0",
-						"Data::Structure::Util" : "0",
             "DBD::mysql" : "0",
             "DBI" : "0",
             "Data::Dumper" : "0",
