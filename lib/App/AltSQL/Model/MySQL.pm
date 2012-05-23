@@ -73,9 +73,9 @@ sub read_my_dot_cnf {
   my $self = shift;
   my $path = shift;
 
-  my @valid_keys = qw( user password host port database prompt safe_update ); # keys we'll read
+  my @valid_keys = qw( user password host port database prompt safe_update select_limit no_auto_rehash ); # keys we'll read
   my @valid_sections = qw( client mysql ); # valid [section] names
-	my @boolean_keys = qw( safe_update );
+	my @boolean_keys = qw( safe_update no_auto_rehash );
 
   open MYCNF, "<$path";
   
@@ -98,18 +98,28 @@ sub read_my_dot_cnf {
 
     } elsif ($in_valid_section) {
       # read a key/value pair
-      /^\s*(.+?)\s*=\s*(.+?)\s*$/;
-      my ($key, $val) = ($1, $2);
-			$key || next;
+			#/^\s*(.+?)\s*=\s*(.+?)\s*$/;
+			#my ($key, $val) = ($1, $2);
+			my ($key, $val) = split /\s*=\s*/, $_, 2;
 
-			# substitute - in the $key with _ (eg: safe-update => safe_update)
+			# value cleanup
+			$key =~ s/^\s*(.+?)\s*$/$1/;
+			$key || next;
 			$key =~ s/-/_/g;
+
+			$val || ( $val = '' );
+			$val && $val =~ s/\s*$//;
+
+			# special case for no_auto_rehash, which is 'skip-auto-rehash' in my.cnf
+			if ($key eq 'skip_auto_rehash') {
+				$key = 'no_auto_rehash';
+			}
       
       # verify that the field is one of the supported ones
       unless ( grep $_ eq $key, @valid_keys ) { next; }
             
 			# if this key is expected to be a boolean, fix the value
-			if (grep $_ eq $val, @boolean_keys ) {
+			if (grep $_ eq $key, @boolean_keys ) {
 				if ($val eq '0' || $val eq 'false') {
 					$val = 0;
 				} else {
