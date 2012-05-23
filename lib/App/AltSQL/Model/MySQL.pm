@@ -49,6 +49,85 @@ sub args_spec {
 	);
 }
 
+sub find_and_read_configs {
+  my $self = shift;
+  my @config_paths = ( 
+    "$ENV{HOME}/.my.cnf",
+  );
+  
+  foreach my $path (@config_paths) {
+    (-e $path) or next;
+    $self->read_my_dot_cnf($path);
+  }
+}
+
+sub read_my_dot_cnf {
+  my $self = shift;
+  my $path = shift;
+
+  my @valid_keys = qw( user password host port database prompt safe_update select_limit no_auto_rehash ); # keys we'll read
+  my @valid_sections = qw( client mysql ); # valid [section] names
+	my @boolean_keys = qw( safe_update no_auto_rehash );
+
+  open MYCNF, "<$path";
+  
+  # ignore lines in file until we hit a valid [section]
+  # then read key=value pairs
+  my $in_valid_section = 0;
+  while(<MYCNF>) {
+
+    # ignore commented lines:
+    /^\s*#/ && next;
+    
+    if (/^\s*\[(.*?)\]\s*$/) {                  # we've hit a section
+			# verify that we're inside a valid section,
+			# and if so, set $in_valid_section
+			if ( grep $_ eq $1, @valid_sections ) {
+				$in_valid_section = 1;
+			} else {
+				$in_valid_section = 0;
+			}
+
+    } elsif ($in_valid_section) {
+      # read a key/value pair
+			#/^\s*(.+?)\s*=\s*(.+?)\s*$/;
+			#my ($key, $val) = ($1, $2);
+			my ($key, $val) = split /\s*=\s*/, $_, 2;
+
+			# value cleanup
+			$key =~ s/^\s*(.+?)\s*$/$1/;
+			$key || next;
+			$key =~ s/-/_/g;
+
+			$val || ( $val = '' );
+			$val && $val =~ s/\s*$//;
+
+			# special case for no_auto_rehash, which is 'skip-auto-rehash' in my.cnf
+			if ($key eq 'skip_auto_rehash') {
+				$key = 'no_auto_rehash';
+			}
+      
+      # verify that the field is one of the supported ones
+      unless ( grep $_ eq $key, @valid_keys ) { next; }
+            
+			# if this key is expected to be a boolean, fix the value
+			if ( grep $_ eq $key, @boolean_keys ) {
+				if ($val eq '0' || $val eq 'false') {
+					$val = 0;
+				} else {
+					# this includes empty values
+					$val = 1;
+				}
+			}
+
+      # override anything that was set on the commandline with the stuff read from the config.
+      unless ($self->{$key}) { $self->{$key} = $val };
+    }
+  }
+  
+  close MYCNF;
+}
+
 sub db_connect {
 	my $self = shift;
 	my $dsn = 'DBI:mysql:' . join (';',
