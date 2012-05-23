@@ -44,14 +44,14 @@ ENDFILE
 
 	my $filename = write_config(<<ENDFILE);
 [client]
-user = edfwaters
+user = ewaters
 password = 12345
 host = localhost
 
 [mysql]
 database = sakila
 default-character-set = utf8
-prompt = \\\\u@\\\\h[\\\\R:\\\\m:\\\\s]>
+prompt = \\u@\\h[\\R:\\m:\\s]>
 safe-update = false
 ENDFILE
 
@@ -76,14 +76,14 @@ ENDFILE
 
 	my $filename = write_config(<<ENDFILE);
 [client]
-user = edfwaters
+user = ewaters
 password = 12345
 host = localhost
 
 [mysql]
 database = sakila
 default-character-set = utf8
-prompt = \\\\u@\\\\h[\\\\R:\\\\m:\\\\s]>
+prompt = \\u@\\h[\\R:\\m:\\s]>
 safe-update = false
 ENDFILE
 
