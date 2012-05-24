@@ -92,5 +92,8 @@ requires:
   Text::UnicodeBox: 0.03
   YAML: 0
 resources:
+  bugtracker: http://github.com/ewaters/altsql-shell/issues
+  homepage: http://ewaters.github.com/altsql-shell
   license: http://dev.perl.org/licenses/
+  repository: http://github.com/ewaters/altsql-shell
 version: 0.02

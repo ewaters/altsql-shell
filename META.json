@@ -128,9 +128,16 @@
    },
    "release_status" : "stable",
    "resources" : {
+      "bugtracker" : {
+         "web" : "http://github.com/ewaters/altsql-shell/issues"
+      },
+      "homepage" : "http://ewaters.github.com/altsql-shell",
       "license" : [
          "http://dev.perl.org/licenses/"
-      ]
+      ],
+      "repository" : {
+         "url" : "http://github.com/ewaters/altsql-shell"
+      }
    },
    "version" : "0.02"
 }
