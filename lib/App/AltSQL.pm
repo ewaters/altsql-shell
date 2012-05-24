@@ -374,7 +374,9 @@ sub read_config_file {
 	}
 
 	# Merge all the hash configs together smartly
-	return union(\@configs);
+	my $merge = union(\@configs);
+	$merge = {} unless defined $merge;
+	return $merge;
 }
 
 =head2 new_from_cli
