@@ -37,8 +37,16 @@ my $build = Module::Build->new(
 		'DBIx::MyParsePP'  => 0,
 		'Text::ASCIITable' => 0,
 	},
-	#create_makefile_pl => 'passthrough',
+	create_makefile_pl => 'small',
 	create_readme      => 1,
+	meta_merge => {
+		resources => {
+			repository => "http://github.com/ewaters/altsql-shell",
+			homepage => "http://ewaters.github.com/altsql-shell",
+			bugtracker => "http://github.com/ewaters/altsql-shell/issues",
+		},
+	},
 );
 
 $build->create_build_script;
+
