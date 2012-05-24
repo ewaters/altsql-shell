@@ -130,7 +130,7 @@ use Data::Dumper;
 use Config::Any;
 use Hash::Union qw(union);
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 our $| = 1;
 
 # Don't emit 'Wide character in output' warnings
@@ -374,9 +374,7 @@ sub read_config_file {
 	}
 
 	# Merge all the hash configs together smartly
-	my $merge = union(\@configs);
-	$merge = {} unless defined $merge;
-	return $merge;
+	return union(\@configs);
 }
 
 =head2 new_from_cli
