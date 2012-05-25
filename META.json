@@ -51,7 +51,7 @@
    "provides" : {
       "App::AltSQL" : {
          "file" : "lib/App/AltSQL.pm",
-         "version" : "0.02"
+         "version" : "0.03"
       },
       "App::AltSQL::Model" : {
          "file" : "lib/App/AltSQL/Model.pm",
@@ -139,5 +139,5 @@
          "url" : "http://github.com/ewaters/altsql-shell"
       }
    },
-   "version" : "0.02"
+   "version" : "0.03"
 }

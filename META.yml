@@ -19,7 +19,7 @@ name: App-AltSQL
 provides:
   App::AltSQL:
     file: lib/App/AltSQL.pm
-    version: 0.02
+    version: 0.03
   App::AltSQL::Model:
     file: lib/App/AltSQL/Model.pm
     version: 0
@@ -96,4 +96,4 @@ resources:
   homepage: http://ewaters.github.com/altsql-shell
   license: http://dev.perl.org/licenses/
   repository: http://github.com/ewaters/altsql-shell
-version: 0.02
+version: 0.03

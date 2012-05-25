@@ -24,8 +24,8 @@ MANIFEST			This list of files
 MANIFEST.SKIP
 META.json
 META.yml
-README
 README.pod
+INSTALL
 t/001_arguments.t
 t/002_my_cnf.t
 t/sql/sakila-data.sql
