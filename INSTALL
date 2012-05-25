@@ -1,0 +1,54 @@
+Install System Wide:
+====================
+
+Installing altsql system side is best done with the `cpan` tool you probably already have installed on your machine.
+
+  $ sudo cpan
+
+  cpan[1]> install App::AltSQL
+
+If you don't have cpan or if it's not configured properly, a good alternative is cpanm.  If you don't have cpanm, it's pretty easy to install:
+
+  $ curl -L http://cpanmin.us | perl - --sudo App::cpanminus
+
+Now install with cpanm:
+
+  $ sudo cpanm App::AltSQL
+
+Install User Space:
+===================
+
+
+If you don't have sudo access on the box you're working on, you can install altsql into your userspace fairly easily.  This involves using local::lib (http://search.cpan.org/perldoc?local%3A%3Alib).
+
+NOTE: This is not recommended unless you're comfortable getting your hands a bit dirty.
+
+Step 1: Install cpanm
+
+  mkdir ~/bin
+  cd ~/bin
+  curl -LO http://xrl.us/cpanm
+  chmod +x cpanm
+
+Step 2: Install local::lib and setup your environment
+
+  ~/bin/cpanm --local-lib=~/perl5 local::lib
+  eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+
+Step 3: Recreate this environment on future shells
+
+  Bash:
+  echo 'eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)' >> ~/.bashrc
+
+  C shell:
+  perl -I$HOME/perl5/lib/perl5 -Mlocal::lib >> ~/.cshrc
+
+Step 4: Install altsql
+
+  ~/bin/cpanm App::AltSQL
+
+Step 5: Run!
+
+  altsql
+
+

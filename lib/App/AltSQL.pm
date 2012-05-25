@@ -23,7 +23,7 @@ App::AltSQL - A drop in replacement to the MySQL prompt with a pluggable Perl in
 
 =head1 DESCRIPTION
 
-AltSQL is a way to improve your user experience with C<mysql>, C<sqlite3>, C<psql> and other tool that Perl has L<DBI> drivers for.  Currently written for MySQL only, the long term goal of this project is to provide users of the various SQL-based databases with a familiar command line interface but with modern improvements such as color, unicode box tables, and tweaks to the user interface that are fast and easy to prototype and experiment with.
+AltSQL is a way to improve your user experience with C<mysql>, C<sqlite3>, C<psql> and other tools that Perl has L<DBI> drivers for.  Currently written for MySQL only, the long term goal of this project is to provide users of the various SQL-based databases with a familiar command line interface but with modern improvements such as color, unicode box tables, and tweaks to the user interface that are fast and easy to prototype and experiment with.
 
 There are a few key issues that this programmer has had with using the mysql client every day.  After looking for alternatives and other ways to fix the problems, reimplementing the client in Perl seemed like the easiest approach, and lent towards the greatest possible adoption by my peers.  Here are a few of those issues:
 

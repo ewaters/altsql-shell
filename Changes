@@ -1,9 +1,19 @@
 Revision history for App::AltSQL
 
-v0.01  Wed May 16 10:07:51 2012 -0400
+v0.03  Fri, 25 May 2012 15:39:15 -0400
 
-  - Initial release
+  - Adding Dump plugin [contributed by https://github.com/joeshin]
+  - Parsing of .my.cnf w/ tests [contributed by https://github.com/spikegrobstein]
+  - Change the prompt with .my.cnf 'prompt' setting
+  - Adding INSTALL document and some minor build changes
+  - Use JSON instead of JSON::XS
+  - Make non-critical dependencies optional
 
 v0.02  Fri May 18 10:33:00 2012 -0400
 
   - Remove unused dependency on Switch
+
+v0.01  Wed May 16 10:07:51 2012 -0400
+
+  - Initial release
+
