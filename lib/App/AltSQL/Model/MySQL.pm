@@ -57,9 +57,7 @@ sub setup {
 
 	# If the user has configured a custom prompt in .my.cnf, use that in the Term instance
 	if ($self->prompt) {
-		my $role = Moose::Meta::Role->create_anon_role();
-		$role->add_method(prompt => sub { $self->render_prompt() });
-		$role->apply($self->app->term);
+		$self->app->term->prompt( $self->parse_prompt() );
 	}
 }
 
@@ -311,72 +309,50 @@ my %prompt_substitutions = (
 	t    => "\t",
 	'_'  => ' ',
 	' '  => ' ',
-	d    => sub { shift->{self}->current_database },
-	h    => sub { shift->{self}->host },
-	c    => sub { ++( shift->{self}{_statement_counter} ) },
-	u    => sub { shift->{self}->user },
-	U    => 'TODO-username@hostname',
-);
-my %date_prompt_substitutions = (
-	D    => sub { shift->{date}->strftime('%a, %d %b %H:%M:%S %Y') },
-	w    => sub { shift->{date}->day_abbr },
-	y    => sub { shift->{date}->stftime('%y') },
-	Y    => sub { shift->{date}->stftime('%Y') },
-	o    => sub { shift->{date}->month },
-	O    => sub { shift->{date}->mont_abbr },
-	R    => sub { shift->{date}->hour },
-	r    => sub { shift->{date}->strftime('%I') },
-	m    => sub { shift->{date}->strftime('%M') },
-	s    => sub { shift->{date}->strftime('%S') },
-	P    => sub { shift->{date}->strftime('%p') },
+	d    => '%d',
+	h    => '%h',
+	c    => '%e{ ++( shift->{self}{_statement_counter} ) }',
+	u    => '%u',
+	U    => '%u@%h',
+	D    => '%t{%a, %d %b %H:%M:%S %Y}',
+	w    => '%t{%a}', 
+	y    => '%t{%y}',
+	Y    => '%t{%Y}',
+	o    => '%t{%m}',
+	O    => '%t{%b}',
+	R    => '%t{%k}',
+	r    => '%t{%I}',
+	m    => '%t{%M}',
+	s    => '%t{%S}',
+	P    => '%t{%p}',
 );
 
-sub render_prompt {
-	my ($self, $now) = @_;
+=cut
 
-	if (! defined $self->{_has_datetime}) {
-		eval { require DateTime; };
-		$self->{_has_datetime} = $@ ? 0 : 1;
-	}
+Take a .my.cnf prompt format and convert it into Term escape options
 
-	if (! $now && $self->{_has_datetime}) {
-		$now = DateTime->now( time_zone => 'local' );
-	}
+Reference:
+http://www.thegeekstuff.com/2010/02/mysql_ps1-6-examples-to-make-your-mysql-prompt-like-angelina-jolie/
 
-	my %context = (
-		self => $self,
-		date => $now,
-	);
+=cut
 
-	my $warn_datetime = 0;
+sub parse_prompt {
+	my $self = shift;
+
 	my $parsed_prompt = $self->prompt;
 	$parsed_prompt =~ s{\\\\(.)}{
-		my $substitute = $prompt_substitutions{$1} || $date_prompt_substitutions{$1};
+		my $substitute = $prompt_substitutions{$1};
 		if (! $substitute) {
 			"$1";
 		}
 		elsif (ref $substitute) {
-			if ($date_prompt_substitutions{$1} && ! $now) {
-				$warn_datetime++;
-				'?';
-			}
-			else {
-				$substitute->(\%context);
-			}
+			$substitute->($self);
 		}
 		else {
 			$substitute;
 		}
 	}exg;
 
-	if ($warn_datetime && ! $self->{_warned_datetime}) {
-		$self->log_error("Prompt uses date variables; install DateTime to render them");
-		$self->{_warned_datetime}++;
-	}
-	
-	# Prelimary code: support color prompts like '\[\033[00;31m\]'
-	$parsed_prompt =~ s{\\\[ \\033 (.+?) \\\]}{\033$1}xg;
-	
 	return $parsed_prompt;
 }
 

@@ -4,6 +4,7 @@ use Moose;
 use Term::ReadLine::Zoid;
 use Data::Dumper;
 use JSON qw(encode_json decode_json);
+use Term::ANSIColor;
 
 with 'App::AltSQL::Role';
 with 'MooseX::Object::Pluggable';
@@ -72,7 +73,7 @@ sub return_key {
 sub readline {
 	my $self = shift;
 
-	return $self->term->readline($self->prompt);
+	return $self->term->readline($self->render_prompt());
 }
 
 sub completion_function {
@@ -153,6 +154,108 @@ sub get_term_height {
 	my $self = shift;
 	my ($width, $height) = $self->term->TermSize();
 	return $height;
+}
+
+my %prompt_substitutions = (
+	u => sub { shift->{self}->app->model->user },
+	d => sub { shift->{self}->app->model->current_database || '(none)' },
+	h => sub { shift->{self}->app->model->host },
+);
+
+my %block_prompt_substitutions = (
+	c => sub {
+		my ($context, $block) = @_;
+		return color($block);
+	},
+	e => sub {
+		my ($context, $block) = @_;
+		# Make '$self' expected in the current scope so the $block can reference it
+		my $self = $context->{self};
+		my $return = eval $block;
+		if (my $ex = $@) {
+			$self->log_error($ex);
+			$return = 'err';
+		}
+		return $return;
+	},
+	t => sub {
+		my ($context, $format) = @_;
+		my $now = $context->{date};
+		if (! $now) {
+			return 'err';
+		}
+		return $now->strftime($format);
+	},
+);
+
+sub render_prompt {
+	my ($self, $now) = @_;
+
+	if (! defined $self->{_has_datetime}) {
+		eval { require DateTime; };
+		$self->{_has_datetime} = $@ ? 0 : 1;
+	}
+
+	if (! $now && $self->{_has_datetime}) {
+		$now = DateTime->now( time_zone => 'local' );
+	}
+
+	my %context = (
+		self => $self,
+		date => $now,
+	);
+
+	my $prompt = $self->prompt;
+	my $output = '';
+
+	while (length $prompt) {
+		my $char = substr $prompt, 0, 1, '';
+
+		# We're looking for a closing brace
+		if ($context{requires_block}) {
+			if ($char eq '}' && --$context{brace_count} == 0) {
+				# Block is complete
+				my $sub = $block_prompt_substitutions{ $context{symbol} };
+				$output .= $sub->(\%context, delete $context{block});
+				delete $context{requires_block};
+				delete $context{brace_count};
+				next;
+			}
+
+			$context{block} .= $char;
+
+			if ($char eq '{') {
+				$context{brace_count}++;
+			}
+
+			next;
+		}
+
+		if ($char eq '%') {
+			$context{symbol} = substr $prompt, 0, 1, '';
+			if ($block_prompt_substitutions{ $context{symbol} } && substr($prompt, 0, 1) eq '{') {
+				substr $prompt, 0, 1, ''; # shift the '{'
+				$context{requires_block} = 1;
+				$context{block} = '';
+				$context{brace_count} = 1;
+			}
+			else {
+				my $sub = $prompt_substitutions{ $context{symbol} };
+				if (! $sub) {
+					$self->log_error("Unrecognized prompt substitution '$context{symbol}'");
+					$output .= $char;
+				}
+				else {
+					$output .= $sub->(\%context);
+				}
+			}
+			next;
+		}
+
+		$output .= $char;
+	}
+
+	return $output;
 }
 
 no Moose;
