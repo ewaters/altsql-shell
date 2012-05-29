@@ -55,8 +55,8 @@ sub setup {
 	my $self = shift;
 	$self->find_and_read_configs();
 
-	# If the user has configured a custom prompt in .my.cnf, use that in the Term instance
-	if ($self->prompt) {
+	# If the user has configured a custom prompt in .my.cnf and not one in the config, use that in the Term instance
+	if ($self->prompt && ! $self->app->config->{prompt}) {
 		$self->app->term->prompt( $self->parse_prompt() );
 	}
 }

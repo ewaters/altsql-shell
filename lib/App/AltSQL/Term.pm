@@ -35,6 +35,13 @@ sub BUILD {
 	$self->log_info("Ctrl-C to reset the line; Ctrl-D to exit");
 }
 
+sub setup {
+	my $self = shift;
+	if (my $custom_prompt = $self->app->config->{prompt}) {
+		$self->prompt($custom_prompt);
+	}
+}
+
 sub _build_term {
 	my $self = shift;
 
