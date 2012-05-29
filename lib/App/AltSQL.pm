@@ -130,7 +130,7 @@ use Data::Dumper;
 use Config::Any;
 use Hash::Union qw(union);
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 our $| = 1;
 
 # Don't emit 'Wide character in output' warnings

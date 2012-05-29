@@ -1,5 +1,9 @@
 Revision history for App::AltSQL
 
+v0.04 Tue, 29 May 2012 08:51:45 -0400
+
+  - Fixing build dependency issue
+
 v0.03  Fri, 25 May 2012 15:39:15 -0400
 
   - Adding Dump plugin [contributed by https://github.com/joeshin]
