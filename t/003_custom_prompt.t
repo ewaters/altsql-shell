@@ -81,6 +81,7 @@ eval { require DateTime; };
 if ($@) {
 	print STDERR "Can't continue testing without DateTime\n";
 	done_testing;
+	exit;
 }
 
 my $now = DateTime->now();

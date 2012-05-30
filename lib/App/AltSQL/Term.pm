@@ -253,8 +253,11 @@ sub render_prompt {
 					$self->log_error("Unrecognized prompt substitution '$context{symbol}'");
 					$output .= $char;
 				}
-				else {
+				elsif (ref $sub) {
 					$output .= $sub->(\%context);
+				}
+				else {
+					$output .= $sub;
 				}
 			}
 			next;
