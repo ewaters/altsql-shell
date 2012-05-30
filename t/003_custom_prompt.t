@@ -33,6 +33,9 @@ $app->{term} = $term;
 $term->prompt('myprompt> ');
 is $term->render_prompt(), 'myprompt> ', "Basic, non-special prompt";
 
+$term->prompt('myprompt%%> ');
+is $term->render_prompt(), 'myprompt%> ', "Escaped percent sign";
+
 $term->prompt('%u@%h> ');
 is $term->render_prompt(), 'testuser@localhost> ', "Some substitutions";
 

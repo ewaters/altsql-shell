@@ -167,6 +167,7 @@ my %prompt_substitutions = (
 	u => sub { shift->{self}->app->model->user },
 	d => sub { shift->{self}->app->model->current_database || '(none)' },
 	h => sub { shift->{self}->app->model->host },
+	'%' => '%',
 );
 
 my %block_prompt_substitutions = (

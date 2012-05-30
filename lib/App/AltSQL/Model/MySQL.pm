@@ -1,5 +1,31 @@
 package App::AltSQL::Model::MySQL;
 
+=head1 NAME
+
+App::AltSQL - A drop in replacement to the MySQL prompt with a pluggable Perl interface
+
+=head1 DESCRIPTION
+
+This module is currently the only Model supported by L<App::AltSQL>.
+
+Upon startup, we will read in C<$HOME/.my.cnf> and will attempt to mimic the behavior for the following configuration variables:
+
+=over 4
+
+=item B<user>
+
+=item B<password>
+
+=item B<host>
+
+=item B<port>
+
+=item B<prompt>
+
+=back
+
+=cut
+
 use Moose;
 use DBI;
 use Sys::SigAction qw(set_sig_handler);
@@ -358,5 +384,17 @@ sub parse_prompt {
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
+
+=head1 COPYRIGHT
+
+Copyright (c) 2012 Eric Waters and Shutterstock Images (http://shutterstock.com).  All rights reserved.  This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the LICENSE file included with this module.
+
+=head1 AUTHOR
+
+Eric Waters <ewaters@gmail.com>
+
+=cut
 
 1;

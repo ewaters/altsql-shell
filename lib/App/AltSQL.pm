@@ -94,6 +94,8 @@ Write your configuration file to either the system or the local configuration lo
 =back
 
   ---
+  prompt: 'altsql> '
+
   plugins:
     - Tail
     - Dump
@@ -116,6 +118,54 @@ Write your configuration file to either the system or the local configuration lo
     plain_ascii: 0
   
 This is the default configuration, and currently encompasses all the configurable settings.  This should be future safe; as you can see, plugins may use this file for their own variables as there are namespaced sections.
+
+=over 4
+
+=item B<prompt>
+
+Provide a custom prompt.  The following variables will be interpolated:
+
+=over 4
+
+=item B<%u>
+
+The username used to connect to the model
+
+=item B<%d>
+
+The current database or '(none)'
+
+=item B<%h>
+
+The hostname the model is connected to
+
+=item B<%%>
+
+An escaped percent sign
+
+=item B<%c{...}>
+
+A L<Term::ANSIColor> color name
+
+=item B<%e{...}>
+
+A block to be eval'ed.  You may use $self to refer to the L<App::AltSQL::Term> object
+
+=item B<%t{...}>
+
+The argument to this option will be passed to L<DateTime> C<strftime> for the current time
+
+=back
+
+=item B<plugins>
+
+An array of plugin names for the main namespace.
+
+=item B<view_plugins>
+
+An array of View plugin names to be applied to each View object created
+
+=back
 
 =head1 EXTENDING
 
