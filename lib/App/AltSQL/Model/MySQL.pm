@@ -2,13 +2,13 @@ package App::AltSQL::Model::MySQL;
 
 =head1 NAME
 
-App::AltSQL - A drop in replacement to the MySQL prompt with a pluggable Perl interface
+App::AltSQL::Model::MySQL
 
 =head1 DESCRIPTION
 
 This module is currently the only Model supported by L<App::AltSQL>.
 
-Upon startup, we will read in C<$HOME/.my.cnf> and will attempt to mimic the behavior for the following configuration variables:
+Upon startup, we will read in C<$HOME/.my.cnf> and will read and respect the following configuration variables:
 
 =over 4
 
@@ -21,6 +21,12 @@ Upon startup, we will read in C<$HOME/.my.cnf> and will attempt to mimic the beh
 =item B<port>
 
 =item B<prompt>
+
+=item B<safe_update>
+
+=item B<select_limit>
+
+=tiem B<no_auto_rehash>
 
 =back
 

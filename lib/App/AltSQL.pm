@@ -123,6 +123,11 @@ This is the default configuration, and currently encompasses all the configurabl
 
 =item B<prompt>
 
+  prompt: "%u@%h[%d]> "
+  # 'username@hostname[database]> '
+  prompt: "%c{red}%u%c{reset} %t{%F %T}> '
+  # 'username' (in red) ' YYYY-MM-DD HH:MM:SS> '
+
 Provide a custom prompt.  The following variables will be interpolated:
 
 =over 4
@@ -145,7 +150,7 @@ An escaped percent sign
 
 =item B<%c{...}>
 
-A L<Term::ANSIColor> color name
+A L<Term::ANSIColor> color name.  The value will be passed directly to the C<color> method.
 
 =item B<%e{...}>
 
