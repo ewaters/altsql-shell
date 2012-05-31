@@ -165,7 +165,7 @@ sub read_my_dot_cnf {
 			}
 
 			# override anything that was set on the commandline with the stuff read from the config.
-			unless ($self->{$key}) { $self->{$key} = $val };
+			unless (defined $self->{$key}) { $self->{$key} = $val };
 		}
 	}
 
