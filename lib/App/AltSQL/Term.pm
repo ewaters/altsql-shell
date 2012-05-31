@@ -48,6 +48,9 @@ sub _build_term {
 	my $term = Term::ReadLine::Zoid->new("altsql-shell");
 	$self->{term} = $term;
 
+	# Require the tab key to be hit twice before showing the list of autocomplete items
+	$term->Attribs->{autolist} = 0;
+
 	$term->Attribs->{completion_function} = sub {
 		$self->completion_function(@_);
 	};

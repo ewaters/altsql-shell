@@ -11,6 +11,7 @@ This uses the L<App::AltSQL> configuration file for customizing how things are c
   style => 'heavy_header',
   split_lines => 1,
   plain_ascii => 0,
+  header_reminder => 100,
 
 The values 'style' and 'split_lines' are passed to L<Text::UnicodeBox::Table>.  'plain_ascii' will toggle a non-unicode table output but still benefit from the features of L<Text::UnicodeBox::Table>
 
@@ -23,6 +24,7 @@ my %default_config = (
 	style => 'heavy_header',
 	split_lines => 1,
 	plain_ascii => 0,
+	header_reminder => 100,
 );
 
 sub _render_table_data {
@@ -31,7 +33,7 @@ sub _render_table_data {
 	my $table = Text::UnicodeBox::Table->new(
 		split_lines => $self->resolve_namespace_config_value(__PACKAGE__, 'split_lines', \%default_config),
 		style       => $self->resolve_namespace_config_value(__PACKAGE__, 'style', \%default_config),
-		($self->resolve_namespace_config_value(__PACKAGE__, 'plain_ascii') ? (
+		($self->resolve_namespace_config_value(__PACKAGE__, 'plain_ascii', \%default_config) ? (
 		fetch_box_character => sub {
 			my %symbol = @_;
 			my $segments = int keys %symbol;
@@ -59,8 +61,20 @@ sub _render_table_data {
 		},
 		) : ()),
 	);
+
+	my $header_reminder_frequency = $self->resolve_namespace_config_value(__PACKAGE__, 'header_reminder', \%default_config);
+
 	$table->add_header({ alignment => $data->{alignment} }, @{ $data->{columns} });
-	$table->add_row(@$_) foreach @{ $data->{rows} };
+
+	my $row_count = 0;
+	my $last_header_at = 0;
+	foreach my $row (@{ $data->{rows} }) {
+		$table->add_row(@$row);
+		if ($header_reminder_frequency && (++$row_count - $last_header_at > $header_reminder_frequency)) {
+			$table->add_header(@{ $data->{columns} });
+			$last_header_at = $row_count;
+		}
+	}
 
 	return $table->render();
 }
