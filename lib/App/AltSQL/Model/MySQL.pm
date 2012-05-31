@@ -200,26 +200,24 @@ sub update_autocomplete_entries {
 	my ($self, $database) = @_;
 
 	return if $self->no_auto_rehash;
-	$self->log_debug("Reading table information for completion of table and column names\nYou can turn off this feature to get a quicker startup with -A\n");
+	my $cache_key = 'autocomplete_' . $database;
+	if (! $self->{_cache}{$cache_key}) {
+		$self->log_debug("Reading table information for completion of table and column names\nYou can turn off this feature to get a quicker startup with -A\n");
 
-	my %autocomplete;
-	my $rows = $self->dbh->selectall_arrayref("select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where TABLE_SCHEMA = ?", {}, $database);
-	foreach my $row (@$rows) {
-		$autocomplete{$row->[0]} = 1; # Table
-		$autocomplete{$row->[1]} = 1; # Column
-		$autocomplete{$row->[0] . '.' . $row->[1]} = 1; # Table.Column
+		my %autocomplete;
+		my $rows = $self->dbh->selectall_arrayref("select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where TABLE_SCHEMA = ?", {}, $database);
+		foreach my $row (@$rows) {
+			$autocomplete{$row->[0]} = 1; # Table
+			$autocomplete{$row->[1]} = 1; # Column
+			$autocomplete{$row->[0] . '.' . $row->[1]} = 1; # Table.Column
+		}
+		$self->{_cache}{$cache_key} = \%autocomplete;
 	}
-	$self->app->term->autocomplete_entries(\%autocomplete);
+	$self->app->term->autocomplete_entries( $self->{_cache}{$cache_key} );
 }
 
 sub handle_sql_input {
 	my ($self, $input, $render_opts) = @_;
-
-	# Track which database we're in for autocomplete
-	if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
-		$self->current_database($database);
-		$self->update_autocomplete_entries($database);
-	}
 
 	# Figure out the verb of the SQL by either using regex or a parser.  If we
 	# use the parser, we get error checking here instead of the server.
@@ -250,6 +248,12 @@ sub handle_sql_input {
 
 	my $sth = $self->execute_sql($input);
 	return unless $sth; # error may have been reached (and reported)
+
+	# Track which database we're in for autocomplete
+	if (my ($database) = $input =~ /^use \s+ (\S+)$/ix) {
+		$self->current_database($database);
+		$self->update_autocomplete_entries($database);
+	}
 
 	my %timing = ( prepare_execute => gettimeofday - $t0 );
 
