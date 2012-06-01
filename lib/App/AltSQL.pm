@@ -185,7 +185,7 @@ use Data::Dumper;
 use Config::Any;
 use Hash::Union qw(union);
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 our $| = 1;
 
 # Don't emit 'Wide character in output' warnings
@@ -202,6 +202,7 @@ my %_default_classes = (
 my %default_config = (
 	plugins => [ 'Tail', 'Dump' ],
 	view_plugins => [ 'Color', 'UnicodeBox' ],
+	term_plugins => [],
 );
 
 =head2 Accessors
@@ -449,8 +450,15 @@ sub new_from_cli {
 	my $self = $class->new(args => $args, config => $config || \%default_config);
 
 	# Load in any plugins that are configured
-	foreach my $plugin (@{ $self->config->{plugins} }) {
-		$self->load_plugin($plugin);
+	if ($self->config->{plugins}) {
+		foreach my $plugin (@{ $self->config->{plugins} }) {
+			$self->load_plugin($plugin);
+		}
+	}
+	if ($self->config->{term_plugins}) {
+		foreach my $plugin (@{ $self->config->{term_plugins} }) {
+			$self->term->load_plugin($plugin);
+		}
 	}
 
 	return $self;
