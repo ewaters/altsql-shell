@@ -198,9 +198,9 @@ around call_command => sub {
             filename   => $filename,
         );
         if ($data) {
-            open(FILE, '>', $filename);
-            print FILE $data;
-            close(FILE);
+            open(my $FILE, '>', $filename);
+            print $FILE $data;
+            close($FILE);
         }
     }
 
