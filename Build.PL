@@ -22,7 +22,7 @@ my $build = Module::Build->new(
 		'Text::CharWidth'  => 0,
 		'Text::UnicodeBox' => 0.03,
 		'Term::ANSIColor'  => 0.04,
-		'Term::ReadLine::Zoid' => 0,
+		'Term::ReadLine::Bender' => 0,
 		'Sys::SigAction'   => 0,
 		'Hash::Union'      => 0,
 		'Getopt::Long'     => 2.38,
@@ -42,7 +42,7 @@ my $build = Module::Build->new(
 		resources => {
 			repository => "http://github.com/ewaters/altsql-shell",
 			homepage => "http://ewaters.github.com/altsql-shell",
-			bugtracker => "http://github.com/ewaters/altsql-shell/issues",
+			bugtracker => "http://github.com/ewaters/altsql-shell/issues?labels=bug",
 		},
 	},
 );

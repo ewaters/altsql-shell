@@ -41,7 +41,7 @@
             "Params::Validate" : "0",
             "Sys::SigAction" : "0",
             "Term::ANSIColor" : "0.04",
-            "Term::ReadLine::Zoid" : "0",
+            "Term::ReadLine::Bender" : "0",
             "Text::CharWidth" : "0",
             "Text::UnicodeBox" : "0.03",
             "YAML" : "0"
@@ -129,7 +129,7 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "http://github.com/ewaters/altsql-shell/issues"
+         "web" : "http://github.com/ewaters/altsql-shell/issues?labels=bug"
       },
       "homepage" : "http://ewaters.github.com/altsql-shell",
       "license" : [
