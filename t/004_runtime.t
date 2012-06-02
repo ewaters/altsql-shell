@@ -8,7 +8,7 @@ use Data::Dumper;
 use FindBin;
 
 if (! $ENV{MYSQL_TESTS}) {
-	ok 1, "Skipping tests as \$ENV{MYSQL_TESTS} is not set";
+	ok 1, "Skipping tests as \$ENV{MYSQL_TESTS} is not set; this is for developer regression testing";
 	done_testing;
 	exit;
 }
@@ -56,6 +56,7 @@ if (! $ENV{SKIP_BOOTSTRAP}) {
 
 $dbh->do("use $config{database}");
 
+# Describe all the modifiers that will be installed around methods
 my %setup_modifiers = (
 	model => {
 		instance => $app->model,
@@ -66,10 +67,12 @@ my %setup_modifiers = (
 		methods => [qw(log_error shutdown call_command create_view)],
 	},
 	view => {
+		# instance is mixed in below after create_view
 		methods => [qw(render)],
 	},
 );
 
+# Define hash that'll be used for local overrides
 my %modifiers;
 
 # Install modifiers on singleton instances
@@ -225,23 +228,28 @@ if ($app->model->sql_parser) {
 	# Don't call render()
 	local $modifiers{'view render before'} = sub { return 1; };
 	my $view = $app->model->handle_sql_input('select staff_id from staff');
-	cmp_deeply { @$args }, superhashof({ verb => 'select' }), "create_view() args";
-	cmp_deeply 
-		{
-			map { $_ => $view->$_ }
-			qw(timing verb table_data footer)
-		},
-		superhashof({
-			table_data => superhashof({
-				columns => [superhashof({
-					name => 'staff_id',
-					nullable => undef,
-					# Keys mapped from mysql_*
-					is_key => 1,
-					is_num => 1, 
-				})],
+
+	cmp_deeply { @$args }, superhashof({
+			verb => 'select',
+			column_meta => superhashof({
+				is_key => [ 1 ],
 			}),
+		}), "create_view() args";
+
+	cmp_deeply $view->table_data, superhashof({
+			columns => [superhashof({
+				name => 'staff_id',
+				nullable => undef,
+				# Keys mapped from mysql_*
+				is_key => 1,
+				is_num => 1, 
+			})],
 		}), "View is created with mysql meta data in columns array";
+
+	cmp_deeply $view->footer, re(qr/^2 rows in set/), "Rows in set footer";
+
+	$view = $app->model->handle_sql_input('select staff_id from staff where staff_id > 10');
+	cmp_deeply $view->buffer, re(qr/^Empty set/), "Empty set";
 }
 
 ## Done with tests

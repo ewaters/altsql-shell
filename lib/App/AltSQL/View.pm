@@ -40,6 +40,7 @@ around BUILDARGS => sub {
 		timing => 1,
 		verb   => 1,
 		sth    => 1,
+		column_meta => { default => {} },
 	});
 	my $sth = delete $args{sth};
 
@@ -64,10 +65,6 @@ around BUILDARGS => sub {
 	$args{table_data} = \%table_data;
 
 	# Populate table_data{columns}
-	my %mysql_meta = (
-		map { my $key = $_; $key =~ s/^mysql_//; +($key => $sth->{$_}) }
-		qw(mysql_is_blob mysql_is_key mysql_is_num mysql_is_pri_key mysql_is_auto_increment mysql_length mysql_max_length)
-	);
 	foreach my $i (0..$sth->{NUM_OF_FIELDS} - 1) {
 		push @{ $table_data{columns} }, {
 			name      => $sth->{NAME}[$i],
@@ -75,7 +72,7 @@ around BUILDARGS => sub {
 			#precision => $sth->{PRECISION}[$i],
 			#scale     => $sth->{SCALE}[$i],
 			nullable  => $sth->{NULLABLE}[$i] || undef,
-			map { $_ => $mysql_meta{$_}[$i] } keys %mysql_meta
+			map { $_ => $args{column_meta}{$_}[$i] } keys %{ $args{column_meta} }
 		};
 	}
 
