@@ -71,9 +71,9 @@ around BUILDARGS => sub {
 	foreach my $i (0..$sth->{NUM_OF_FIELDS} - 1) {
 		push @{ $table_data{columns} }, {
 			name      => $sth->{NAME}[$i],
-			type      => $sth->{TYPE}[$i],
-			precision => $sth->{PRECISION}[$i],
-			scale     => $sth->{SCALE}[$i],
+			#type      => $sth->{TYPE}[$i],
+			#precision => $sth->{PRECISION}[$i],
+			#scale     => $sth->{SCALE}[$i],
 			nullable  => $sth->{NULLABLE}[$i] || undef,
 			map { $_ => $mysql_meta{$_}[$i] } keys %mysql_meta
 		};

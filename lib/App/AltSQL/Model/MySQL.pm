@@ -267,6 +267,31 @@ sub handle_sql_input {
 	return $view;
 }
 
+=cut
+sub 
+	my %args = @_;
+	my $sth = delete $args{sth};
+
+	my %table_data = (
+		columns => [],
+		rows    => [],
+	);
+	$args{table_data} = \%table_data;
+
+	# Populate table_data{columns}
+	my %mysql_meta = (
+		map { my $key = $_; $key =~ s/^mysql_//; +($key => $sth->{$_}) }
+		qw(mysql_is_blob mysql_is_key mysql_is_num mysql_is_pri_key mysql_is_auto_increment mysql_length mysql_max_length)
+	);
+	foreach my $i (0..$sth->{NUM_OF_FIELDS} - 1) {
+		push @{ $table_data{columns} }, {
+			map { $_ => $mysql_meta{$_}[$i] } keys %mysql_meta
+		};
+	}
+
+=cut
+
+
 sub execute_sql {
 	my ($self, $input) = @_;
 

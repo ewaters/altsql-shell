@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Deep;
 use Term::ANSIColor;
 use Test::Resub qw(resub);
 use Data::Dumper;
@@ -210,6 +211,37 @@ if ($app->model->sql_parser) {
 	$app->model->handle_sql_input('use test');
 	is_deeply $args, ['test'], "'use test' calls update_autocomplete_entries('test')";
 	$app->model->execute_sql("use $config{database}"); # reset
+}
+
+ ## create_view
+
+{
+	my $args;
+	local $modifiers{'app create_view before'} = sub {
+		my $return = shift;
+		$args = [ @_ ];
+		return 0; # Call the $orig
+	};
+	# Don't call render()
+	local $modifiers{'view render before'} = sub { return 1; };
+	my $view = $app->model->handle_sql_input('select staff_id from staff');
+	cmp_deeply { @$args }, superhashof({ verb => 'select' }), "create_view() args";
+	cmp_deeply 
+		{
+			map { $_ => $view->$_ }
+			qw(timing verb table_data footer)
+		},
+		superhashof({
+			table_data => superhashof({
+				columns => [superhashof({
+					name => 'staff_id',
+					nullable => undef,
+					# Keys mapped from mysql_*
+					is_key => 1,
+					is_num => 1, 
+				})],
+			}),
+		}), "View is created with mysql meta data in columns array";
 }
 
 ## Done with tests
