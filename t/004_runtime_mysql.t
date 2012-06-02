@@ -3,7 +3,6 @@ use warnings;
 use Test::More;
 use Test::Deep;
 use Term::ANSIColor;
-use Test::Resub qw(resub);
 use Data::Dumper;
 use FindBin;
 
