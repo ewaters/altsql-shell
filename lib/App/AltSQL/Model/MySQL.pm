@@ -263,6 +263,8 @@ sub handle_sql_input {
 		verb => $verb,
 	);
 	$view->render(%$render_opts);
+
+	return $view;
 }
 
 sub execute_sql {

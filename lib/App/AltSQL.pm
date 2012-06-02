@@ -199,7 +199,7 @@ my %_default_classes = (
 	view => 'App::AltSQL::View',
 	model => 'App::AltSQL::Model::MySQL',
 );
-my %default_config = (
+our %default_config = (
 	plugins => [ 'Tail', 'Dump' ],
 	view_plugins => [ 'Color', 'UnicodeBox' ],
 	term_plugins => [],
@@ -525,7 +525,7 @@ sub handle_term_input {
 
 	# Allow the user to pass non-SQL control verbs
 	if ($input =~ m/^\s*(quit|exit)\s*$/) {
-		$self->shutdown();
+		return $self->shutdown();
 	}
 
 	# Allow the user to execute perl code via '% print Dumper(...);'
@@ -537,12 +537,13 @@ sub handle_term_input {
 		return;
 	}
 
-	if (my ($command) = $input =~ m/^\.([a-z]+)\b/i) {
+	if (my ($command) = $input =~ m/^\.([a-z_]+)\b/i) {
 		my $handled = $self->call_command(lc($command), $input);
 		return if $handled;
 	}
 
-	$self->model->handle_sql_input($input, \%render_opts);
+	my $view = $self->model->handle_sql_input($input, \%render_opts);
+	return $view;
 }
 
 =head2 call_command $command, $input
