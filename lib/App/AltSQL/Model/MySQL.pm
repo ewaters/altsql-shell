@@ -49,8 +49,6 @@ has 'sql_parser' => (is => 'ro', default => sub {
 	}
 	return DBIx::MyParsePP->new();
 });
-has 'dbh'        => (is => 'rw');
-has 'current_database' => (is => 'rw');
 
 has [qw(host user password database port)] => ( is => 'ro' );
 has [qw(no_auto_rehash select_limit safe_update prompt)] => ( is => 'ro' );
@@ -328,16 +326,6 @@ sub db_type_info {
 		return $self->{db_types}{unknown};
 	}
 	return $info;
-}
-
-sub show_sql_error {
-	my ($self, $input, $char_number, $line_number) = @_;
-
-	my @lines = split /\n/, $input;
-	my $line = $lines[ $line_number - 1 ];
-	$self->log_error("There was an error parsing the SQL statement on line $line_number:");
-	$self->log_error($line);
-	$self->log_error(('-' x ($char_number - 1)) . '^');
 }
 
 my %prompt_substitutions = (

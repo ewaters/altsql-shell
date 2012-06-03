@@ -14,7 +14,7 @@ my $build = Module::Build->new(
 		'Data::Structure::Util' => 0,
 	},
 	requires => {
-		'Moose'            => 0,
+		'Moose'            => 2.0600,
 		'MooseX::Object::Pluggable' => 0,
 		'Params::Validate' => 0,
 		'DBI'              => 0,
@@ -36,6 +36,8 @@ my $build = Module::Build->new(
 		'JSON::XS'         => 0,
 		'DBIx::MyParsePP'  => 0,
 		'Text::ASCIITable' => 0,
+		'DBD::Pg'          => 0,
+		'DBD::SQLite'      => 0,
 	},
 	create_makefile_pl => 'small',
 	meta_merge => {
