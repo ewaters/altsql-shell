@@ -16,7 +16,6 @@ my $build = Module::Build->new(
 	requires => {
 		'Moose'            => 2.0600,
 		'MooseX::Object::Pluggable' => 0,
-		'Params::Validate' => 0,
 		'DBI'              => 0,
 		'DBD::mysql'       => 0,
 		'Text::CharWidth'  => 0,

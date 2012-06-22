@@ -4,7 +4,7 @@
       "Eric Waters <ewaters@gmail.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120630",
    "license" : [
       "perl_5"
    ],
@@ -36,9 +36,8 @@
             "Getopt::Long" : "2.38",
             "Hash::Union" : "0",
             "JSON" : "0",
-            "Moose" : "0",
+            "Moose" : "2.06",
             "MooseX::Object::Pluggable" : "0",
-            "Params::Validate" : "0",
             "Sys::SigAction" : "0",
             "Term::ANSIColor" : "0.04",
             "Term::ReadLine::Zoid" : "0",
