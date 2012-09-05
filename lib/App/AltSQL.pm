@@ -116,7 +116,7 @@ Write your configuration file to either the system or the local configuration lo
     style: heavy_header
     split_lines: 1
     plain_ascii: 0
-  
+
 This is the default configuration, and currently encompasses all the configurable settings.  This should be future safe; as you can see, plugins may use this file for their own variables as there are namespaced sections.
 
 =over 4
