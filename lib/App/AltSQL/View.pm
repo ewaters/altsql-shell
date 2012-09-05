@@ -14,7 +14,6 @@ use Moose;
 use Data::Dumper;
 use Text::CharWidth qw(mbswidth);
 use Time::HiRes qw(gettimeofday);
-use Params::Validate;
 use List::Util qw(sum max);
 
 with 'App::AltSQL::Role';
@@ -32,16 +31,36 @@ sub args_spec {
 	);
 }
 
+=head2 new
+
+Pass the following required arguments:
+
+=over 4
+
+=item B<app>
+
+=item B<timing>
+
+=item B<verb>
+
+=item B<sth>
+
+=back
+
+And the following optional arguments:
+
+=over 4
+
+=item B<column_meta>
+
+=back
+
+The passed data will be rendered into one or more of: B<buffer>, B<footer>, B<table_data>.  The statement handler B<sth> will have all the rows read from it as well as metadata extracted from it (mixed in with the passed B<column_meta>), storing the result in B<table_data>.  If there was no table data resulting, only B<buffer> will contain a message describing the result of the statement.
+
+=cut
+
 around BUILDARGS => sub {
-	my $orig = shift;
-	my $class = shift;
-	my %args = validate(@_, {
-		app    => 1,
-		timing => 1,
-		verb   => 1,
-		sth    => 1,
-		column_meta => { default => {} },
-	});
+	my ($orig, $class, %args) = @_;
 	my $sth = delete $args{sth};
 
 	if ($args{verb} eq 'use') {
@@ -99,11 +118,7 @@ Optionally pass 'no_pager' or 'one_row_per_column'.  Will render the stored buff
 =cut
 
 sub render {
-	my $self = shift;
-	my %args = validate(@_, {
-		no_pager           => 0,
-		one_row_per_column => 0,
-	});
+	my ($self, %args) = @_;
 
 	# Buffer will be unset unless there is a static result
 	my $buffer = $self->buffer;

@@ -10,7 +10,7 @@ build_requires:
 configure_requires:
   Module::Build: 0.4
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120630'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -88,9 +88,8 @@ requires:
   Getopt::Long: 2.38
   Hash::Union: 0
   JSON: 0
-  Moose: 0
+  Moose: 2.06
   MooseX::Object::Pluggable: 0
-  Params::Validate: 0
   Sys::SigAction: 0
   Term::ANSIColor: 0.04
   Term::ReadLine::Zoid: 0

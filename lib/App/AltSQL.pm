@@ -180,7 +180,6 @@ As mentioned above, one key point of this project is to make it easy for people 
 
 use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
-use Params::Validate;
 use Data::Dumper;
 use Config::Any;
 use Hash::Union qw(union);
