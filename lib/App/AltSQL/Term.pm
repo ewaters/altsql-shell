@@ -60,9 +60,7 @@ sub _build_term {
 	};
 
 	$term->bindkey('^Z', sub {
-		# The Term::ReadLine::Zoid uses Term::ReadKey in 'raw' mode which disables all signals
-		# If we can find a way to background ourselves at this point, that's the only option that I can see
-		$self->log_info("Backgrounding is not currently possible");
+		kill 20, $$; # send ourselves SIGTSTP
 	});
 
 	$term->bindkey('^D', sub {
