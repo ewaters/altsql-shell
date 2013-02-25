@@ -65,7 +65,6 @@ after _build_term => sub {
 		my ($lines, $pos) = @_;
 		for my $i (0..$#{ $lines }) {
 			# Color the main color words (just for the fun)
-			$lines->[$i] =~ s{(red|green|yellow|blue|magenta|cyan)}{ colored($1, $1) }egi;
 			foreach my $syntax_block (@input_highlighting) {
 				$lines->[$i] =~ s/($$syntax_block{regex})/colored($1, $syntax_block->{color})/eg;
 			}

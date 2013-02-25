@@ -201,7 +201,7 @@ my %_default_classes = (
 our %default_config = (
 	plugins => [ 'Tail', 'Dump' ],
 	view_plugins => [ 'Color', 'UnicodeBox' ],
-	term_plugins => [],
+	term_plugins => [ 'SyntaxHighlight' ],
 );
 
 =head2 Accessors
