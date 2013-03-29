@@ -1,0 +1,36 @@
+# %grammar mysql
+# %version 5.5
+
+mysql_statement:
+	<age_assertion>+
+
+#ALTER {DATABASE | SCHEMA} [db_name]
+#alter_specification ...
+#ALTER {DATABASE | SCHEMA} db_name
+#UPGRADE DATA DIRECTORY NAME
+#
+#alter_specification:
+#[DEFAULT] CHARACTER SET [=] charset_name
+#	| [DEFAULT] COLLATE [=] collation_name
+
+age_assertion:
+	<name>
+	<is>
+	<age>
+	<EOL>
+
+name: /([A-Za-z]+)/
+age: /(\d+)/
+is: <WS>+ /is/ <WS>+
+
+test:
+	/Eric<semicolon><EOL>/
+
+alter_database:
+	/alter<WS>+(?:database|schema)<WS>+/
+	<db_name>
+	/<WS>+upgrade<WS>+data<WS>+directory<WS>+name/
+
+semicolon: /;/
+
+db_name: /a-z0-9/
