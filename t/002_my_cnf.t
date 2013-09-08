@@ -143,6 +143,37 @@ ENDFILE
 	unlink $filename;
 }
 
+{
+	my $instance = App::AltSQL::Model::MySQL->new( app => $app );
+
+	my $filename = write_config(<<ENDFILE);
+[client]
+user = ewaters
+password = 12345
+host=localhost
+database = sakila
+mysql_socket = /path/to_socket/socket.sock
+skip-auto-rehash
+
+ENDFILE
+
+	$instance->read_my_dot_cnf($filename);
+	unbless($instance);
+	cmp_deeply(
+		$instance,
+		superhashof({
+			user           => 'ewaters',
+			password       => '12345',
+			host           => 'localhost',
+			database       => 'sakila',
+			no_auto_rehash => 1,
+			mysql_socket   => '/path/to_socket/socket.sock',
+		}),
+		'Config with socket',
+	);
+	unlink $filename;
+}
+
 done_testing;
 
 sub write_config {

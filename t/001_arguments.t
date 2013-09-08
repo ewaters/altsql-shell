@@ -47,4 +47,22 @@ cmp_deeply(
 	'Known failing CLI args'
 );
 
+cmp_deeply(
+	App::AltSQL->parse_cli_args([qw(-u root -s ~/socket.sock)]),
+	superhashof({
+		_model_user    => 'root',
+		_model_mysql_socket => '~/socket.sock',
+	}),
+	'Short argument name for socket'
+);
+
+cmp_deeply(
+	App::AltSQL->parse_cli_args([qw(-u root --mysql_socket ~/socket2.sock)]),
+	superhashof({
+		_model_user    => 'root',
+		_model_mysql_socket => '~/socket2.sock',
+	}),
+	'Long argument name for socket'
+);
+
 done_testing;
