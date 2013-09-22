@@ -22,23 +22,28 @@ has [qw(host user password database port)] => ( is => 'ro' );
 sub args_spec {
 	return (
 		host => {
-			cli  => 'host|h=s',
-			help => '-h HOSTNAME | --host HOSTNAME',
+			cli         => 'host|h=s',
+			help        => '-h HOSTNAME | --host HOSTNAME',
+			description => 'The hostname for the database server',
 		},
 		user => {
-			cli  => 'user|u=s',
-			help => '-u USERNAME | --user USERNAME',
+			cli         => 'user|u=s',
+			help        => '-u USERNAME | --user USERNAME',
+			description => 'The username to authenticate as',
 		},
 		password => {
-			help => '-p | --password=PASSWORD | -pPASSWORD',
+			help        => '-p | --password=PASSWORD | -pPASSWORD',
+			description => 'The password to authenticate with',
 		},
 		database => {
-			cli  => 'database|d=s',
-			help => '-d DATABASE | --database DATABASE',
+			cli         => 'database|d=s',
+			help        => '-d DATABASE | --database DATABASE',
+			description => 'The database to use once connected',
 		},
 		port => {
-			cli  => 'port=i',
-			help => '--port PORT',
+			cli         => 'port=i',
+			help        => '--port PORT',
+			description => 'The port to use for the database server',
 		},
 	);
 }
