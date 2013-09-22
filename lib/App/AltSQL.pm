@@ -258,8 +258,7 @@ sub BUILD {
 
 		my $subclass_name = $self->args->{"${subclass}_class"};
 
-		eval "require $subclass_name";
-		die $@ if $@;
+		load_class($subclass_name);
 
 		if ($subclass eq 'view') {
 			# We don't have one view per class; we create it per statement
@@ -307,8 +306,7 @@ sub parse_cli_args {
 		}
 		else {
 			my $args_classname = $args{"${args_class}_class"};
-			eval "require $args_classname";
-			die $@ if $@;
+			load_class($args_classname);
 			my %args_spec = $args_classname->args_spec();
 			foreach my $key (keys %args_spec) {
 				next unless $args_spec{$key}{cli};
