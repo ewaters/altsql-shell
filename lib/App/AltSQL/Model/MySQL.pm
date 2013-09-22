@@ -26,7 +26,7 @@ Upon startup, we will read in C<$HOME/.my.cnf> and will read and respect the fol
 
 =item B<select_limit>
 
-=tiem B<no_auto_rehash>
+=item B<no_auto_rehash>
 
 =back
 
@@ -56,27 +56,33 @@ has [qw(no_auto_rehash select_limit safe_update prompt)] => ( is => 'ro' );
 sub args_spec {
 	return (
 		host => {
-			cli  => 'host|h=s',
-			help => '-h HOSTNAME | --host HOSTNAME',
+			cli         => 'host|h=s',
+			help        => '-h HOSTNAME | --host HOSTNAME',
+			description => 'The hostname for the database server',
 		},
 		user => {
-			cli  => 'user|u=s',
-			help => '-u USERNAME | --user USERNAME',
+			cli         => 'user|u=s',
+			help        => '-u USERNAME | --user USERNAME',
+			description => 'The username to authenticate as',
 		},
 		password => {
-			help => '-p | --password=PASSWORD | -pPASSWORD',
+			help        => '-p | --password=PASSWORD | -pPASSWORD',
+			description => 'The password to authenticate with',
 		},
 		database => {
-			cli  => 'database|d=s',
-			help => '-d DATABASE | --database DATABASE',
+			cli         => 'database|d=s',
+			help        => '-d DATABASE | --database DATABASE',
+			description => 'The database to use once connected',
 		},
 		port => {
-			cli  => 'port=i',
-			help => '--port PORT',
+			cli         => 'port=i',
+			help        => '--port PORT',
+			description => 'The port to use for the database server',
 		},
 		no_auto_rehash => {
-			cli  => 'no-auto-rehash|A',
-			help => "-A --no-auto-rehash -- Don't scan the information schema for tab autocomplete data",
+			cli         => 'no-auto-rehash|A',
+			help        => '-A --no-auto-rehash',
+			description => q{Don't scan the information schema for tab autocomplete data},
 		},
 	);
 }

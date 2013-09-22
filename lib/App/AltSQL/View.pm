@@ -106,7 +106,8 @@ around BUILDARGS => sub {
 		return $class->$orig(\%args);
 	}
 
-	$args{footer} = sprintf "%d rows in set (%s)\n\n", int @{ $table_data{rows} }, _describe_timing($args{timing});
+	my $num_rows = @{ $table_data{rows} };
+	$args{footer} = sprintf "%d row%s in set (%s)\n\n", $num_rows, $num_rows == 1 ? '' : 's', _describe_timing($args{timing});
 
 	return $class->$orig(\%args);
 };

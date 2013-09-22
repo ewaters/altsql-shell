@@ -23,9 +23,10 @@ has 'autocomplete_entries' => ( is => 'rw' );
 sub args_spec {
 	return (
 		history_fn => {
-			cli     => 'history=s',
-			default => $ENV{HOME} . '/.altsql_history.js',
-			help    => '--history FILENAME',
+			cli         => 'history=s',
+			default     => $ENV{HOME} . '/.altsql_history.js',
+			help        => '--history FILENAME',
+			description => 'The file to store history entries in',
 		},
 	);
 }

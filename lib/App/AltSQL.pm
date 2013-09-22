@@ -178,6 +178,7 @@ As mentioned above, one key point of this project is to make it easy for people 
 
 =cut
 
+use Class::Load qw(load_class);
 use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use Data::Dumper;
@@ -237,7 +238,9 @@ has ['args', 'config'] => (is => 'rw');
 sub args_spec {
 	return (
 		help => {
-			cli  => 'help|?',
+			cli         => 'help|?',
+			help        => '--help',
+			description => 'Displays this help message and exits',
 		},
 	);
 }
@@ -255,8 +258,7 @@ sub BUILD {
 
 		my $subclass_name = $self->args->{"${subclass}_class"};
 
-		eval "require $subclass_name";
-		die $@ if $@;
+		load_class($subclass_name);
 
 		if ($subclass eq 'view') {
 			# We don't have one view per class; we create it per statement
@@ -304,8 +306,7 @@ sub parse_cli_args {
 		}
 		else {
 			my $args_classname = $args{"${args_class}_class"};
-			eval "require $args_classname";
-			die $@ if $@;
+			load_class($args_classname);
 			my %args_spec = $args_classname->args_spec();
 			foreach my $key (keys %args_spec) {
 				next unless $args_spec{$key}{cli};
@@ -442,7 +443,7 @@ sub new_from_cli {
 	my $class = shift;
 	my $args = $class->parse_cli_args(\@ARGV);
 	if ($args->{help}) {
-		print "TODO from spec!\n";
+		$class->show_help($args);
 		exit;
 	}
 	my $config = $class->read_config_file();
@@ -596,6 +597,52 @@ sub log_debug {
 
 sub log_error {
 	return log_info(@_);
+}
+
+=head2 show_help($args)
+
+Displays the help message for this program.
+
+=cut
+
+sub show_help {
+	my ( $class, $args ) = @_;
+	my @labels_and_args = map {
+		my $c = $_ eq 'main' ? $class : $args->{$_ . '_class'};
+		load_class($c);
+		$_ => { $c->args_spec() }
+	} ( 'main', qw/model term view/ );
+
+	my $max_help_length = 0;
+
+	for(my $i = 0; $i < @labels_and_args; $i += 2) {
+		my $args = $labels_and_args[$i + 1];
+
+		foreach my $spec (values %$args) {
+			if(length($spec->{help}) > $max_help_length) {
+				$max_help_length = length($spec->{help});
+			}
+		}
+	}
+
+	my $format = '%' . $max_help_length . "s  %s\n";
+
+	for(my $i = 0; $i < @labels_and_args; $i += 2) {
+		my ( $label, $args ) = @labels_and_args[ $i, $i + 1 ];
+		my $tc_label = $label;
+		$tc_label    =~ s/^([a-z])/uc($1)/e;
+
+		print "$tc_label Options\n";
+		print '-' x length("$tc_label Options"), "\n";
+		print "\n";
+
+		foreach my $key (sort keys %$args) {
+			my $spec = $args->{$key};
+			printf $format, @{$spec}{qw/help description/};
+		}
+
+		print "\n";
+	}
 }
 
 no Moose;
