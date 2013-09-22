@@ -25,7 +25,7 @@ sub execute_sql {
 	my ($self, $input) = @_;
 
 	my $sth = $self->dbh->prepare($input);
-	$sth->execute();
+	$sth->execute() if $sth;
 
 	if (my $error = $self->dbh->errstr || $@) {
 		$self->log_error($error);
