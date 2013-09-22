@@ -26,7 +26,7 @@ Upon startup, we will read in C<$HOME/.my.cnf> and will read and respect the fol
 
 =item B<select_limit>
 
-=tiem B<no_auto_rehash>
+=item B<no_auto_rehash>
 
 =back
 
