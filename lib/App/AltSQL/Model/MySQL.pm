@@ -53,6 +53,39 @@ has 'sql_parser' => (is => 'ro', default => sub {
 has [qw(host user password database port)] => ( is => 'ro' );
 has [qw(no_auto_rehash select_limit safe_update prompt)] => ( is => 'ro' );
 
+my %prompt_substitutions = (
+	S    => ';',
+	"'"  => "'",
+	'"'  => '"',
+	v    => 'TODO-server-version',
+	p    => sub { shift->{self}->port },
+	'\\' => '\\',
+	n    => "\n",
+	t    => "\t",
+	'_'  => ' ',
+	' '  => ' ',
+	d    => '%d',
+	h    => '%h',
+	c    => '%e{ ++( shift->{self}{_statement_counter} ) }',
+	u    => '%u',
+	U    => '%u@%h',
+	D    => '%t{%a, %d %b %H:%M:%S %Y}',
+	w    => '%t{%a}',
+	y    => '%t{%y}',
+	Y    => '%t{%Y}',
+	o    => '%t{%m}',
+	O    => '%t{%b}',
+	R    => '%t{%k}',
+	r    => '%t{%I}',
+	m    => '%t{%M}',
+	s    => '%t{%S}',
+	P    => '%t{%p}',
+);
+
+sub get_version() {
+  return $prompt_substitutions{v};
+}
+
 sub args_spec {
 	return (
 		host => {
@@ -628,34 +661,6 @@ sub db_type_info {
 	return $info;
 }
 
-my %prompt_substitutions = (
-	S    => ';',
-	"'"  => "'",
-	'"'  => '"',
-	v    => 'TODO-server-version',
-	p    => sub { shift->{self}->port },
-	'\\' => '\\',
-	n    => "\n",
-	t    => "\t",
-	'_'  => ' ',
-	' '  => ' ',
-	d    => '%d',
-	h    => '%h',
-	c    => '%e{ ++( shift->{self}{_statement_counter} ) }',
-	u    => '%u',
-	U    => '%u@%h',
-	D    => '%t{%a, %d %b %H:%M:%S %Y}',
-	w    => '%t{%a}',
-	y    => '%t{%y}',
-	Y    => '%t{%Y}',
-	o    => '%t{%m}',
-	O    => '%t{%b}',
-	R    => '%t{%k}',
-	r    => '%t{%I}',
-	m    => '%t{%M}',
-	s    => '%t{%S}',
-	P    => '%t{%p}',
-);
 
 =cut
 
