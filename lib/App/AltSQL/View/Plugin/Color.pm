@@ -22,6 +22,7 @@ The values are passed to L<Term::ANSIColor> so any supported color may be used.
 =cut
 
 use Moose::Role;
+use Number::Format qw(:subs);
 use Term::ANSIColor qw(color colored);
 
 my %default_config = (
@@ -32,6 +33,10 @@ my %default_config = (
 		is_null => 'blue',
 		is_primary_key => 'bold',
 		is_number => 'yellow',
+		is_ipv4 => 'magenta',
+		is_url => 'cyan',
+		is_bool_true => 'green',
+		is_bool_false => 'red',
 	},
 );
 
@@ -58,6 +63,18 @@ sub format_cell {
 	}
 	elsif ($spec->{is_num}) {
 		$key = 'is_number';
+	}
+	elsif ($value =~ /^\d+\.\d+\.\d+\.\d+/) {
+		$key = 'is_ipv4';
+	}
+	elsif ($value =~ /^([a-z]+):\/\//) {
+		$key = 'is_url';
+	}
+	elsif ($value eq 'YES' || $value eq 'ON' || $value eq 'ENABLED') {
+		$key = 'is_bool_true';
+	}
+	elsif ($value eq 'NO' || $value eq 'OFF' || $value eq 'DISABLED') {
+		$key = 'is_bool_false';
 	}
 	else {
 		$key = 'default';
