@@ -25,14 +25,25 @@ use Moose::Role;
 use Number::Format qw(:subs);
 use Term::ANSIColor qw(color colored);
 
+=head1 COLOURS
+
+Lots more colours. Unwieldy though, needs to be refactored
+
+=cut
+
 my %default_config = (
 	header_text => {
 		default => 'red',
 	},
 	cell_text => {
 		is_null => 'blue',
-		is_primary_key => 'bold',
-		is_key => 'cyan',
+		is_primary_key => 'underline bold',
+		is_primary_key_number => 'yellow underline',
+		is_primary_key_ipv4 => 'magenta underline',
+		is_primary_key_aa => 'underline bold black on_white',
+		is_key => 'white underline',
+		is_key_number => 'yellow underline',
+		is_key_ipv4 => 'magenta underline',
 		is_number => 'yellow',
 		is_ipv4 => 'magenta',
 		is_url => 'cyan',
@@ -61,6 +72,24 @@ sub format_cell {
 	}
 	elsif ($spec->{is_pri_key}) {
 		$key = 'is_primary_key';
+		if ($spec->{is_auto_increment}) {
+			$key = $key . '_aa';
+		}
+		elsif ($spec->{is_num}) {
+			$key = $key . '_number';
+		}
+		elsif ($value =~ /^\d+\.\d+\.\d+\.\d+/) {
+			$key = $key . '_ipv4';
+		}
+	}
+	elsif ($spec->{is_key}) {
+		$key = 'is_key';
+		if ($spec->{is_num}) {
+			$key = $key . '_number';
+		}
+		elsif ($value =~ /^\d+\.\d+\.\d+\.\d+/) {
+			$key = $key . '_ipv4';
+		}
 	}
 	elsif ($spec->{is_num}) {
 		$key = 'is_number';
@@ -76,9 +105,6 @@ sub format_cell {
 	}
 	elsif ($value eq 'NO' || $value eq 'OFF' || $value eq 'DISABLED') {
 		$key = 'is_bool_false';
-	}
-	elsif ($spec->{is_key}) {
-		$key = 'is_key';
 	}
 	else {
 		$key = 'default';
