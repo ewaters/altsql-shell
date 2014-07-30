@@ -1,0 +1,32 @@
+---
+# Pretty prompt
+  prompt: "%c{black}%c{on_white} %u %c{reset}%c{white}%c{on_magenta}⮀%c{reset}%c{black}%c{on_magenta} %h %c{reset}%c{on_blue}%c{magenta}⮀%c{black}%c{on_blue}%d %c{blue}%c{on_black}⮀%c{reset} "
+
+  plugins:
+    - Tail
+    - Dump
+
+  view_plugins:
+    - Color
+    - UnicodeBox
+    - VerticalSorted
+
+# Live syntax highlighting
+# This module requires features in L<Term::ReadLine::Zoid> that are not yet in the upstream release.  If you don't want to wait until this module is updated you can install the developer release from here: L<https://github.com/ewaters/Term-ReadLine-Zoid>.  This degrades safely without the updated module. 
+  term_plugins:
+    - SyntaxHighlight
+
+# Custome colours
+  App::AltSQL::View::Plugin::Color:
+    header_text:
+      default: red
+    cell_text:
+      is_null: blue
+      is_primary_key: bold
+      is_number: yellow
+
+# Output formatting
+  App::AltSQL::View::Plugin::UnicodeBox:
+    style: heavy_header
+    split_lines: 1
+    plain_ascii: 0

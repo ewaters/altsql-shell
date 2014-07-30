@@ -32,6 +32,7 @@ my %default_config = (
 	cell_text => {
 		is_null => 'blue',
 		is_primary_key => 'bold',
+		is_key => 'cyan',
 		is_number => 'yellow',
 		is_ipv4 => 'magenta',
 		is_url => 'cyan',
@@ -75,6 +76,9 @@ sub format_cell {
 	}
 	elsif ($value eq 'NO' || $value eq 'OFF' || $value eq 'DISABLED') {
 		$key = 'is_bool_false';
+	}
+	elsif ($spec->{is_key}) {
+		$key = 'is_key';
 	}
 	else {
 		$key = 'default';
