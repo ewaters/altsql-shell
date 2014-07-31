@@ -55,7 +55,20 @@ my %default_config = (
 sub format_column_cell {
 	my ($self, $spec) = @_;
 
-	return colored $spec->{name}, $self->resolve_namespace_config_value(__PACKAGE__, [ 'header_text', 'default' ], \%default_config);
+	my $value = $spec->{name};
+
+	if ($spec->{is_pri_key}) {
+		$value = $value . ' [PRI]';
+	}
+	elsif ($spec->{is_key}) {
+		$value = $value . ' [FK]';
+	}
+
+	if ($spec->{is_auto_increment}) {
+		$value = $value . ' [AI]'
+	}
+
+	return colored $value, $self->resolve_namespace_config_value(__PACKAGE__, [ 'header_text', 'default' ], \%default_config);
 }
 
 sub format_cell {
