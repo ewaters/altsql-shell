@@ -19,36 +19,91 @@ use Term::ANSIColor qw(color colored);
 my @input_highlighting = (
 	{
 		color => 'yellow',
+		type => 'misc',
 		words => [qw(
-			action add after aggregate all alter as asc auto_increment avg avg_row_length
-			both by
-			cascade change character check checksum column columns comment constraint create cross
+			action auto_increment avg avg_row_length
+			both 
+			change character checksum columns cross
 			current_date current_time current_timestamp
-			data database databases day day_hour day_minute day_second
-			default delayed delay_key_write delete desc describe distinct distinctrow drop
-			enclosed escape escaped explain
-			fields file first flush for foreign from full function
-			global grant grants group
-			having heap high_priority hosts hour hour_minute hour_second
-			identified ignore index infile inner insert insert_id into isam
-			join
-			key keys kill last_insert_id leading left limit lines load local lock logs long 
+			data databases day day_hour day_minute day_second
+			delayed delay_key_write describe distinctrow 
+			enclosed escaped 
+			fields first flush full 
+			global grants 
+			heap high_priority hosts hour hour_minute hour_second
+			ignore infile insert_id isam
+			keys kill last_insert_id leading limit lines load local logs long 
 			low_priority
-			match max_rows middleint min_rows minute minute_second modify month myisam
+			match max_rows middleint min_rows minute minute_second month myisam
 			natural no
-			on optimize option optionally order outer outfile
-			pack_keys partial password primary privileges procedure process processlist
-			read references reload rename replace restrict returns revoke right row rows
-			second select show shutdown soname sql_big_result sql_big_selects sql_big_tables sql_log_off
+			optimize optionally outfile
+			pack_keys partial password process processlist
+			read reload restrict returns right rows
+			second show shutdown soname sql_big_result sql_big_selects sql_big_tables sql_log_off
 			sql_log_update sql_low_priority_updates sql_select_limit sql_small_result sql_warnings starting
 			status straight_join string
-			table tables temporary terminated to trailing type
-			unique unlock unsigned update usage use using
-			values varbinary variables varying
-			where with write
+			table tables temporary terminated trailing type
+			unlock unsigned usage use 
+			varbinary variables varying
+			write
 			year_month
 			zerofill
 		)],
+	},
+	{
+		color => 'blue',
+		type => 'statement',
+		words => [qw(
+			alter analyze audit begin comment commit delete
+			drop execute explain grant insert lock noaudit
+			rename revoke rollback savepoint select
+			truncate update vacuum
+			replace create)],
+	},
+	{
+		color => 'magenta',
+		type => 'type',
+		words => [qw(
+			bigint bit blob bool boolean byte char
+			clob date datetime dec decimal enum
+			float int int8 integer interval long
+			longblob longtext lvarchar mediumblob
+			mediumint mediumtext mlslabel money
+			multiset nchar number numeric nvarchar
+			raw real rowid serial serial8 set
+			smallfloat smallint text time
+			timestamp tinyblob tinyint tinytext
+			varchar varchar2 varray year
+			character characters double doubles varying precision)],
+	},
+	{
+		color => 'green',
+		type => 'operator',
+		words => [qw(
+			all and any between case distinct elif else end
+			exists if in intersect is like match matches minus
+			not or out prior regexp some then union unique when)],
+	},
+	{
+		color => 'cyan',
+		type => 'keywords',
+		words => [qw(
+			access add after aggregate as asc authorization
+			begin by cache cascade check cluster collate
+			collation column compress conflict connect connection
+			constraint current cursor database debug decimal
+			default desc each else elsif escape exception
+			exclusive explain external file for foreign from function
+			group having identified if immediate increment index
+			initial inner into is join key left level loop
+			maxextents mode modify nocompress nowait object of
+			off offline on online option order outer pctfree
+			primary privileges procedure public references
+			referencing release resource return role row
+			rowlabel rownum rows schema session share size
+			start successful synonym then to transaction trigger
+			uid user using validate values view virtual whenever
+			where with)],
 	},
 );
 
