@@ -40,7 +40,7 @@ $term->prompt('%u@%h> ');
 is $term->render_prompt(), 'testuser@localhost> ', "Some substitutions";
 
 $term->prompt('(%u@%h) [%d]> ');
-is $term->render_prompt(), '(testuser@localhost) [(none)]> ', "Issue #28, without database"; 
+is $term->render_prompt(), '(testuser@localhost) [none]> ', "Issue #28, without database"; 
 
 $model->current_database('saklia');
 
