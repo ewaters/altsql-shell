@@ -29,6 +29,7 @@ my $build = Module::Build->new(
 		'Config::Any'      => 0,
 		'JSON'             => 0,
  		'YAML'             => 0,
+		'perl'             => '5.8.0',
 	},
 	suggests => {
 		'DateTime'         => 0,
