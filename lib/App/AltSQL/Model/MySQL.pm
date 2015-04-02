@@ -363,14 +363,10 @@ my %prompt_substitutions = (
 	P    => '%t{%p}',
 );
 
-=cut
-
-Take a .my.cnf prompt format and convert it into Term escape options
-
-Reference:
-http://www.thegeekstuff.com/2010/02/mysql_ps1-6-examples-to-make-your-mysql-prompt-like-angelina-jolie/
-
-=cut
+# Take a .my.cnf prompt format and convert it into Term escape options
+#
+# Reference:
+# http://www.thegeekstuff.com/2010/02/mysql_ps1-6-examples-to-make-your-mysql-prompt-like-angelina-jolie/
 
 sub parse_prompt {
 	my $self = shift;
