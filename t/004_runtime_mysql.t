@@ -22,10 +22,10 @@ BEGIN {
 ## Setup
 
 %db_config = (
-	user     => 'perl_tester',
-	password => '',
-	database => 'test_altsql',
-	host     => 'localhost',
+	user     => $ENV{MYSQL_TEST_USER} || 'perl_tester',
+	password => $ENV{MYSQL_TEST_PASSWORD} || '',
+	database => $ENV{MYSQL_TEST_DB} || 'test_altsql',
+	host     => $ENV{MYSQL_TEST_HOST} || 'localhost',
 	sql_files => [
 		$FindBin::Bin . '/sql/sakila-schema.sql',
 		$FindBin::Bin . '/sql/sakila-data.sql',
