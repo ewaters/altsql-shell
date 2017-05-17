@@ -20,6 +20,8 @@ Upon startup, we will read in C<$HOME/.my.cnf> and will read and respect the fol
 
 =item B<port>
 
+=item B<mysql_socket>
+
 =item B<prompt>
 
 =item B<safe_update>
@@ -50,7 +52,7 @@ has 'sql_parser' => (is => 'ro', default => sub {
 	return DBIx::MyParsePP->new();
 });
 
-has [qw(host user password database port)] => ( is => 'ro' );
+has [qw(host user password database port mysql_socket)] => ( is => 'ro' );
 has [qw(no_auto_rehash select_limit safe_update prompt)] => ( is => 'ro' );
 
 sub args_spec {
@@ -78,6 +80,10 @@ sub args_spec {
 			cli         => 'port=i',
 			help        => '--port PORT',
 			description => 'The port to use for the database server',
+		},
+		mysql_socket => {
+			cli => 'mysql_socket|s=s',
+			help => '-s SOCKET | --mysql_socket SOCKET',
 		},
 		no_auto_rehash => {
 			cli         => 'no-auto-rehash|A',
@@ -113,7 +119,7 @@ sub read_my_dot_cnf {
 	my $self = shift;
 	my $path = shift;
 
-	my @valid_keys = qw( user password host port database prompt safe_update select_limit no_auto_rehash ); # keys we'll read
+	my @valid_keys = qw( user password host port mysql_socket database prompt safe_update select_limit no_auto_rehash ); # keys we'll read
 	my @valid_sections = qw( client mysql ); # valid [section] names
 	my @boolean_keys = qw( safe_update no_auto_rehash );
 
@@ -181,7 +187,7 @@ sub db_connect {
 	my $dsn = 'DBI:mysql:' . join (';',
 		map { "$_=" . $self->$_ }
 		grep { defined $self->$_ }
-		qw(database host port)
+		qw(database host port mysql_socket)
 	);
 	my $dbh = DBI->connect($dsn, $self->user, $self->password, {
 		PrintError => 0,

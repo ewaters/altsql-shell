@@ -8,7 +8,7 @@ App::AltSQL - A drop in replacement to the MySQL prompt with a pluggable Perl in
 
 =head1 SYNOPSIS
 
-  ./altsql -h <host> -u <username> -D <database> -p<password>
+  ./altsql -h <host> -u <username> -D <database> -p<password> -s<socket>
 
   altsql> select * from film limit 4;
   ╒═════════╤══════════════════╤════════════════════════════
@@ -70,6 +70,8 @@ The following options are available.
 =item --port PORT
 
 =item -D DATABASE | --database DATABASE
+
+=item -s | --mysql_socket=SOCKET | -sSOCKET
 
 Basic connection parameters to the MySQL database.
 

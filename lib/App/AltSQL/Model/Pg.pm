@@ -17,7 +17,7 @@ use Time::HiRes qw(gettimeofday tv_interval);
 
 extends 'App::AltSQL::Model';
 
-has [qw(host user password database port)] => ( is => 'ro' );
+has [qw(host user password database port mysql_socket)] => ( is => 'ro' );
 
 sub args_spec {
 	return (
@@ -45,6 +45,10 @@ sub args_spec {
 			help        => '--port PORT',
 			description => 'The port to use for the database server',
 		},
+		mysql_socket => {
+	  		cli => 'mysql_socket|s=s',
+	  		help => '-s SOCKET | --mysql_socket SOCKET',
+		}
 	);
 }
 
@@ -53,7 +57,7 @@ sub db_connect {
 	my $dsn = 'DBI:Pg:' . join (';',
 		map { "$_=" . $self->$_ }
 		grep { defined $self->$_ }
-		qw(database host port)
+		qw(database host port mysql_socket)
 	);
 	my $dbh = DBI->connect($dsn, $self->user, $self->password, {
 		PrintError => 0,
