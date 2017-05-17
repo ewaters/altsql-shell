@@ -60,6 +60,11 @@ sub is_end_of_statement {
 			if ($in_something eq '/*' && $char eq '/' && $last_char eq '*') {
 				$in_something = '';
 			}
+			if($in_something eq '--') {
+				if($char =~ /[\r\n]/) {
+					$in_something = '';
+				}
+			}
 		}
 		else {
 			for my $start (qw/' " `/) {
@@ -92,11 +97,11 @@ sub is_end_of_statement {
 	if ($in_something eq '--') {
 		$in_something = '';
 	}
-    return 0 if $in_something;
+	return 0 if $in_something;
 
 	$line = join '', @sanitized_string;
-    # If the buffer ends in ';' or '\G', or
-    # if they've typed the bare word 'quit' or 'exit', accept the buffer
+	# If the buffer ends in ';' or '\G', or
+	# if they've typed the bare word 'quit' or 'exit', accept the buffer
 	if ($line =~ m{(;|\\G|\\c)\s*$} || $line =~ m{^\s*(quit|exit)\s*$} || $line =~ m{^\s*$}) {
 		return 1;
 	}

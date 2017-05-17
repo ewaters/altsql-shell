@@ -36,4 +36,6 @@ is $model->is_end_of_statement(qq{select * from film where title = /* "\";\n*/ '
 
 is $model->is_end_of_statement(q{select 'test'; -- a simple statement}), 1, 'Statement terminated Got a comment after';
 
+is $model->is_end_of_statement(qq{select 'test' -- a simple statement\n;}), 1, 'Statement with -- comment terminated on next line';
+
 done_testing;

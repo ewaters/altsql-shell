@@ -79,7 +79,7 @@ sub _build_term {
 sub return_key {
 	my $self = shift;
 
-	my $input = join ' ', @{ $self->term->{lines} };
+	my $input = join "\n", @{ $self->term->{lines} };
 	if ($self->app->model->is_end_of_statement($input)) {
 		$self->term->accept_line();
 	}
