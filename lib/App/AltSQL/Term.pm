@@ -79,9 +79,8 @@ sub _build_term {
 sub return_key {
 	my $self = shift;
 
-	## The user has pressed the 'enter' key.  If the buffer ends in ';' or '\G', or if they've typed the bare word 'quit' or 'exit', accept the buffer
 	my $input = join ' ', @{ $self->term->{lines} };
-	if ($input =~ m{(;|\\G|\\c)\s*$} || $input =~ m{^\s*(quit|exit)\s*$} || $input =~ m{^\s*$}) {
+	if ($self->app->model->is_end_of_statement($input)) {
 		$self->term->accept_line();
 	}
 	else {
