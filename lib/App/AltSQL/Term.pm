@@ -158,7 +158,7 @@ sub tidy_history {
 	if ($#history > 1_000) {
 		splice @history, 0, $#history - 1_000;
 	}
-	
+
 	return @history;
 }
 
@@ -175,9 +175,10 @@ sub get_term_height {
 }
 
 my %prompt_substitutions = (
-	u => sub { shift->{self}->app->model->user },
-	d => sub { shift->{self}->app->model->current_database || '(none)' },
-	h => sub { shift->{self}->app->model->host },
+	u => sub { shift->{self}->app->model->user || getlogin || getpwuid($<) },
+	d => sub { shift->{self}->app->model->current_database || 'none' },
+	h => sub { shift->{self}->app->model->host || 'localhost' },
+	v => sub { shift->{self}->app->model->get_version || 'unknown' },
 	'%' => '%',
 );
 

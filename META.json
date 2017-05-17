@@ -1,7 +1,7 @@
 {
-   "abstract" : "A drop in replacement to the MySQL prompt with a pluggable Perl interface",
+   "abstract" : "An improved version of altsql-shell, the drop in replacement to the MySQL prompt with a pluggable Perl interface.",
    "author" : [
-      "Eric Waters <ewaters@gmail.com>"
+      "darryn.ten <https://github.com/darrynten> via nareshv <https://github.com/nareshv/altsql-shell> via Eric Waters <ewaters@gmail.com>"
    ],
    "dynamic_config" : 1,
    "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120630",
@@ -43,14 +43,15 @@
             "Term::ReadLine::Zoid" : "0",
             "Text::CharWidth" : "0",
             "Text::UnicodeBox" : "0.03",
-            "YAML" : "0"
+            "YAML" : "0",
+            "Number::Format" : "0"
          }
       }
    },
    "provides" : {
       "App::AltSQL" : {
          "file" : "lib/App/AltSQL.pm",
-         "version" : "0.05"
+         "version" : "0.05.8"
       },
       "App::AltSQL::Model" : {
          "file" : "lib/App/AltSQL/Model.pm",
@@ -133,18 +134,18 @@
          "version" : 0
       }
    },
-   "release_status" : "stable",
+   "release_status" : "experimental",
    "resources" : {
       "bugtracker" : {
-         "web" : "http://github.com/ewaters/altsql-shell/issues?labels=bug"
+         "web" : "http://github.com/darryn/altsql-shell/issues?labels=bug"
       },
       "homepage" : "http://ewaters.github.com/altsql-shell",
       "license" : [
          "http://dev.perl.org/licenses/"
       ],
       "repository" : {
-         "url" : "http://github.com/ewaters/altsql-shell"
+         "url" : "http://github.com/darrynten/altsql-shell"
       }
    },
-   "version" : "0.05"
+   "version" : "0.05.8"
 }
