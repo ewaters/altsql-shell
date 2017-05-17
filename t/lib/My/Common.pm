@@ -31,7 +31,7 @@ sub bootstrap_db ($) {
 	my $dbh = $app->model->dbh;
 
 	if (! $ENV{SKIP_BOOTSTRAP}) {
-		if ($app->args->model_class eq 'App::AltSQL::Model::MySQL') {
+		if ($app->args->{model_class} eq 'App::AltSQL::Model::MySQL') {
 			$dbh->do("drop database if exists $db_config{database}");
 			$dbh->do("create database $db_config{database}");
 
