@@ -64,11 +64,6 @@ sub _build_term {
 		kill 20, $$; # send ourselves SIGTSTP
 	});
 
-	$term->bindkey('^D', sub {
-		print "\n";
-		$self->app->shutdown();
-	});
-
 	$term->bindkey('return', sub { $self->return_key });
 
 	$self->read_history();
