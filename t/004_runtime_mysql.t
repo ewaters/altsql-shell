@@ -11,6 +11,7 @@ use My::Common;
 
 if (! $ENV{MYSQL_TESTS}) {
 	ok 1, "Skipping tests as \$ENV{MYSQL_TESTS} is not set; this is for developer regression testing";
+	# FIXME: mention MYSQL_TEST_CLIENT, MYSQL_TEST_HOST, MYSQL_TEST_DB, MYSQL_TEST_USER and MYSQL_TEST_PASSWORD
 	done_testing;
 	exit;
 }
