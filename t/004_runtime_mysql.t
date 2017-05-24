@@ -9,10 +9,18 @@ use lib "$FindBin::Bin/lib/";
 use My::ModifierResub;
 use My::Common;
 
-if (! $ENV{MYSQL_TESTS}) {
-	ok 1, "Skipping tests as \$ENV{MYSQL_TESTS} is not set; this is for developer regression testing";
-	done_testing;
-	exit;
+BEGIN
+{
+    if (! $ENV{MYSQL_TESTS}) {
+        note 'To configure the database server used to test against';
+        note 'set these environment variables, MYSQL_TEST_CLIENT, MYSQL_TEST_HOST,';
+        note 'MYSQL_TEST_DB, MYSQL_TEST_USER and MYSQL_TEST_PASSWORD';
+        note '';
+        note 'For example,';
+        note 'MYSQL_TEST_CLIENT=`which mysql` MYSQL_TEST_HOST=mysql MYSQL_TEST_DB=test MYSQL_TEST_USER=dev MYSQL_TEST_PASSWORD=devpass MYSQL_TESTS=1 prove -l t';
+        note '';
+        plan skip_all => "Skipping tests as \$ENV{MYSQL_TESTS} is not set; this is for developer regression testing";
+    }
 }
 
 BEGIN {
@@ -22,15 +30,15 @@ BEGIN {
 ## Setup
 
 %db_config = (
-	user     => 'perl_tester',
-	password => '',
-	database => 'test_altsql',
-	host     => 'localhost',
+	user     => $ENV{MYSQL_TEST_USER} || 'perl_tester',
+	password => $ENV{MYSQL_TEST_PASSWORD} || '',
+	database => $ENV{MYSQL_TEST_DB} || 'test_altsql',
+	host     => $ENV{MYSQL_TEST_HOST} || 'localhost',
 	sql_files => [
 		$FindBin::Bin . '/sql/sakila-schema.sql',
 		$FindBin::Bin . '/sql/sakila-data.sql',
 	],
-	mysql_client => '/opt/local/bin/mysql5',
+	mysql_client => $ENV{MYSQL_TEST_CLIENT} || '/opt/local/bin/mysql5',
 );
 
 my $app = App::AltSQL->new(
